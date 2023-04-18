@@ -1,6 +1,6 @@
 import { compose, toPairs, filter, fromPairs } from "ramda";
 
-import { Left, Right, of, fromNullable } from "../hyper-either.js";
+import { of, fromNullable } from "../hyper-either.js";
 
 export const mint = (state, action) => {
   return of({ state, action })
