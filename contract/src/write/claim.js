@@ -1,13 +1,21 @@
 export function claim(state, action) {
-  const { balances } = state;
+  const { claimable, claims, balances } = state;
   const { caller, input } = action;
-  const { qty, target } = input;
+  const { qty, tx } = input;
+  const obj = validateClaim(tx, claims, claimable, caller);
 
-  balances[caller] -= qty;
-  if (!balances[target]) {
-    balances[target] = 0;
-  }
+  validateTx(tx);
 
-  balances[target] += qty;
+  const filteredClaim = claimable.filter((c) => c.tx === tx)[0];
+  const filteredClaimable = claimable.filter((c) => c.tx !== tx);
+
+  validateQuantityOfClaim(qty, filteredClaim.qty);
+
+  if (!Number.isInteger(balances[caller])) balances[caller] = 0;
+
+  balances[caller] += obj.qty;
+  claims.push(tx);
+  state.claimable = filteredClaimable;
+
   return { state };
 }

@@ -1,18 +1,20 @@
-export function allow(state, action) {
-  const { balances } = state;
+export async function allow(state, action) {
   const { caller, input } = action;
-  const { qty, target } = input;
-  validateQuantityGreaterThanZero(qty);
+  const { target, qty } = input;
+  const { balances, claimable } = state;
+  const newQty = Math.floor(qty);
 
   validateTarget(caller, target);
-
-  validateBalanceGreaterThanQuantity(balances[caller], qty);
-  balances[caller] -= qty;
-  if (!balances[target]) {
-    balances[target] = 0;
-  }
+  validateBalanceGreaterThanQuantity(balances[caller], newQty);
+  // Set target to 0 if it doesn't exist
+  if (!balances[target]) balances[target] = 0;
+  balances[caller] -= newQty;
   validateBalance(balances[caller]);
-  validateBalance(balances[target]);
-  balances[target] += qty;
+  claimable.push({
+    from: caller,
+    to: target,
+    qty: newQty,
+    tx: SmartWeave.transaction.id,
+  });
   return { state };
 }
