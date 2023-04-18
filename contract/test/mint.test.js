@@ -1,78 +1,34 @@
 import { suite } from "uvu";
 import * as assert from "uvu/assert";
-import { mint } from "../src/write/mint-mgr.js";
+import { mint } from "../src/write/mint.js";
 import { setupSmartWeaveEnv } from "./setup.js";
 const test = suite("mint");
 
 test.before(async () => {});
 
-test("should mint 1", async () => {
-  setupSmartWeaveEnv(1, 20);
+test("should mint 10", async () => {
+  // set reward to 10
+  setupSmartWeaveEnv(100000);
+
   const caller = "<justin>";
   const output = await mint(
     {
       name: "rebar",
-      ticker: "PC",
+      ticker: "rebar",
       balances: {},
-      mints: {
-        "<tx>": {
-          amount: 1,
-          fee: 1,
-          height: 10,
-          addr: "<justin>",
-        },
-        "<another-tx>": {
-          amount: 1,
-          fee: 1,
-          height: 10,
-          addr: "<justin>",
-        },
-      },
-      orders: {},
       settings: [
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      divisibility: 12,
+      claims: [],
+      claimable: [],
+      divisibility: 6,
     },
-    { caller, input: { tx: "<tx>" } }
+    { caller }
   );
   const state = output.state;
-  assert.is(state.balances["<justin>"], 1);
-});
-
-test("should throw if block height too high", async () => {
-  // set block height below mint.height
-  setupSmartWeaveEnv(1, 9);
-  const caller = "<justin>";
-  const height = 10;
-
-  assert.throws(
-    () =>
-      mint(
-        {
-          name: "rebar",
-          ticker: "PC",
-          balances: {},
-          mints: {
-            "<tx>": {
-              amount: 1,
-              fee: 1,
-              height,
-              addr: "<justin>",
-            },
-          },
-          orders: {},
-          settings: [
-            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-            ["isTradeable", true],
-          ],
-          divisibility: 12,
-        },
-        { caller, input: { tx: "<tx>" } }
-      ),
-    /Mint request expired./
-  );
+  console.log("STATE", state);
+  assert.is(state.balances["<justin>"], 10);
 });
 
 test.after(async () => {});
