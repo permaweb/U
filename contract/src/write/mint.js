@@ -9,7 +9,6 @@ export const mint = (state, action) => {
       },
       ({ state, action }) => {
         const qty = Math.floor(parseInt(SmartWeave.transaction.reward) / 1e6);
-        console.log("QTY", qty);
         // Set balance to 0 if it doesn't exist
         if (!state.balances[action.caller]) state.balances[action.caller] = 0;
 
