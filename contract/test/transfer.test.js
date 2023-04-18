@@ -151,7 +151,6 @@ test("should throw (Not enough tokens for transfer.)", () => {
     { caller, input: { target: "<tom>", qty: 10 } }
   );
 
-  console.log("state", state);
   assert.equal(state.balances[caller], 0);
   assert.equal(state.balances["<tom>"], 10);
 });
