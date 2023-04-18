@@ -1,7 +1,7 @@
 import { Left, Right } from "./hyper-either.js";
 
 /**
- * @description Same as ContractAssert with a passthrough
+ * @description Contract Error
  *
  * @author @jshaw-ar
  * @param {*} flag What your conditional check is
@@ -9,4 +9,4 @@ import { Left, Right } from "./hyper-either.js";
  * @param {*} p The payload to pass through the func
  * @return {*} p
  */
-export const ca = (flag, message) => (p) => flag ? Left(message) : Right(p);
+export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
