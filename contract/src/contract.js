@@ -5,9 +5,6 @@ import { claim } from "./write/claim.js";
 import { mint } from "./write/mint.js";
 
 export async function handle(state, action) {
-  state.mints = expireStaleRequests(state.mints);
-
-  // beforeHandler(state, action);
   const input = action.input;
   switch (input.function) {
     case "balance":
