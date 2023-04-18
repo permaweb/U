@@ -1,4 +1,4 @@
-export function transfer(state, action) {
+export function allow(state, action) {
   const { balances } = state;
   const { caller, input } = action;
   const { qty, target } = input;

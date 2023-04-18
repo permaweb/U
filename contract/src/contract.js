@@ -1,6 +1,8 @@
 import { balance } from "./read/balance.js";
 import { transfer } from "./write/transfer.js";
-import { mintRequest, expireStaleRequests, mint } from "./write/mint-mgr.js";
+import { allow } from "./write/allow.js";
+import { claim } from "./write/claim.js";
+import { mint } from "./write/mint.js";
 
 export async function handle(state, action) {
   state.mints = expireStaleRequests(state.mints);
@@ -14,8 +16,10 @@ export async function handle(state, action) {
       return await mint(state, action);
     case "transfer":
       return await transfer(state, action);
-    case "mintRequest":
-      return mintRequest(state, action);
+    case "allow":
+      return allow(state, action);
+    case "claim":
+      return claim(state, action);
     default:
       throw new ContractError(
         `No function supplied or function not recognized`
