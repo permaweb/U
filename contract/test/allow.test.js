@@ -130,7 +130,7 @@ test("should throw (Not enough tokens for allow.)", () => {
   );
 });
 
-test("should throw (Not enough tokens for allow.)", () => {
+test("should create a claimable (allow) of qty 10 for tom", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const output = allow(

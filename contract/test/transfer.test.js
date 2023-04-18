@@ -130,7 +130,7 @@ test("should throw (Not enough tokens for transfer.)", () => {
   );
 });
 
-test("should throw (Not enough tokens for transfer.)", () => {
+test("should transfer 10 to tom", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const state = transfer(
