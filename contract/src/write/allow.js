@@ -1,22 +1,22 @@
 import { of, fromNullable } from "../hyper-either.js";
-import { ca } from "../util.js";
+import { ce } from "../util.js";
 
 export function allow(state, action) {
   return of({ state, action })
     .chain(fromNullable)
-    .chain(ca(!action.input?.target, "Please specify a target."))
+    .chain(ce(!action.input?.target, "Please specify a target."))
     .chain(
-      ca(action.input?.target === action.caller, "Target cannot be caller.")
+      ce(action.input?.target === action.caller, "Target cannot be caller.")
     )
     .chain(
-      ca(
+      ce(
         !Number.isInteger(state.balances[action.caller]),
         "Caller does not have a balance."
       )
     )
-    .chain(ca(!Number.isInteger(action.input?.qty), "qty must be an integer."))
+    .chain(ce(!Number.isInteger(action.input?.qty), "qty must be an integer."))
     .chain(
-      ca(
+      ce(
         state.balances[action.caller] < action.input?.qty,
         "Not enough tokens for allow."
       )
