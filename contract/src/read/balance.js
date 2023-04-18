@@ -1,24 +1,20 @@
-export async function balance(state, action) {
-  const { ticker, balances } = state;
-  const { input, caller } = action;
+import { of, fromNullable } from "../hyper-either.js";
 
-  let target;
-  if (!input.target) {
-    target = caller;
-  } else {
-    target = input.target;
-  }
-  if (typeof target !== "string") {
-    throw new ContractError("Must specify target to get balance for.");
-  }
-  if (typeof balances[target] !== "number") {
-    throw new ContractError("Cannot get balance; target does not exist.");
-  }
-  return {
-    result: {
-      target,
-      ticker,
-      balance: balances[target],
-    },
-  };
+export function balance(state, action) {
+  return of({ state, action })
+    .chain(fromNullable)
+    .fold(
+      () => {
+        throw new ContractError("An error occured.");
+      },
+      ({ state, action }) => {
+        return {
+          result: {
+            target: action.input?.target || action.caller,
+            ticker: state.ticker,
+            balance: state.balances[action.input?.target || action.caller] || 0,
+          },
+        };
+      }
+    );
 }

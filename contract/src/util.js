@@ -7,4 +7,4 @@
  * @param {*} p The payload to pass through the func
  * @return {*} p
  */
-const ca = (flag, message) => (p) => flag ? Left(message) : Right(p);
+export const ca = (flag, message) => (p) => flag ? Left(message) : Right(p);
