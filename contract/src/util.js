@@ -1,3 +1,5 @@
+import { Left, Right } from "./hyper-either.js";
+
 /**
  * @description Same as ContractAssert with a passthrough
  *
