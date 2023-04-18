@@ -1,0 +1,13 @@
+{
+  "name": "rebar",
+  "ticker": "PC",
+  "balances": {},
+  "mints": {},
+  "orders": {},
+  "settings": [
+    ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+    ["isTradeable", true]
+  ],
+  "divisibility": 12,
+  "mintQueueSize": 5
+}
