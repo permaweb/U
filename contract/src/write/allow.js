@@ -1,6 +1,8 @@
 import BigNumber from "bignumber.js";
+import { assoc, __, over, lensProp, identity, subtract } from "ramda";
+
 import { of, fromNullable } from "../hyper-either.js";
-import { ce } from "../util.js";
+import { ce, qtyToNumber } from "../util.js";
 
 export function allow(state, action) {
   return of({ state, action })
@@ -33,25 +35,40 @@ export function allow(state, action) {
         "Not enough tokens for allow."
       )
     )
-    .fold(
-      (msg) => {
-        throw new ContractError(msg || "An error occurred.");
-      },
-      ({ state, action }) => {
-        const { input, caller } = action;
-        const { target, qty } = input;
-        const { balances, claimable } = state;
-        const newQty = new BigNumber(qty).toNumber();
-        if (!balances[target]) balances[target] = 0;
-        balances[caller] -= newQty;
+    .map(qtyToNumber)
+    .map(setCallerBalance)
+    .map(createClaim)
+    .map(assoc("state", __, {}))
+    .fold((msg) => {
+      throw new ContractError(msg || "An error occurred.");
+    }, identity);
+}
 
-        claimable.push({
-          from: caller,
-          to: target,
-          qty: newQty,
-          tx: SmartWeave.transaction.id,
-        });
-        return { state };
-      }
-    );
+function setCallerBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.caller),
+        subtract(action.input.qty),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+function createClaim({ state, action }) {
+  return {
+    ...state,
+    claimable: [
+      ...state.claimable,
+      {
+        from: action.caller,
+        to: action.input.target,
+        qty: action.input.qty,
+        tx: SmartWeave.transaction.id,
+      },
+    ],
+  };
 }
