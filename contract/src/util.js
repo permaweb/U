@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { Left, Right } from "./hyper-either.js";
+import { over, ifElse, identity, lensProp, always, isNil } from "ramda";
 
 /**
  * @description Contract Error
@@ -29,5 +30,27 @@ export function qtyToNumber({ state, action }) {
         qty: new BigNumber(action.input?.qty).toNumber(),
       },
     },
+  };
+}
+
+/**
+ *
+ *
+ * @author Tom Wilson
+ * @export
+ * @param {*} { state, action }
+ * @return {*}
+ */
+export function setCallerBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.caller),
+        ifElse(isNil, always(0), identity),
+        state.balances
+      ),
+    },
+    action,
   };
 }

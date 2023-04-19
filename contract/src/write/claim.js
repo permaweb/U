@@ -1,20 +1,6 @@
 import { fromNullable, of } from "../hyper-either.js";
-import { ce } from "../util.js";
-import {
-  always,
-  assoc,
-  __,
-  compose,
-  add,
-  prop,
-  find,
-  reject,
-  over,
-  lensProp,
-  ifElse,
-  isNil,
-  identity,
-} from "ramda";
+import { ce, setCallerBalance } from "../util.js";
+import { assoc, __, compose, add, prop, find, reject, identity } from "ramda";
 /**
  * Claims rebAR from claimables
  *
@@ -60,20 +46,6 @@ export function claim(state, action) {
     .fold((msg) => {
       throw new ContractError(msg || "An error occurred.");
     }, identity);
-}
-
-function setCallerBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.caller),
-        ifElse(isNil, always(0), identity),
-        state.balances
-      ),
-    },
-    action,
-  };
 }
 
 function handleClaim({ state, action }) {
