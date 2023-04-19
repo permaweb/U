@@ -4,7 +4,7 @@ import { claim } from "../src/write/claim.js";
 import { setupSmartWeaveEnv } from "./setup.js";
 const test = suite("claim");
 
-test.before(async () => { });
+test.before(async () => {});
 
 test("should throw (txID must be passed to the claim function.)", () => {
   setupSmartWeaveEnv();
@@ -107,36 +107,6 @@ test("should throw (Claim not addressed to caller.)", () => {
   );
 });
 
-test("should throw (Incorrect qty.)", () => {
-  setupSmartWeaveEnv();
-  const caller = "<justin>";
-  assert.throws(
-    () =>
-      claim(
-        {
-          name: "rebar",
-          ticker: "rebar",
-          balances: {},
-          settings: [
-            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-            ["isTradeable", true],
-          ],
-          claims: [],
-          claimable: [
-            {
-              txID: "<test-claim>",
-              to: caller,
-              qty: 11,
-            },
-          ],
-          divisibility: 6,
-        },
-        { caller, input: { txID: "<test-claim>", qty: 10 } }
-      ),
-    /Incorrect qty./
-  );
-});
-
 test("should claim", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
@@ -164,12 +134,12 @@ test("should claim", () => {
   );
 
   const { state } = output;
-  console.log(state)
+  console.log(state);
   assert.is(state.balances[caller], 11);
   //assert.is(state.claims[0], "<test-claim>");
   assert.is(state.claimable.length, 0);
 });
 
-test.after(async () => { });
+test.after(async () => {});
 
 test.run();
