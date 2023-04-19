@@ -17,6 +17,12 @@ export function transfer(state, action) {
     .chain(ce(!Number.isInteger(action.input?.qty), "qty must be an integer."))
     .chain(
       ce(
+        action.input?.qty < 1,
+        "Invalid token transfer. qty must be an integer greater than 0."
+      )
+    )
+    .chain(
+      ce(
         state.balances[action.caller] < action.input?.qty,
         "Not enough tokens for transfer."
       )
