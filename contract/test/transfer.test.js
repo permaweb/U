@@ -6,7 +6,7 @@ const test = suite("transfer");
 
 test.before(async () => {});
 
-test.skip("should throw (Please specify a target.)", () => {
+test("should throw (Please specify a target.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -30,7 +30,7 @@ test.skip("should throw (Please specify a target.)", () => {
   );
 });
 
-test.skip("should throw (Target cannot be caller.)", () => {
+test("should throw (Target cannot be caller.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -54,7 +54,7 @@ test.skip("should throw (Target cannot be caller.)", () => {
   );
 });
 
-test.skip("should throw (Caller does not have a balance.)", () => {
+test("should throw (Caller does not have a balance.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -78,7 +78,7 @@ test.skip("should throw (Caller does not have a balance.)", () => {
   );
 });
 
-test.skip("should throw (qty must be an integer.)", () => {
+test("should throw (qty must be an integer.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -104,7 +104,7 @@ test.skip("should throw (qty must be an integer.)", () => {
   );
 });
 
-test.skip("should throw (Not enough tokens for transfer.)", () => {
+test("should throw (Not enough tokens for transfer.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -130,7 +130,7 @@ test.skip("should throw (Not enough tokens for transfer.)", () => {
   );
 });
 
-test.skip("should not transfer null amount of tokens", () => {
+test("should not transfer null amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -156,7 +156,7 @@ test.skip("should not transfer null amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer undefined amount of tokens", () => {
+test("should not transfer undefined amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -182,7 +182,7 @@ test.skip("should not transfer undefined amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer 'string' amount of tokens", () => {
+test("should not transfer 'string' amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -208,7 +208,7 @@ test.skip("should not transfer 'string' amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer fractional amount of tokens", () => {
+test("should not transfer fractional amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -234,7 +234,7 @@ test.skip("should not transfer fractional amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer fractional amount of tokens", () => {
+test("should not transfer fractional amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -260,7 +260,7 @@ test.skip("should not transfer fractional amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer without a target", () => {
+test("should not transfer without a target", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -286,7 +286,7 @@ test.skip("should not transfer without a target", () => {
   );
 });
 
-test.skip("should not transfer with null target", () => {
+test("should not transfer with null target", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -312,7 +312,7 @@ test.skip("should not transfer with null target", () => {
   );
 });
 
-test.skip("should not transfer with undefined target", () => {
+test("should not transfer with undefined target", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -338,7 +338,7 @@ test.skip("should not transfer with undefined target", () => {
   );
 });
 
-test.skip("should not transfer from non-existing accout", () => {
+test("should not transfer from non-existing accout", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -364,7 +364,7 @@ test.skip("should not transfer from non-existing accout", () => {
   );
 });
 
-test.skip("should not transfer more than owned", () => {
+test("should not transfer more than owned", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -390,7 +390,7 @@ test.skip("should not transfer more than owned", () => {
   );
 });
 
-test.skip("should not transfer 0 tokens", () => {
+test("should not transfer 0 tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -416,7 +416,7 @@ test.skip("should not transfer 0 tokens", () => {
   );
 });
 
-test.skip("should not transfer negative amount of tokens", () => {
+test("should not transfer negative amount of tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -442,7 +442,7 @@ test.skip("should not transfer negative amount of tokens", () => {
   );
 });
 
-test.skip("should not transfer to the same account (caller -> caller)", () => {
+test("should not transfer to the same account (caller -> caller)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(

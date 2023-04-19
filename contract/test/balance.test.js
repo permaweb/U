@@ -6,7 +6,7 @@ const test = suite("balance");
 
 test.before(async () => {});
 
-test.skip("caller should have 0 balance", async () => {
+test("caller should have 0 balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999);
 
@@ -30,7 +30,7 @@ test.skip("caller should have 0 balance", async () => {
   assert.is(output.result.target, caller);
 });
 
-test.skip("caller should have 1 balance", async () => {
+test("caller should have 1 balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999);
 
@@ -56,7 +56,7 @@ test.skip("caller should have 1 balance", async () => {
   assert.is(output.result.target, caller);
 });
 
-test.skip("target should have 0 balance", async () => {
+test("target should have 0 balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999);
 
@@ -79,7 +79,7 @@ test.skip("target should have 0 balance", async () => {
   assert.is(output.result.balance, 0);
   assert.is(output.result.target, "<tom>");
 });
-test.skip("target should have 1 balance", async () => {
+test("target should have 1 balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999);
 
