@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { Left, Right } from "./hyper-either.js";
 
 /**
@@ -10,3 +11,23 @@ import { Left, Right } from "./hyper-either.js";
  * @return {*} p
  */
 export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
+
+/**
+ * Converts qty to a number (eg. converts 10.0 => 10)
+ *
+ * @author @jshaw-ar
+ * @param {*} { state, action }
+ * @return {*}
+ */
+export function qtyToNumber({ state, action }) {
+  return {
+    state,
+    action: {
+      ...action,
+      input: {
+        ...action.input,
+        qty: new BigNumber(action.input?.qty).toNumber(),
+      },
+    },
+  };
+}
