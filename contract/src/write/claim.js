@@ -46,11 +46,12 @@ export function claim(state, action) {
     )
     .map(setCallerBalance)
     .map(handleClaim)
+    .map(assoc('state', __, {}))
     .fold(
       (msg) => {
         throw new ContractError(msg || "An error occurred.");
       },
-      assoc('state', __, {})
+      identity
     );
 }
 
