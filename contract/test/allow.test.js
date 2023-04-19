@@ -20,7 +20,7 @@ test("should throw (Please specify a target.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -44,7 +44,7 @@ test("should throw (Target cannot be caller.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -68,7 +68,7 @@ test("should throw (Caller does not have a balance.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -94,7 +94,7 @@ test("should throw (qty must be an integer.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -120,7 +120,7 @@ test("should throw (Not enough tokens for allow.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -146,7 +146,7 @@ test("should not allow null amount of tokens", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -172,7 +172,7 @@ test("should not allow without providing quantity", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -198,7 +198,7 @@ test("should not transfer corrupted amount of tokens", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -224,7 +224,7 @@ test("should not allow fractional value", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -249,7 +249,7 @@ test("should not allow without a target", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -275,7 +275,7 @@ test("should not allow with null target", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -301,7 +301,7 @@ test("should not allow with undefined target", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -327,7 +327,7 @@ test("should not transfer negative amount of tokens", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -353,7 +353,7 @@ test("should not transfer 0 tokens", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -379,7 +379,7 @@ test("should not transfer to the same account", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -405,7 +405,7 @@ test("should not transfer to the same account", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -431,7 +431,7 @@ test("should not transfer more than owned", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -455,7 +455,6 @@ test("should transfer to empty account", () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [],
       divisibility: 6,
     },
@@ -483,7 +482,6 @@ test("should allow to existing account", () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [],
       divisibility: 6,
     },
