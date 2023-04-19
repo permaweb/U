@@ -47,6 +47,13 @@ export function claim(state, action) {
         "Claim not addressed to caller."
       )
     )
+    .chain(
+      ce(
+        state.claimable.filter((c) => c.txID === action.input.txID)[0]?.qty !==
+          action.input?.qty,
+        "Incorrect qty."
+      )
+    )
     .map(setCallerBalance)
     .map(handleClaim)
     .map(assoc("state", __, {}))
