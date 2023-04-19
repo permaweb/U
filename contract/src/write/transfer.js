@@ -1,6 +1,13 @@
 import BigNumber from "bignumber.js";
+import { assoc, identity, __ } from "ramda";
+
 import { fromNullable, of } from "../hyper-either.js";
-import { ce } from "../util.js";
+import {
+  addTargetBalance,
+  ce,
+  setTargetBalance,
+  subtractCallerBalance,
+} from "../util.js";
 
 export function transfer(state, action) {
   return of({ state, action })
@@ -33,20 +40,12 @@ export function transfer(state, action) {
         "Not enough tokens for transfer."
       )
     )
-    .fold(
-      (msg) => {
-        throw new ContractError(msg || "An error occurred.");
-      },
-      ({ state, action }) => {
-        const { input, caller } = action;
-        const { target, qty } = input;
-        const { balances } = state;
-        balances[caller] -= qty;
-        if (!balances[target]) {
-          balances[target] = 0;
-        }
-        balances[target] += qty;
-        return state;
-      }
-    );
+    .map(setTargetBalance)
+    .map(subtractCallerBalance)
+    .map(addTargetBalance)
+    .map(({ state }) => state)
+    .map(assoc("state", __, {}))
+    .fold((msg) => {
+      throw new ContractError(msg || "An error occurred.");
+    }, identity);
 }

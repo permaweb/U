@@ -1,8 +1,8 @@
 import BigNumber from "bignumber.js";
-import { assoc, __, over, lensProp, identity, subtract } from "ramda";
+import { assoc, __, identity } from "ramda";
 
 import { of, fromNullable } from "../hyper-either.js";
-import { ce, qtyToNumber } from "../util.js";
+import { ce, qtyToNumber, subtractCallerBalance } from "../util.js";
 
 export function allow(state, action) {
   return of({ state, action })
@@ -36,26 +36,12 @@ export function allow(state, action) {
       )
     )
     .map(qtyToNumber)
-    .map(setCallerBalance)
+    .map(subtractCallerBalance)
     .map(createClaim)
     .map(assoc("state", __, {}))
     .fold((msg) => {
       throw new ContractError(msg || "An error occurred.");
     }, identity);
-}
-
-function setCallerBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.caller),
-        subtract(action.input.qty),
-        state.balances
-      ),
-    },
-    action,
-  };
 }
 
 function createClaim({ state, action }) {
