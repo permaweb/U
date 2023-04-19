@@ -286,7 +286,6 @@ test("should claim tokens", () => {
   );
 
   const { state } = output;
-  console.log(state);
   assert.is(state.balances[caller], 11);
   assert.is(state.claimable.length, 0);
 });

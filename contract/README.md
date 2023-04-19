@@ -1,6 +1,6 @@
-# rebar Contract
+# REBAR Contract
 
-This contract is the rebar contract.
+This contract is the reBAR contract.
 
 ## Build
 

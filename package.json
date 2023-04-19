@@ -1,0 +1,23 @@
+{
+  "name": "rebar",
+  "version": "1.0.0",
+  "description": "The utility token of the permaweb",
+  "main": "index.js",
+  "scripts": {
+    "test": "(cd contract && npm test)",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/permaweb/rebar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/permaweb/rebar/issues"
+  },
+  "homepage": "https://github.com/permaweb/rebar#readme",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}

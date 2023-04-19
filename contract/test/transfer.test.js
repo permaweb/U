@@ -471,7 +471,7 @@ test("should not transfer to the same account (caller -> caller)", () => {
 test("should transfer to empty account", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
-  const state = transfer(
+  const output = transfer(
     {
       name: "rebar",
       ticker: "rebar",
@@ -487,7 +487,7 @@ test("should transfer to empty account", () => {
     },
     { caller, input: { target: "<tom>", qty: 10 } }
   );
-
+  const { state } = output;
   assert.equal(state.balances[caller], 0);
   assert.equal(state.balances["<tom>"], 10);
 });
@@ -495,7 +495,7 @@ test("should transfer to empty account", () => {
 test("should transfer to existing account", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
-  const state = transfer(
+  const output = transfer(
     {
       name: "rebar",
       ticker: "rebar",
@@ -513,6 +513,7 @@ test("should transfer to existing account", () => {
     { caller, input: { target: "<tom>", qty: 10 } }
   );
 
+  const { state } = output;
   assert.equal(state.balances[caller], 0);
   assert.equal(state.balances["<tom>"], 20);
 });
