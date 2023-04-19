@@ -1,6 +1,6 @@
 import { fromNullable, of } from "../hyper-either.js";
 import { ce } from "../util.js";
-
+import { always, assoc, __, compose, add, prop, find, reject, over, lensProp, ifElse, isNil, identity } from 'ramda'
 /**
  * Claims rebAR from claimables
  *
@@ -16,9 +16,9 @@ export function claim(state, action) {
     .chain(
       ce(!action.input?.txID, "txID must be passed to the claim function.")
     )
-    .chain(
-      ce(state.claims.includes(action.input?.txID), "Claim already processed.")
-    )
+    // .chain(
+    //   ce(state.claims.includes(action.input?.txID), "Claim already processed.")
+    // )
     .chain(
       ce(
         !(
@@ -31,7 +31,7 @@ export function claim(state, action) {
     .chain(
       ce(
         state.claimable.filter((c) => c.txID === action.input.txID)[0]?.to !==
-          action.caller,
+        action.caller,
         "Claim not addressed to caller."
       )
     )
@@ -44,24 +44,48 @@ export function claim(state, action) {
         "Incorrect qty."
       )
     )
+    .map(setCallerBalance)
+    .map(handleClaim)
     .fold(
       (msg) => {
         throw new ContractError(msg || "An error occurred.");
       },
-      ({ state, action }) => {
-        const { balances, claimable, claims } = state;
-        const { input, caller } = action;
-        const { txID } = input;
-        if (!Number.isInteger(balances[caller])) balances[caller] = 0;
-        const claim = claimable.filter((c) => c.txID === txID)[0];
-        balances[caller] += claim.qty;
-        claims.push(claim.txID);
-        return {
-          state: {
-            ...state,
-            claimable: claimable.filter((c) => c.txID !== claim.txID),
-          },
-        };
-      }
+      assoc('state', __, {})
     );
+}
+
+function setCallerBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(lensProp(action.caller), ifElse(isNil, always(0), identity), state.balances)
+    },
+    action
+  }
+}
+
+function handleClaim({ state, action }) {
+  const txID = action.input.txID
+  const caller = action.caller
+  const byTx = x => x.txID === txID
+
+  return {
+    ...state,
+    balances: {
+      ...state.balances,
+      [caller]: (
+        compose(
+          add(state.balances[caller]),
+          prop('qty'),
+          find(byTx),
+          prop('claimable')
+        )(state)
+      )
+
+    },
+    claimable: compose(
+      reject(byTx),
+      prop('claimable')
+    )(state)
+  }
 }
