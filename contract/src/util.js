@@ -1,6 +1,15 @@
 import BigNumber from "bignumber.js";
 import { Left, Right } from "./hyper-either.js";
-import { over, ifElse, identity, lensProp, always, isNil } from "ramda";
+import {
+  over,
+  ifElse,
+  identity,
+  lensProp,
+  always,
+  isNil,
+  add,
+  subtract,
+} from "ramda";
 
 /**
  * @description Contract Error
@@ -34,7 +43,7 @@ export function qtyToNumber({ state, action }) {
 }
 
 /**
- *
+ * Sets caller balance to 0 if it does not exist
  *
  * @author Tom Wilson
  * @export
@@ -48,6 +57,70 @@ export function setCallerBalance({ state, action }) {
       balances: over(
         lensProp(action.caller),
         ifElse(isNil, always(0), identity),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+/**
+ * Sets target balance to 0 if it does not exist
+ *
+ * @author Tom Wilson
+ * @export
+ * @param {*} { state, action }
+ * @return {*}
+ */
+export function setTargetBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.input.target),
+        ifElse(isNil, always(0), identity),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+/**
+ * Subtracts qty from caller balance
+ *
+ * @author @jshaw-ar
+ * @param {*} { state, action }
+ * @return {*}
+ */
+export function subtractCallerBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.caller),
+        subtract(action.input.qty),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+/**
+ * Adds qty from caller balance
+ *
+ * @author @jshaw-ar
+ * @param {*} { state, action }
+ * @return {*}
+ */
+export function addTargetBalance({ state, action }) {
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.input.target),
+        add(action.input.qty),
         state.balances
       ),
     },
