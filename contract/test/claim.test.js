@@ -20,7 +20,7 @@ test("should not allow claiming without txId", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -44,7 +44,7 @@ test("should not allow claiming with null txID", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -68,7 +68,7 @@ test("should not allow claiming with non-existing txID", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [],
           divisibility: 6,
         },
@@ -92,7 +92,7 @@ test("should throw (Claim not addressed to caller.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               txID: "<test-claim>",
@@ -121,7 +121,7 @@ test("should throw (Incorrect qty.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               txID: "<test-claim>",
@@ -151,7 +151,7 @@ test("should throw (Incorrect qty.)", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               txID: "<test-claim>",
@@ -181,7 +181,7 @@ test("should not allow claiming with null quantity", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               txID: "<test-claim>",
@@ -213,7 +213,7 @@ test("should not allow claiming with incorrect quantity", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               from: "<tom>",
@@ -244,7 +244,7 @@ test("should not allow claiming with null quantity", () => {
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
           ],
-          claims: [],
+
           claimable: [
             {
               txID: "<test-claim>",
@@ -272,7 +272,6 @@ test("should claim tokens", () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [
         {
           txID: "<test-claim>",
@@ -289,7 +288,6 @@ test("should claim tokens", () => {
   const { state } = output;
   console.log(state);
   assert.is(state.balances[caller], 11);
-  //assert.is(state.claims[0], "<test-claim>");
   assert.is(state.claimable.length, 0);
 });
 
