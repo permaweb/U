@@ -6,7 +6,7 @@ const test = suite("claim");
 
 test.before(async () => {});
 
-test("should throw (txID must be passed to the claim function.)", () => {
+test("should not allow claiming without txId", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -30,6 +30,30 @@ test("should throw (txID must be passed to the claim function.)", () => {
   );
 });
 
+test("should not allow claiming with null txID", () => {
+  setupSmartWeaveEnv();
+  const caller = "<justin>";
+  assert.throws(
+    () =>
+      claim(
+        {
+          name: "rebar",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claims: [],
+          claimable: [],
+          divisibility: 6,
+        },
+        { caller, input: { txID: null } }
+      ),
+    /txID must be passed to the claim function./
+  );
+});
+
 test("should throw (Claim already processed.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
@@ -48,13 +72,13 @@ test("should throw (Claim already processed.)", () => {
           claimable: [],
           divisibility: 6,
         },
-        { caller, input: { txID: "<test-claim>" } }
+        { caller, input: { txID: "<test-claim>", qty: 1 } }
       ),
     /Claim already processed./
   );
 });
 
-test("should throw (There must be 1 claimable with this tx id.)", () => {
+test("should not allow claiming with non-existing txID", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -72,7 +96,7 @@ test("should throw (There must be 1 claimable with this tx id.)", () => {
           claimable: [],
           divisibility: 6,
         },
-        { caller, input: { txID: "<test-claim>" } }
+        { caller, input: { txID: "<test-claim>", qty: 1 } }
       ),
     /There must be 1 claimable with this tx id./
   );
@@ -101,7 +125,7 @@ test("should throw (Claim not addressed to caller.)", () => {
           ],
           divisibility: 6,
         },
-        { caller, input: { txID: "<test-claim>" } }
+        { caller, input: { txID: "<test-claim>", qty: 1 } }
       ),
     /Claim not addressed to caller./
   );
@@ -137,7 +161,127 @@ test("should throw (Incorrect qty.)", () => {
   );
 });
 
-test("should claim", () => {
+test("should throw (Incorrect qty.)", () => {
+  setupSmartWeaveEnv();
+  const caller = "<justin>";
+  assert.throws(
+    () =>
+      claim(
+        {
+          name: "rebar",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claims: [],
+          claimable: [
+            {
+              txID: "<test-claim>",
+              to: caller,
+              qty: 11,
+            },
+          ],
+          divisibility: 6,
+        },
+        { caller, input: { txID: "<test-claim>" } }
+      ),
+    /A qty must be specified./
+  );
+});
+
+test("should not allow claiming with null quantity", () => {
+  setupSmartWeaveEnv();
+  const caller = "<justin>";
+  assert.throws(
+    () =>
+      claim(
+        {
+          name: "rebar",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claims: [],
+          claimable: [
+            {
+              txID: "<test-claim>",
+              to: caller,
+              qty: 11,
+            },
+          ],
+          divisibility: 6,
+        },
+        { caller, input: { txID: "<test-claim>", qty: null } }
+      ),
+    /A qty must be specified./
+  );
+});
+
+test("should not allow claiming with null quantity", () => {
+  setupSmartWeaveEnv();
+  const caller = "<justin>";
+  assert.throws(
+    () =>
+      claim(
+        {
+          name: "rebar",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claims: [],
+          claimable: [
+            {
+              txID: "<test-claim>",
+              to: caller,
+              qty: 11,
+            },
+          ],
+          divisibility: 6,
+        },
+        { caller, input: { txID: "<test-claim>", qty: 10 } }
+      ),
+    /Incorrect qty./
+  );
+});
+
+test("should not allow claiming with null quantity", () => {
+  setupSmartWeaveEnv();
+  const caller = "<justin>";
+  assert.throws(
+    () =>
+      claim(
+        {
+          name: "rebar",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claims: [],
+          claimable: [
+            {
+              txID: "<test-claim>",
+              to: caller,
+              qty: 11,
+            },
+          ],
+          divisibility: 6,
+        },
+        { caller: "<incorrect>", input: { txID: "<test-claim>", qty: 11 } }
+      ),
+    /Claim not addressed to caller./
+  );
+});
+
+test("should claim tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const output = claim(

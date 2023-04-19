@@ -54,7 +54,7 @@ test("should mint new bars with empty balance", async () => {
   assert.is(state.balances["<justin>"], 1);
 });
 
-test("should mint new bars with empty balance", async () => {
+test("should mint new bars with existing balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(2000123);
 

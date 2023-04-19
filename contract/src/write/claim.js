@@ -16,6 +16,7 @@ export function claim(state, action) {
     .chain(
       ce(!action.input?.txID, "txID must be passed to the claim function.")
     )
+    .chain(ce(!action.input?.qty, "A qty must be specified."))
     .chain(
       ce(state.claims.includes(action.input?.txID), "Claim already processed.")
     )
