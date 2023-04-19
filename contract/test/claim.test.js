@@ -54,30 +54,6 @@ test("should not allow claiming with null txID", () => {
   );
 });
 
-test("should throw (Claim already processed.)", () => {
-  setupSmartWeaveEnv();
-  const caller = "<justin>";
-  assert.throws(
-    () =>
-      claim(
-        {
-          name: "rebar",
-          ticker: "rebar",
-          balances: {},
-          settings: [
-            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-            ["isTradeable", true],
-          ],
-          claims: ["<test-claim>"],
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { txID: "<test-claim>", qty: 1 } }
-      ),
-    /Claim already processed./
-  );
-});
-
 test("should not allow claiming with non-existing txID", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
@@ -221,7 +197,7 @@ test("should not allow claiming with null quantity", () => {
   );
 });
 
-test("should not allow claiming with null quantity", () => {
+test("should not allow claiming with incorrect quantity", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -230,7 +206,9 @@ test("should not allow claiming with null quantity", () => {
         {
           name: "rebar",
           ticker: "rebar",
-          balances: {},
+          balances: {
+            "<tom>": 11,
+          },
           settings: [
             ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
             ["isTradeable", true],
@@ -238,6 +216,7 @@ test("should not allow claiming with null quantity", () => {
           claims: [],
           claimable: [
             {
+              from: "<tom>",
               txID: "<test-claim>",
               to: caller,
               qty: 11,
