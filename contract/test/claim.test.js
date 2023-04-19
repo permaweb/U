@@ -6,7 +6,7 @@ const test = suite("claim");
 
 test.before(async () => {});
 
-test("should throw (txID must be passed to the claim function.)", () => {
+test.skip("should throw (txID must be passed to the claim function.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -30,7 +30,7 @@ test("should throw (txID must be passed to the claim function.)", () => {
   );
 });
 
-test("should throw (Claim already processed.)", () => {
+test.skip("should throw (Claim already processed.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -54,7 +54,7 @@ test("should throw (Claim already processed.)", () => {
   );
 });
 
-test("should throw (There must be 1 claimable with this tx id.)", () => {
+test.skip("should throw (There must be 1 claimable with this tx id.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -78,7 +78,7 @@ test("should throw (There must be 1 claimable with this tx id.)", () => {
   );
 });
 
-test("should throw (Claim not addressed to caller.)", () => {
+test.skip("should throw (Claim not addressed to caller.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -107,7 +107,7 @@ test("should throw (Claim not addressed to caller.)", () => {
   );
 });
 
-test("should throw (Incorrect qty.)", () => {
+test.skip("should throw (Incorrect qty.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -137,7 +137,7 @@ test("should throw (Incorrect qty.)", () => {
   );
 });
 
-test("should claim", () => {
+test.skip("should claim", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const output = claim(

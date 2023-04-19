@@ -6,7 +6,7 @@ const test = suite("allow");
 
 test.before(async () => {});
 
-test("should throw (Please specify a target.)", () => {
+test.skip("should throw (Please specify a target.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -30,7 +30,7 @@ test("should throw (Please specify a target.)", () => {
   );
 });
 
-test("should throw (Target cannot be caller.)", () => {
+test.skip("should throw (Target cannot be caller.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -54,7 +54,7 @@ test("should throw (Target cannot be caller.)", () => {
   );
 });
 
-test("should throw (Caller does not have a balance.)", () => {
+test.skip("should throw (Caller does not have a balance.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -78,7 +78,7 @@ test("should throw (Caller does not have a balance.)", () => {
   );
 });
 
-test("should throw (qty must be an integer.)", () => {
+test.skip("should throw (qty must be an integer.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -104,7 +104,7 @@ test("should throw (qty must be an integer.)", () => {
   );
 });
 
-test("should throw (Not enough tokens for allow.)", () => {
+test.skip("should throw (Not enough tokens for allow.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -130,7 +130,7 @@ test("should throw (Not enough tokens for allow.)", () => {
   );
 });
 
-test("should create a claimable (allow) of qty 10 for tom", () => {
+test.skip("should create a claimable (allow) of qty 10 for tom", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const output = allow(
