@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { fromNullable, of } from "../hyper-either.js";
 import { ce } from "../util.js";
 
@@ -10,11 +11,16 @@ export function transfer(state, action) {
     )
     .chain(
       ce(
-        !Number.isInteger(state.balances[action.caller]),
+        !new BigNumber(state.balances[action.caller]).isInteger(),
         "Caller does not have a balance."
       )
     )
-    .chain(ce(!Number.isInteger(action.input?.qty), "qty must be an integer."))
+    .chain(
+      ce(
+        !new BigNumber(action.input?.qty).isInteger(),
+        "qty must be an integer."
+      )
+    )
     .chain(
       ce(
         action.input?.qty < 1,

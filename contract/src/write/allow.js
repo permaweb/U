@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { of, fromNullable } from "../hyper-either.js";
 import { ce } from "../util.js";
 
@@ -10,11 +11,16 @@ export function allow(state, action) {
     )
     .chain(
       ce(
-        !Number.isInteger(state.balances[action.caller]),
+        !new BigNumber(state.balances[action.caller]).isInteger(),
         "Caller does not have a balance."
       )
     )
-    .chain(ce(!Number.isInteger(action.input?.qty), "qty must be an integer."))
+    .chain(
+      ce(
+        !new BigNumber(action.input?.qty).isInteger(),
+        "qty must be an integer."
+      )
+    )
     .chain(
       ce(
         action.input?.qty < 1,
@@ -35,13 +41,14 @@ export function allow(state, action) {
         const { input, caller } = action;
         const { target, qty } = input;
         const { balances, claimable } = state;
+        const newQty = new BigNumber(qty).toNumber();
         if (!balances[target]) balances[target] = 0;
-        balances[caller] -= qty;
+        balances[caller] -= newQty;
 
         claimable.push({
           from: caller,
           to: target,
-          qty,
+          qty: newQty,
           tx: SmartWeave.transaction.id,
         });
         return { state };
