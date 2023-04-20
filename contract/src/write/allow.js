@@ -47,7 +47,7 @@ function createClaim({ state, action }) {
         from: action.caller,
         to: action.input.target,
         qty: action.input.qty,
-        tx: SmartWeave.transaction.id,
+        txID: SmartWeave.transaction.id,
       },
     ],
   };
