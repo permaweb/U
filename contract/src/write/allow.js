@@ -1,20 +1,60 @@
-export async function allow(state, action) {
-  const { caller, input } = action;
-  const { target, qty } = input;
-  const { balances, claimable } = state;
-  const newQty = Math.floor(qty);
+import BigNumber from "bignumber.js";
+import { assoc, __, identity } from "ramda";
 
-  validateTarget(caller, target);
-  validateBalanceGreaterThanQuantity(balances[caller], newQty);
-  // Set target to 0 if it doesn't exist
-  if (!balances[target]) balances[target] = 0;
-  balances[caller] -= newQty;
-  validateBalance(balances[caller]);
-  claimable.push({
-    from: caller,
-    to: target,
-    qty: newQty,
-    tx: SmartWeave.transaction.id,
-  });
-  return { state };
+import { of, fromNullable } from "../hyper-either.js";
+import { ce, qtyToNumber, subtractCallerBalance } from "../util.js";
+
+export function allow(state, action) {
+  return of({ state, action })
+    .chain(fromNullable)
+    .chain(ce(!action.input?.target, "Please specify a target."))
+    .chain(
+      ce(action.input?.target === action.caller, "Target cannot be caller.")
+    )
+    .chain(
+      ce(
+        !new BigNumber(state.balances[action.caller]).isInteger(),
+        "Caller does not have a balance."
+      )
+    )
+    .chain(
+      ce(
+        !new BigNumber(action.input?.qty).isInteger(),
+        "qty must be an integer."
+      )
+    )
+    .chain(
+      ce(
+        action.input?.qty < 1,
+        "Invalid token transfer. qty must be an integer greater than 0."
+      )
+    )
+    .chain(
+      ce(
+        state.balances[action.caller] < action.input?.qty,
+        "Not enough tokens for allow."
+      )
+    )
+    .map(qtyToNumber)
+    .map(subtractCallerBalance)
+    .map(createClaim)
+    .map(assoc("state", __, {}))
+    .fold((msg) => {
+      throw new ContractError(msg || "An error occurred.");
+    }, identity);
+}
+
+function createClaim({ state, action }) {
+  return {
+    ...state,
+    claimable: [
+      ...state.claimable,
+      {
+        from: action.caller,
+        to: action.input.target,
+        qty: action.input.qty,
+        tx: SmartWeave.transaction.id,
+      },
+    ],
+  };
 }

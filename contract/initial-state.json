@@ -2,11 +2,7 @@
   "ticker": "REBAR",
   "name": "REBAR",
   "balances": {},
-  "settings": [
-    ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-    ["isTradeable", true]
-  ],
-  "claims": [],
+  "settings": [["isTradeable", true]],
   "claimable": [],
   "divisibility": 6
 }

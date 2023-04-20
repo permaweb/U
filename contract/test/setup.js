@@ -1,7 +1,8 @@
-export function setupSmartWeaveEnv(reward, height) {
+export function setupSmartWeaveEnv(reward, height, id) {
   globalThis.SmartWeave = {
     transaction: {
       reward: reward || 1,
+      id: id || "<test-tx>",
     },
     block: {
       height: height || 1,

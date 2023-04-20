@@ -20,7 +20,6 @@ test("should not mint bar with reward lower than 1M", async () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [],
       divisibility: 6,
     },
@@ -44,7 +43,6 @@ test("should mint new bars with empty balance", async () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [],
       divisibility: 6,
     },
@@ -54,7 +52,7 @@ test("should mint new bars with empty balance", async () => {
   assert.is(state.balances["<justin>"], 1);
 });
 
-test("should mint new bars with empty balance", async () => {
+test("should mint new bars with existing balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(2000123);
 
@@ -70,7 +68,6 @@ test("should mint new bars with empty balance", async () => {
         ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
         ["isTradeable", true],
       ],
-      claims: [],
       claimable: [],
       divisibility: 6,
     },
