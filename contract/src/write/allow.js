@@ -1,8 +1,7 @@
-import BigNumber from "bignumber.js";
 import { assoc, __, identity } from "ramda";
 
 import { of, fromNullable } from "../hyper-either.js";
-import { ce, qtyToNumber, subtractCallerBalance } from "../util.js";
+import { ce, isInteger, qtyToNumber, subtractCallerBalance } from "../util.js";
 
 export function allow(state, action) {
   return of({ state, action })
@@ -13,16 +12,11 @@ export function allow(state, action) {
     )
     .chain(
       ce(
-        !new BigNumber(state.balances[action.caller]).isInteger(),
+        !isInteger(state.balances[action.caller]),
         "Caller does not have a balance."
       )
     )
-    .chain(
-      ce(
-        !new BigNumber(action.input?.qty).isInteger(),
-        "qty must be an integer."
-      )
-    )
+    .chain(ce(!isInteger(action.input?.qty), "qty must be an integer."))
     .chain(
       ce(
         action.input?.qty < 1,

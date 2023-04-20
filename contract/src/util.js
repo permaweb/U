@@ -127,3 +127,15 @@ export function addTargetBalance({ state, action }) {
     action,
   };
 }
+
+/**
+ * Uses BigNumber to check if value is an integer.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} v value
+ * @return {*}
+ */
+export function isInteger(v) {
+  return new BigNumber(v).isInteger();
+}
