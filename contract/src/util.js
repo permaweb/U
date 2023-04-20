@@ -9,6 +9,7 @@ import {
   isNil,
   add,
   subtract,
+  __,
 } from "ramda";
 
 /**
@@ -99,7 +100,7 @@ export function subtractCallerBalance({ state, action }) {
       ...state,
       balances: over(
         lensProp(action.caller),
-        subtract(action.input.qty),
+        subtract(__, action.input.qty),
         state.balances
       ),
     },
