@@ -13,6 +13,9 @@ let connectedWallet1;
 let wallet2;
 let connectedWallet2;
 let arlocal;
+// This will be set after allow, and be used for claiming
+let allowTxForClaim1;
+let allowTxForClaim2;
 
 const test = suite("full-integration");
 
@@ -38,9 +41,6 @@ test.before(async () => {
     ...state,
     ...{
       owner: wallet1.address,
-      balances: {
-        [wallet1.address]: 100,
-      },
     },
   };
 
@@ -69,47 +69,85 @@ test.before(async () => {
   );
 });
 
-test("mint 10 rebar", async () => {
+test("mint 10 rebar with wallet1", async () => {
   await connectedWallet1.writeInteraction(
     { function: "mint" },
     { reward: "10000000000000" }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.balances[wallet1.address], 10000100);
+  assert.is(state.balances[wallet1.address], 10000000);
 });
 
-test.skip("transfer", async () => {});
+test("transfer 5 to wallet 2", async () => {
+  await connectedWallet1.writeInteraction({
+    function: "transfer",
+    target: wallet2.address,
+    qty: 5000000,
+  });
+  const state = (await connectedWallet1.readState()).cachedValue.state;
+  assert.is(state.balances[wallet2.address], 5000000);
+});
 
-test.skip("allow", async () => {});
+test("allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2", async () => {
+  const interaction1 = await connectedWallet2.writeInteraction({
+    function: "allow",
+    target: wallet1.address,
+    qty: 2000000,
+  });
 
-test.skip("claim", async () => {});
+  const interaction2 = await connectedWallet2.writeInteraction({
+    function: "allow",
+    target: wallet1.address,
+    qty: 1000000,
+  });
 
-test.skip("balance", async () => {});
+  const state = (await connectedWallet1.readState()).cachedValue.state;
+  assert.is(state.claimable.length, 2);
+
+  // Set the allow tx for claim next
+  allowTxForClaim1 = interaction1.originalTxId;
+  allowTxForClaim2 = interaction2.originalTxId;
+});
+
+test("claim 2 with wallet 1", async () => {
+  await connectedWallet1.writeInteraction({
+    function: "claim",
+    txID: allowTxForClaim1,
+    qty: 2000000,
+  });
+  const state = (await connectedWallet1.readState()).cachedValue.state;
+  assert.is(state.balances[wallet1.address], 7000000);
+  assert.is(state.balances[wallet2.address], 2000000);
+});
+
+test("should claim with different txID", async () => {
+  await connectedWallet1.writeInteraction({
+    function: "claim",
+    txID: allowTxForClaim2,
+    qty: 1000000,
+  });
+  const state = (await connectedWallet1.readState()).cachedValue.state;
+  assert.is(state.balances[wallet1.address], 8000000);
+  assert.is(state.balances[wallet2.address], 2000000);
+});
+
+test("check balance with target", async () => {
+  const balanceFunc = await connectedWallet1.viewState({
+    function: "balance",
+    target: wallet2.address,
+  });
+  assert.is(balanceFunc.result.balance, 2000000);
+});
+
+test("check balance without target", async () => {
+  const balanceFunc = await connectedWallet1.viewState({
+    function: "balance",
+  });
+  assert.is(balanceFunc.result.balance, 8000000);
+});
 
 test.after(async () => {
   await arlocal.stop();
 });
 
 test.run();
-
-// it('should claim with different txID', async () => {
-//   await bar.connect(user2Wallet).writeInteraction(
-//     {function: 'claim', qty: 2, txID: claim2txID}, {strict: true}
-//   );
-
-//   expect((await bar.viewState({function: 'balance'})).result.balance)
-//     .toEqual(3);
-
-//   const state = (await bar.readState()).cachedValue.state;
-//   expect(state.claimable.length).toEqual(0);
-//   expect(state.claims[1]).toEqual(claim2txID);
-// });
-
-// it('should claim again without causing an effect', async () => {
-//   await bar.connect(user2Wallet).writeInteraction(
-//     {function: 'claim', qty: 1, txID: claim1txID}, {strict: true}
-//   );
-
-//   expect((await bar.viewState({function: 'balance'})).result.balance)
-//     .toEqual(1);
-// });
