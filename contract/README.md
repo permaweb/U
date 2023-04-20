@@ -4,6 +4,27 @@ This contract is the reBAR contract.
 
 ## Build
 
+This commit was added to fix how `esbuild` imports `BigNumber` https://github.com/permaweb/rebar/pull/27/commits/a1f3005de4b53fdd0ba175febcc9385aab51f9cc.
+
+eg.
+
+```js
+// ./scripts/build.js
+
+replace.sync({
+  files: "./dist/contract.js",
+  from: ["var BigNumber = clone();"],
+  to: "var BigNumberClone = clone();",
+  countMatches: true,
+});
+replace.sync({
+  files: "./dist/contract.js",
+  from: ["var bignumber_default = BigNumber;"],
+  to: "var bignumber_default = BigNumberClone;",
+  countMatches: true,
+});
+```
+
 `npm run build`
 
 ## Test
