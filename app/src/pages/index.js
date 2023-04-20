@@ -3,14 +3,15 @@ import { NOT_FOUND } from "redux-first-router";
 const components = {
   HOME: "Home",
   // PLAYER: "Player",
-  [NOT_FOUND]: "Feed",
+  [NOT_FOUND]: "Home",
 };
 
 export const routesMap = {
   HOME: {
     path: "/",
     thunk: async (dispatch, getState) => {
-      console.log("Feed thunk.");
+      // You can do stuff here before the component loads.
+      console.log("Home thunk.");
     },
   },
   // PLAYER: {
@@ -34,5 +35,11 @@ export const mapStateToProps = (state, props) => {
   };
 };
 
+export const router = (dispatch) => ({
+  goToHome: () => dispatch({ type: "HOME" }),
+  goToPlayer: (tx) => dispatch({ type: "PLAYER", payload: { tx } }),
+});
+
+// imported into store.js
 export default (state = "HOME", action = {}) =>
   components[action.type] || state;
