@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { mapStateToProps } from "../pages";
+import { mapStateToProps, router } from "../pages";
 import { ArweaveWebWallet } from "arweave-wallet-connector";
 import ConnectWallet from "../components/connect-wallet/connect-wallet";
 import Account from "arweave-account";
@@ -9,7 +9,7 @@ import { BurnArModel } from "../components/all-in-one/react-bar-ui";
 
 import Header from "../components/header/header";
 
-function Feed(props) {
+function Home(props) {
   const { goToPlayer } = props;
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [isBurnArOpen, setIsBurnArOpen] = useState(false);
@@ -149,6 +149,4 @@ function Feed(props) {
     </section>
   );
 }
-export default connect(mapStateToProps, (dispatch) => ({
-  goToPlayer: (tx) => dispatch({ type: "PLAYER", payload: { tx } }),
-}))(Feed);
+export default connect(mapStateToProps, router)(Home);
