@@ -9,6 +9,7 @@ import {
   isNil,
   add,
   subtract,
+  __,
 } from "ramda";
 
 /**
@@ -99,7 +100,7 @@ export function subtractCallerBalance({ state, action }) {
       ...state,
       balances: over(
         lensProp(action.caller),
-        subtract(action.input.qty),
+        subtract(__, action.input.qty),
         state.balances
       ),
     },
@@ -126,4 +127,16 @@ export function addTargetBalance({ state, action }) {
     },
     action,
   };
+}
+
+/**
+ * Uses BigNumber to check if value is an integer.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} v value
+ * @return {*}
+ */
+export function isInteger(v) {
+  return new BigNumber(v).isInteger();
 }

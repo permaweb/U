@@ -1,10 +1,10 @@
-import BigNumber from "bignumber.js";
 import { assoc, identity, __ } from "ramda";
 
 import { fromNullable, of } from "../hyper-either.js";
 import {
   addTargetBalance,
   ce,
+  isInteger,
   setTargetBalance,
   subtractCallerBalance,
 } from "../util.js";
@@ -18,16 +18,11 @@ export function transfer(state, action) {
     )
     .chain(
       ce(
-        !new BigNumber(state.balances[action.caller]).isInteger(),
+        !isInteger(state.balances[action.caller]),
         "Caller does not have a balance."
       )
     )
-    .chain(
-      ce(
-        !new BigNumber(action.input?.qty).isInteger(),
-        "qty must be an integer."
-      )
-    )
+    .chain(ce(!isInteger(action.input?.qty), "qty must be an integer."))
     .chain(
       ce(
         action.input?.qty < 1,
