@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "bignumber.js": "9.1.1",
+    "crocks": "0.12.4",
     "ramda": "0.29.0"
   }
 }
