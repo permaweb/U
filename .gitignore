@@ -41,3 +41,4 @@ Thumbs.db
 #Project Docs
 docs/packages/rebar
 contract/logs
+mint-contract/logs
