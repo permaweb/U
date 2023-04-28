@@ -20,8 +20,5 @@
   "devDependencies": {
     "husky": "^8.0.0"
   },
-  "dependencies": {
-    "bignumber.js": "9.1.1",
-    "ramda": "0.29.0"
-  }
+  "dependencies": {}
 }
