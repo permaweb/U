@@ -1,6 +1,5 @@
 {
   "ticker": "REBAR",
-  "mint_contract": "<todo>",
   "name": "REBAR",
   "balances": {},
   "settings": [["isTradeable", true]],

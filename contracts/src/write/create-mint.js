@@ -2,7 +2,7 @@ import { of, fromNullable } from "../hyper-either.js";
 import { setCallerBalance } from "../util.js";
 import { __, identity, assoc } from "ramda";
 
-export function mint(state, action) {
+export async function mint(state, action) {
   return of({ state, action })
     .chain(fromNullable)
     .map(setCallerBalance)
