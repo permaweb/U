@@ -1,8 +1,0 @@
-{
-  "ticker": "REBAR",
-  "name": "REBAR",
-  "balances": {},
-  "settings": [["isTradeable", true]],
-  "claimable": [],
-  "divisibility": 6
-}

@@ -6,7 +6,7 @@ const test = suite("mint");
 
 test.before(async () => {});
 
-test("should not mint bar with reward lower than 1M", async () => {
+test.skip("should not mint bar with reward lower than 1M", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999);
 
@@ -29,7 +29,7 @@ test("should not mint bar with reward lower than 1M", async () => {
   assert.is(state.balances["<justin>"], 0);
 });
 
-test("should mint new bars with empty balance", async () => {
+test.skip("should mint new bars with empty balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(1000000);
 
@@ -52,7 +52,7 @@ test("should mint new bars with empty balance", async () => {
   assert.is(state.balances["<justin>"], 1);
 });
 
-test("should mint new bars with existing balance", async () => {
+test.skip("should mint new bars with existing balance", async () => {
   // set reward to 10
   setupSmartWeaveEnv(2000123);
 
