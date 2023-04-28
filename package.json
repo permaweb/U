@@ -4,7 +4,7 @@
   "description": "The utility token of the permaweb",
   "main": "index.js",
   "scripts": {
-    "test": "(cd contract && npm test)",
+    "test": "(cd contracts && npm test)",
     "prepare": "husky install"
   },
   "repository": {
