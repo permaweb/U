@@ -1,7 +1,11 @@
 import BigNumber from "bignumber.js";
 import { Left, Right } from "./hyper-either.js";
 import {
+  fromPairs,
+  toPairs,
   over,
+  pipe,
+  filter,
   ifElse,
   identity,
   lensProp,
@@ -135,8 +139,47 @@ export function addTargetBalance({ state, action }) {
  * @author @jshaw-ar
  * @export
  * @param {number} v
- * @return {number}
+ * @return {boolean}
  */
 export function isInteger(v) {
   return new BigNumber(v).isInteger();
+}
+
+/**
+ * @description Uses BigNumber to check if value rounded down is greater than 0.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {number} v
+ * @return {boolean}
+ */
+export function isGreaterThanZero(v) {
+  return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN) >= 1;
+}
+
+export function filterExpired(requests, height) {
+  const newRequests = pipe(
+    toPairs,
+    // (pairs) => removeExpired(pairs, height),
+    fromPairs
+  )(requests);
+  throw new ContractError(`Height: ${height}`);
+  throw new ContractError(
+    JSON.stringify({
+      CHICKEN_NUGGETS2: newRequests,
+      height: height || "not there",
+    })
+  );
+
+  return pipe(
+    toPairs,
+    (pairs) => removeExpired(pairs, height),
+    fromPairs
+  )(requests);
+}
+
+function removeExpired(pairs, height) {
+  return filter((r) => {
+    return r[1].expires >= height;
+  }, pairs);
 }

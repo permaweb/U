@@ -10,7 +10,7 @@ export async function handle(state, action) {
     case "balance":
       return await balance(state, action);
     case "mint":
-      return await mint(state, action);
+      return mint(state, action);
     case "transfer":
       return await transfer(state, action);
     case "allow":

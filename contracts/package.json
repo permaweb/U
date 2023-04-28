@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run build && uvu test",
-    "build": "rm -r dist; node ./scripts/build.js && cp initial-state-SEQ.json dist/initial-state-SEQ.json",
+    "build": "rm -r dist; node ./scripts/build.js && cp initial-state-SEQ.json dist/initial-state-SEQ.json && cp initial-state-L1.json dist/initial-state-L1.json",
     "deploy": "npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-prod.mjs ./dist"
   },
   "keywords": [],

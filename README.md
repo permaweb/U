@@ -16,5 +16,5 @@ TODO
 
 ## Packages
 
-- [contract](packages/contract)
+- [contract](packages/contracts)
 - [app](packages/app)

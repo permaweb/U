@@ -1,19 +1,23 @@
 import { suite } from "uvu";
 import * as assert from "uvu/assert";
-import { mint } from "../src/write/mint.js";
+import { createMint } from "../src/write/create-mint.js";
 import { setupSmartWeaveEnv } from "./setup.js";
-const test = suite("mint");
+const test = suite("create-mint");
 
 test.before(async () => {});
 
-test.skip("should not mint bar with reward lower than 1M", async () => {
-  // set reward to 10
-  setupSmartWeaveEnv(999999);
+test.skip("should create 1 mint request", async () => {
+  const env = setupSmartWeaveEnv(
+    1000000, // reward
+    0, // height
+    "<tx>"
+  );
 
   const caller = "<justin>";
-  const output = await mint(
+  const output = createMint(env)(
     {
       name: "rebar",
+      mint_contract: "<mint-contract-2>",
       ticker: "rebar",
       balances: {},
       settings: [
@@ -26,57 +30,38 @@ test.skip("should not mint bar with reward lower than 1M", async () => {
     { caller }
   );
   const state = output.state;
-  assert.is(state.balances["<justin>"], 0);
+  console.log("STATE", state);
+  assert.is(state.requests["<tx>"].target, "<justin>");
+  assert.is(state.requests["<tx>"].qty, 1);
+  assert.is(state.requests["<tx>"].expires, 721);
 });
 
-test.skip("should mint new bars with empty balance", async () => {
-  // set reward to 10
-  setupSmartWeaveEnv(1000000);
-
-  const caller = "<justin>";
-  const output = await mint(
-    {
-      name: "rebar",
-      ticker: "rebar",
-      balances: {},
-      settings: [
-        ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-        ["isTradeable", true],
-      ],
-      claimable: [],
-      divisibility: 6,
-    },
-    { caller }
+test.skip("should throw Reward must be an integer.", async () => {
+  const env = setupSmartWeaveEnv(
+    999999, // reward
+    0, // height
+    "<tx>"
   );
-  const state = output.state;
-  assert.is(state.balances["<justin>"], 1);
-});
-
-test.skip("should mint new bars with existing balance", async () => {
-  // set reward to 10
-  setupSmartWeaveEnv(2000123);
-
-  const caller = "<justin>";
-  const output = await mint(
-    {
-      name: "rebar",
-      ticker: "rebar",
-      balances: {
-        "<justin>": 1,
-      },
-      settings: [
-        ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-        ["isTradeable", true],
-      ],
-      claimable: [],
-      divisibility: 6,
-    },
-    { caller }
+  assert.throws(
+    () =>
+      createMint(env)(
+        {
+          name: "rebar",
+          mint_contract: "<mint-contract-2>",
+          ticker: "rebar",
+          balances: {},
+          settings: [
+            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
+            ["isTradeable", true],
+          ],
+          claimable: [],
+          divisibility: 6,
+        },
+        { caller: "<justin>" }
+      ),
+    /Reward must be an integer./
   );
-  const state = output.state;
-  assert.is(state.balances["<justin>"], 3);
 });
-
 test.after(async () => {});
 
 test.run();

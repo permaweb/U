@@ -1,26 +1,30 @@
-import { of, fromNullable } from "../hyper-either.js";
-import { setCallerBalance } from "../util.js";
+import { of } from "../hyper-either.js";
 import { __, identity, assoc } from "ramda";
+import { ce, filterExpired, isInteger } from "../util.js";
 
-export async function mint(state, action) {
-  return of({ state, action })
-    .chain(fromNullable)
-    .map(setCallerBalance)
-    .map(updateBalance)
-    .map(assoc("state", __, {}))
-    .fold((msg) => {
-      throw new ContractError(msg || "An error occurred.");
-    }, identity);
+export function createMint({ reward, height, tx }) {
+  return (state, action) =>
+    of({ state, action, tx, reward, height })
+      .chain(
+        ce(!isInteger(reward / 1e6), "(reward / 1e6) must be an integer > 0.")
+      )
+      .map(createRequest)
+      .map(assoc("state", __, {}))
+      .fold((msg) => {
+        throw new ContractError(msg || "An error occurred.");
+      }, identity);
 }
 
-function updateBalance({ state, action }) {
+const createRequest = ({ state, action, tx, reward, height }) => {
   return {
     ...state,
-    balances: {
-      ...state.balances,
-      [action.caller]:
-        state.balances[action.caller] +
-        Math.floor(parseInt(SmartWeave.transaction.reward) / 1e6),
+    requests: {
+      [tx]: {
+        target: action.caller,
+        qty: reward / 1e6,
+        expires: height + 720,
+      },
+      ...filterExpired(state.requests),
     },
   };
-}
+};
