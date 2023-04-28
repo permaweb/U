@@ -157,29 +157,21 @@ export function isGreaterThanZero(v) {
   return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN) >= 1;
 }
 
-export function filterExpired(requests, height) {
-  const newRequests = pipe(
-    toPairs,
-    // (pairs) => removeExpired(pairs, height),
-    fromPairs
-  )(requests);
-  throw new ContractError(`Height: ${height}`);
-  throw new ContractError(
-    JSON.stringify({
-      CHICKEN_NUGGETS2: newRequests,
-      height: height || "not there",
-    })
-  );
-
-  return pipe(
-    toPairs,
-    (pairs) => removeExpired(pairs, height),
-    fromPairs
-  )(requests);
+/**
+ * @description Uses bignumber.js to round down.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {number} v
+ * @return {number}
+ */
+export function roundDown(v) {
+  return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber();
 }
 
-function removeExpired(pairs, height) {
-  return filter((r) => {
-    return r[1].expires >= height;
-  }, pairs);
-}
+export const filterInvalid = (requests, height) =>
+  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
+
+export const removeExpired = (pairs) => {
+  return filter((r) => r[1].qty > 0, pairs);
+};
