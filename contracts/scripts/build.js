@@ -2,7 +2,7 @@ import { build } from "esbuild";
 import replace from "replace-in-file";
 
 build({
-  entryPoints: ["./src/contract.js"],
+  entryPoints: ["./src/contract-SEQ.js"],
   outdir: "./dist",
   minify: false,
   bundle: true,
@@ -12,19 +12,19 @@ build({
 
   .finally(() => {
     replace.sync({
-      files: "./dist/contract.js",
+      files: "./dist/contract-SEQ.js",
       from: [/\(\(\) => {/g, /}\)\(\);/g],
       to: "",
       countMatches: true,
     });
     replace.sync({
-      files: "./dist/contract.js",
+      files: "./dist/contract-SEQ.js",
       from: ["async function handle"],
       to: "export async function handle",
       countMatches: true,
     });
     replace.sync({
-      files: "./dist/contract.js",
+      files: "./dist/contract-SEQ.js",
       from: [
         `
 export {
@@ -35,13 +35,13 @@ export {
       countMatches: true,
     });
     replace.sync({
-      files: "./dist/contract.js",
+      files: "./dist/contract-SEQ.js",
       from: ["var BigNumber = clone();"],
       to: "var BigNumberClone = clone();",
       countMatches: true,
     });
     replace.sync({
-      files: "./dist/contract.js",
+      files: "./dist/contract-SEQ.js",
       from: ["var bignumber_default = BigNumber;"],
       to: "var bignumber_default = BigNumberClone;",
       countMatches: true,
