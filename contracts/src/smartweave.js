@@ -16,8 +16,8 @@
  */
 
 export const env = {
-  readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
-  write: SmartWeave.contracts.write.bind(SmartWeave),
-  height: SmartWeave.block.height,
-  reward: SmartWeave.transaction.reward,
+  // readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
+  // write: SmartWeave.contracts.write.bind(SmartWeave),
+  block: SmartWeave.block,
+  transaction: SmartWeave.transaction,
 };
