@@ -30,32 +30,22 @@ export function mint(env) {
       .map(({ requests }) => requests)
       .map(toPairs)
       .map(removeExpired)
-      .map((pairs) => notInPile(state, pairs))
-      .map(keyWithQty) // ["addr", qty]
-      .map((output) => {
-        console.log("TEST", output);
-        return output;
-      })
+      .map(notInPile(state, __))
+      .map(keyTargetQty) // ["addr", {qty, target}]
       .fork(
         (e) => {
           throw new ContractError("An error occurred.");
         },
         (requests) =>
           of({ state, requests })
-            // add target
             .map(addToPile)
-            // add target
             .map(setBalances)
-            // add target
             .map(updateBalances)
             .fork(
               (e) => {
                 throw new ContractError("An error occurred.");
               },
-              ({ state }) => {
-                console.log("STATE", state);
-                return { state };
-              }
+              ({ state }) => ({ state })
             )
       );
   };
@@ -72,7 +62,7 @@ const readContractState = async (contract) =>
  * @param {Array} pairs
  * @return {Array} pairs
  */
-const keyWithQty = (pairs) =>
+const keyTargetQty = (pairs) =>
   map((r) => [r[0], { qty: r[1].qty, target: r[1].target }], pairs);
 
 /**
