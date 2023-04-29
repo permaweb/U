@@ -35,29 +35,34 @@ test("should not mint bar with reward lower than 1M", async () => {
           qty: 5,
           target: "<jshaw>",
         },
+        processed: {
+          expires: 722,
+          qty: 5,
+          target: "<jshaw>",
+        },
       },
     },
     "ERROR"
   );
 
   const caller = "<justin>";
+
   const output = await mint(env)(
     {
-      name: "rebar",
-      mint_contract: "<mint-contract-2>",
-      ticker: "rebar",
+      ticker: "REBAR",
+      name: "REBAR",
       balances: {},
-      settings: [
-        ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-        ["isTradeable", true],
-      ],
+      settings: [["isTradeable", true]],
       claimable: [],
       divisibility: 6,
+      mint_contract: "<mint-contract>",
+      pile: ["processed"],
     },
     { caller }
   );
   const state = output.state;
-  assert.is(state.balances["good"], 5);
+  assert.is(state.balances["<jshaw>"], 5);
+  assert.is(state.pile.filter((v) => v === "processed").length, 1);
 });
 
 test.after(async () => {});
