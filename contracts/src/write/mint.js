@@ -14,6 +14,8 @@ import {
   filter,
   pipe,
   uniq,
+  prop,
+  head,
 } from "ramda";
 import { removeExpired } from "../util.js";
 
@@ -23,36 +25,24 @@ import { removeExpired } from "../util.js";
  * @author @jshaw-ar
  * @export
  */
-export function mint(env) {
+export function mint({ readContractState }) {
   return (state, action) => {
     return of(state.mint_contract)
-      .chain(fromPromise(readContractState))
-      .map(({ requests }) => requests)
+      .chain(fromPromise(readContractState)) // consider using viewContractState and calling a read method
+      .map(prop("requests"))
       .map(toPairs)
       .map(removeExpired)
       .map(notInPile(state, __))
       .map(keyTargetQty) // ["addr", {qty, target}]
-      .fork(
-        (e) => {
-          throw new ContractError("An error occurred.");
-        },
-        (requests) =>
-          of({ state, requests })
-            .map(addToPile)
-            .map(setBalances)
-            .map(updateBalances)
-            .fork(
-              (e) => {
-                throw new ContractError("An error occurred.");
-              },
-              ({ state }) => ({ state })
-            )
-      );
+      .map((requests) => ({ state, requests }))
+      .map(addToPile)
+      .map(setBalances)
+      .map(updateBalances);
   };
 }
 
-const readContractState = async (contract) =>
-  SmartWeave.contracts.readContractState(contract);
+// const readContractState = async (contract) =>
+//   SmartWeave.contracts.readContractState(contract);
 
 /**
  * @description Converts a pair to an array of it's key (tx) and {qty(integer), target(address)}
@@ -63,6 +53,10 @@ const readContractState = async (contract) =>
  * @return {Array} pairs
  */
 const keyTargetQty = (pairs) =>
+  // this seems like an identity function map(identity, pairs)
+  // input [tx, {qty, target}]
+  // output [tx, { qty, target}]
+  // not sure what I am missing -tnw
   map((r) => [r[0], { qty: r[1].qty, target: r[1].target }], pairs);
 
 /**
@@ -77,6 +71,7 @@ const keyTargetQty = (pairs) =>
 export const notInPile = (state, pairs) => {
   const isGood = (p) => !state.pile[p[0]];
   return filter(isGood, pairs);
+  // filter(compose(contains(__, state.pile), head), pairs)
 };
 
 /**
@@ -91,7 +86,14 @@ const addToPile = ({ state, requests }) => ({
   state: {
     ...state,
     // combines pile and requests and returns an array of unique values
-    pile: [...pipe(uniq(__))([...map((r) => r[0], requests), ...state.pile])],
+    pile: [...pipe(uniq(__))([...map(head, requests), ...state.pile])],
+    /* optional implementation
+    pile: compose(
+      uniq,
+      concat(state.pile),
+      map(head) 
+    )(requests)
+    */
   },
   requests: requests,
 });

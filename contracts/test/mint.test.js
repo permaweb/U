@@ -4,7 +4,7 @@ import { mint } from "../src/write/mint.js";
 import { setupSmartWeaveEnv } from "./setup.js";
 const test = suite("mint");
 
-test.before(async () => {});
+test.before(async () => { });
 
 test("should not mint bar with reward lower than 1M", async () => {
   // set reward to 10
@@ -59,12 +59,12 @@ test("should not mint bar with reward lower than 1M", async () => {
       pile: ["processed"],
     },
     { caller }
-  );
+  ).toPromise();
   const state = output.state;
   assert.is(state.balances["<jshaw>"], 5);
   assert.is(state.pile.filter((v) => v === "processed").length, 1);
 });
 
-test.after(async () => {});
+test.after(async () => { });
 
 test.run();
