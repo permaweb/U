@@ -234,32 +234,6 @@ test("should not transfer fractional amount of tokens", () => {
   );
 });
 
-test("should not transfer fractional amount of tokens", () => {
-  setupSmartWeaveEnv();
-  const caller = "<justin>";
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: "rebar",
-          ticker: "rebar",
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ["communityLogo", "_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo"],
-            ["isTradeable", true],
-          ],
-
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: "<tom>", qty: 199999.01 } }
-      ),
-    /qty must be an integer./
-  );
-});
-
 test("should not transfer without a target", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
@@ -338,7 +312,7 @@ test("should not transfer with undefined target", () => {
   );
 });
 
-test("should not transfer from non-existing accout", () => {
+test("should not transfer from non-existing account", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
