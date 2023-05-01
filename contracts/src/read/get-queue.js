@@ -1,3 +1,3 @@
 export function getQueue(state, action) {
-  return { ...state.requests };
+  return { result: { ...state.requests } };
 }
