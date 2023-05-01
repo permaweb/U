@@ -3,7 +3,8 @@ export function setupSmartWeaveEnv(
   height,
   id,
   readContractState, // pass `Promise.reject("<READ-ERROR>")` for error
-  write // pass `Promise.reject("<WRITE-ERROR>")` for error
+  write, // pass `Promise.reject("<WRITE-ERROR>")` for error
+  viewContractState
 ) {
   globalThis.SmartWeave = {
     transaction: {
@@ -14,16 +15,17 @@ export function setupSmartWeaveEnv(
       height: height || 1,
     },
     contracts: {
-      readContractState: async (contract) => {
-        return readContractState;
-      },
+      readContractState: async (contract) => readContractState,
       write: async () => Promise.resolve(write),
+      viewContractState: async (contract, input) => viewContractState,
     },
   };
   globalThis.ContractError = ContractError;
   return {
     readContractState: async (contract) =>
       SmartWeave.contracts.readContractState(contract),
+    viewContractState: async (contract, input) =>
+      SmartWeave.contracts.viewContractState(contract, input),
     write: SmartWeave.contracts.write.bind(globalThis.SmartWeave),
     height: SmartWeave.block.height,
     reward: SmartWeave.transaction.reward,
