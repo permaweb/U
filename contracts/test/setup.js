@@ -27,9 +27,8 @@ export function setupSmartWeaveEnv(
     viewContractState: async (contract, input) =>
       SmartWeave.contracts.viewContractState(contract, input),
     write: SmartWeave.contracts.write.bind(globalThis.SmartWeave),
-    height: SmartWeave.block.height,
-    reward: SmartWeave.transaction.reward,
-    tx: SmartWeave.transaction.id,
+    block: SmartWeave.block,
+    transaction: SmartWeave.transaction,
   };
 }
 
