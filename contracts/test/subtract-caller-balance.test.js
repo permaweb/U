@@ -5,7 +5,7 @@ const test = suite("subtract-caller-balance");
 
 test.before(async () => {});
 
-test.skip("should subtract 10 from caller balance", async () => {
+test("should subtract 10 from caller balance", async () => {
   const caller = "<justin>";
   const output = subtractCallerBalance({
     state: {

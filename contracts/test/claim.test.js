@@ -6,7 +6,7 @@ const test = suite("claim");
 
 test.before(async () => {});
 
-test.skip("should not allow claiming without txId", () => {
+test("should not allow claiming without txId", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -30,7 +30,7 @@ test.skip("should not allow claiming without txId", () => {
   );
 });
 
-test.skip("should not allow claiming with null txID", () => {
+test("should not allow claiming with null txID", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -54,7 +54,7 @@ test.skip("should not allow claiming with null txID", () => {
   );
 });
 
-test.skip("should not allow claiming with non-existing txID", () => {
+test("should not allow claiming with non-existing txID", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -78,7 +78,7 @@ test.skip("should not allow claiming with non-existing txID", () => {
   );
 });
 
-test.skip("should throw (Claim not addressed to caller.)", () => {
+test("should throw (Claim not addressed to caller.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -107,7 +107,7 @@ test.skip("should throw (Claim not addressed to caller.)", () => {
   );
 });
 
-test.skip("should throw (Incorrect qty.)", () => {
+test("should throw (Incorrect qty.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -137,7 +137,7 @@ test.skip("should throw (Incorrect qty.)", () => {
   );
 });
 
-test.skip("should throw (Incorrect qty.)", () => {
+test("should throw (Incorrect qty.)", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -167,7 +167,7 @@ test.skip("should throw (Incorrect qty.)", () => {
   );
 });
 
-test.skip("should not allow claiming with null quantity", () => {
+test("should not allow claiming with null quantity", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -197,7 +197,7 @@ test.skip("should not allow claiming with null quantity", () => {
   );
 });
 
-test.skip("should not allow claiming with incorrect quantity", () => {
+test("should not allow claiming with incorrect quantity", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -230,7 +230,7 @@ test.skip("should not allow claiming with incorrect quantity", () => {
   );
 });
 
-test.skip("should not allow claiming with null quantity", () => {
+test("should not allow claiming with null quantity", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
@@ -260,7 +260,7 @@ test.skip("should not allow claiming with null quantity", () => {
   );
 });
 
-test.skip("should claim tokens", () => {
+test("should claim tokens", () => {
   setupSmartWeaveEnv();
   const caller = "<justin>";
   const output = claim(

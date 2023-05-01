@@ -6,9 +6,9 @@ const test = suite("create-mint");
 
 test.before(async () => {});
 
-test.skip("should create 1 mint request", async () => {
+test("should create 1 mint request", async () => {
   const env = setupSmartWeaveEnv(
-    1000000, // reward
+    1000000000000, // reward
     0, // height
     "<tx>"
   );
@@ -30,13 +30,12 @@ test.skip("should create 1 mint request", async () => {
     { caller }
   );
   const state = output.state;
-  console.log("STATE", state);
   assert.is(state.requests["<tx>"].target, "<justin>");
-  assert.is(state.requests["<tx>"].qty, 1);
+  assert.is(state.requests["<tx>"].qty, 1000000);
   assert.is(state.requests["<tx>"].expires, 721);
 });
 
-test.skip("should throw Reward must be an integer.", async () => {
+test("should throw Reward must be an integer.", async () => {
   const env = setupSmartWeaveEnv(
     999999, // reward
     0, // height
@@ -59,7 +58,7 @@ test.skip("should throw Reward must be an integer.", async () => {
         },
         { caller: "<justin>" }
       ),
-    /Reward must be an integer./
+    /You must mint at least 1 token./
   );
 });
 test.after(async () => {});

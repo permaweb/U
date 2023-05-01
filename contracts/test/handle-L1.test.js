@@ -79,7 +79,7 @@
 //   await fetch(`http://localhost:1984/mine`);
 // });
 
-// test.skip("should filter out expired requests and create a request for 10000000", async () => {
+// test("should filter out expired requests and create a request for 10000000", async () => {
 //   // See initialState for how the requests
 //   // are preloaded into the state of the contract
 //   const interaction = await connectedWallet1.writeInteraction(
@@ -92,7 +92,7 @@
 //   assert.is(state.requests[interaction.originalTxId].qty, 10000000);
 // });
 
-// test.skip("should create a request for 0 if no reward is added.", async () => {
+// test("should create a request for 0 if no reward is added.", async () => {
 //   const interaction = await connectedWallet1.writeInteraction({
 //     function: "create-mint",
 //   });
@@ -100,7 +100,7 @@
 //   assert.is(state.requests[interaction.originalTxId].qty, 0);
 // });
 
-// test.skip("should create a request for 0 if reward is undefined.", async () => {
+// test("should create a request for 0 if reward is undefined.", async () => {
 //   const interaction = await connectedWallet1.writeInteraction(
 //     {
 //       function: "create-mint",
@@ -111,7 +111,7 @@
 //   assert.is(state.requests[interaction.originalTxId].qty, 0);
 // });
 
-// test.skip("should create a request for 0 if reward is null.", async () => {
+// test("should create a request for 0 if reward is null.", async () => {
 //   const interaction = await connectedWallet1.writeInteraction(
 //     {
 //       function: "create-mint",
@@ -123,7 +123,7 @@
 //   assert.is(state.requests[interaction.originalTxId].qty, 0);
 // });
 
-// test.skip("should create a request for 0 if reward is string xxx.", async () => {
+// test("should create a request for 0 if reward is string xxx.", async () => {
 //   const interaction = await connectedWallet1.writeInteraction(
 //     {
 //       function: "create-mint",

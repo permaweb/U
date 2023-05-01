@@ -8,7 +8,7 @@ const test = suite("get-queue");
 
 test.before(async () => {});
 
-test.skip("should return requests 2", async () => {
+test("should return requests 2", async () => {
   // set reward to 10
   setupSmartWeaveEnv(999999, 10, "<tx>", undefined, "ERROR", {
     zero_qty: {
@@ -47,7 +47,7 @@ test.skip("should return requests 2", async () => {
       },
     },
     { caller }
-  );
+  ).result;
   const pairs = toPairs(queue);
   assert.is(queue["one"].target, "<justin>");
   assert.is(queue["two"].target, "<tom>");
