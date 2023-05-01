@@ -12,10 +12,11 @@ import {
   always,
   add,
   filter,
-  pipe,
   uniq,
   prop,
   head,
+  concat,
+  compose,
 } from "ramda";
 import { removeExpired } from "../util.js";
 
@@ -33,31 +34,12 @@ export function mint({ readContractState }) {
       .map(toPairs)
       .map(removeExpired)
       .map(notInPile(state, __))
-      .map(keyTargetQty) // ["addr", {qty, target}]
       .map((requests) => ({ state, requests }))
       .map(addToPile)
       .map(setBalances)
       .map(updateBalances);
   };
 }
-
-// const readContractState = async (contract) =>
-//   SmartWeave.contracts.readContractState(contract);
-
-/**
- * @description Converts a pair to an array of it's key (tx) and {qty(integer), target(address)}
- *
- * @author @jshaw-ar
- * @export
- * @param {Array} pairs
- * @return {Array} pairs
- */
-const keyTargetQty = (pairs) =>
-  // this seems like an identity function map(identity, pairs)
-  // input [tx, {qty, target}]
-  // output [tx, { qty, target}]
-  // not sure what I am missing -tnw
-  map((r) => [r[0], { qty: r[1].qty, target: r[1].target }], pairs);
 
 /**
  * @description Returns pairs (requests) that haven't been processed
@@ -86,14 +68,7 @@ const addToPile = ({ state, requests }) => ({
   state: {
     ...state,
     // combines pile and requests and returns an array of unique values
-    pile: [...pipe(uniq(__))([...map(head, requests), ...state.pile])],
-    /* optional implementation
-    pile: compose(
-      uniq,
-      concat(state.pile),
-      map(head) 
-    )(requests)
-    */
+    pile: compose(uniq, concat(state.pile), map(head))(requests),
   },
   requests: requests,
 });
