@@ -5,7 +5,7 @@ import {
   toPairs,
   over,
   pipe,
-  filter,
+  reject,
   ifElse,
   identity,
   lensProp,
@@ -160,6 +160,6 @@ export function roundDown(v) {
 export const filterInvalid = (requests, height) =>
   pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
 
-export const removeExpired = (pairs) => {
-  return filter((r) => r[1].qty > 0, pairs);
+export const removeExpired = (pairs, height) => {
+  return reject((r) => height > r[1].expires, pairs);
 };
