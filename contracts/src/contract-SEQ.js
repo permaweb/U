@@ -1,3 +1,4 @@
+import { env } from "./smartweave.js";
 import { balance } from "./read/balance.js";
 import { transfer } from "./write/transfer.js";
 import { allow } from "./write/allow.js";
@@ -10,7 +11,7 @@ export async function handle(state, action) {
     case "balance":
       return await balance(state, action);
     case "mint":
-      return mint(state, action);
+      return mint(env)(state, action).toPromise();
     case "transfer":
       return await transfer(state, action);
     case "allow":
