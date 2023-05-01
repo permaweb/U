@@ -146,18 +146,6 @@ export function isInteger(v) {
 }
 
 /**
- * @description Uses BigNumber to check if value rounded down is greater than 0.
- *
- * @author @jshaw-ar
- * @export
- * @param {number} v
- * @return {boolean}
- */
-export function isGreaterThanZero(v) {
-  return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN) >= 1;
-}
-
-/**
  * @description Uses bignumber.js to round down.
  *
  * @author @jshaw-ar
