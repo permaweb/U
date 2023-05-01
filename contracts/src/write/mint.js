@@ -10,13 +10,16 @@ import {
   ifElse,
   isNil,
   always,
-  add,
-  filter,
   uniq,
   prop,
   head,
   concat,
   compose,
+  reject,
+  includes,
+  path,
+  assoc,
+  reduce,
 } from "ramda";
 import { removeExpired } from "../util.js";
 
@@ -26,16 +29,15 @@ import { removeExpired } from "../util.js";
  * @author @jshaw-ar
  * @export
  */
-export function mint({ viewContractState }) {
+export function mint({ viewContractState, block }) {
   return (state, action) => {
     return of(state.mint_contract)
-      .chain(
-        fromPromise((contractId) =>
-          viewContractState(contractId, { function: "get-queue" })
-        )
+      .chain((id) =>
+        fromPromise(viewContractState)(id, { function: "get-queue" })
       )
+      .map(prop("result"))
       .map(toPairs)
-      .map(removeExpired)
+      .map(removeExpired(__, block.height))
       .map(notInPile(state, __))
       .map((requests) => ({ state, requests }))
       .map(addToPile)
@@ -53,11 +55,8 @@ export function mint({ viewContractState }) {
  * @param {Array} pairs
  * @return {Array} pairs
  */
-export const notInPile = (state, pairs) => {
-  const isGood = (p) => !state.pile[p[0]];
-  return filter(isGood, pairs);
-  // filter(compose(contains(__, state.pile), head), pairs)
-};
+export const notInPile = (state, pairs) =>
+  reject((pair) => includes(pair[0], state.pile), pairs);
 
 /**
  * @description Adds requests to the "pile" of processed requests
@@ -84,10 +83,12 @@ const addToPile = ({ state, requests }) => ({
  * @param {Object} {state, requests}
  * @return {Object} {state, requests}
  */
-const setBalances = ({ state, requests }) => ({
-  state: map((p) => setBalance(p, state), requests)[0],
-  requests: requests,
-});
+const setBalances = ({ state, requests }) => {
+  return {
+    state: map((p) => setBalance(p, state), requests)[0] || { ...state },
+    requests: requests,
+  };
+};
 
 /**
  * @description Sets a balance to 0 if it doesn't exist
@@ -115,8 +116,10 @@ export const setBalance = (pair, state) => ({
  * @return {{Object, Array}} {state, requests}
  */
 const updateBalances = ({ state, requests }) => ({
-  state: map((p) => updateBalance(state, p), requests)[0],
-  requests,
+  state: {
+    ...state,
+    balances: reduce(addQtyToBalance, state.balances, requests),
+  },
 });
 
 /**
@@ -128,7 +131,5 @@ const updateBalances = ({ state, requests }) => ({
  * @param {Array} pair // pair[0] (address) pair[1] {qty, target}
  * @return {state}
  */
-const updateBalance = (state, pair) => ({
-  ...state,
-  balances: over(lensProp(pair[1].target), add(pair[1].qty), state.balances),
-});
+const addQtyToBalance = (balances, [txId, { qty, target }]) =>
+  assoc(target, path([target], balances) + qty, balances);
