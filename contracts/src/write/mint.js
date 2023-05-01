@@ -26,11 +26,14 @@ import { removeExpired } from "../util.js";
  * @author @jshaw-ar
  * @export
  */
-export function mint({ readContractState }) {
+export function mint({ viewContractState }) {
   return (state, action) => {
     return of(state.mint_contract)
-      .chain(fromPromise(readContractState)) // consider using viewContractState and calling a read method
-      .map(prop("requests"))
+      .chain(
+        fromPromise((contractId) =>
+          viewContractState(contractId, { function: "get-queue" })
+        )
+      )
       .map(toPairs)
       .map(removeExpired)
       .map(notInPile(state, __))
