@@ -1,5 +1,5 @@
-import Async from "hyper-async";
-import { getWarpFactory } from "./common";
+import Async from 'hyper-async';
+import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
 
 export function getState(tx: string) {
@@ -9,20 +9,21 @@ export function getState(tx: string) {
     .fork(
       (e: any) => {
         console.log(e);
-        return { error: "There was an error fetching the contract state" };
+        return { error: 'There was an error fetching the contract state.' };
       },
-      (state: any) => state
+      (state: any) => {
+        console.log('State', JSON.stringify(state));
+        return state;
+      }
     );
 }
 
 const readState = async (tx: string) => {
-  const CACHE = "https://cache.permapages.app";
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL)
-    await warp.contract(tx).syncState(CACHE + "/contract", { validity: true });
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
   const contract = await warp
     .contract(tx)
-    .connect("use_wallet")
+    .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
       allowBigInt: true,

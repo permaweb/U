@@ -1,16 +1,16 @@
-import React from "react";
-import parse from "html-react-parser";
-import { ReactSVG } from "react-svg";
+import React from 'react';
+import parse from 'html-react-parser';
+import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
 
-import { ASSETS } from "helpers/config";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import * as S from "./styles";
-import { getState } from "api";
+import { language } from 'helpers/language';
+import * as S from './styles';
+import { env } from 'api';
 
 export default function Swap() {
   const arProvider = useArweaveProvider();
@@ -35,7 +35,7 @@ export default function Swap() {
 
     return (
       <Button
-        type={"alt1"}
+        type={'alt1'}
         label={label}
         handlePress={action}
         height={52.5}
@@ -50,11 +50,11 @@ export default function Swap() {
   }
 
   React.useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
+    env.getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
   }, []);
 
   return (
-    <S.Wrapper className={"tab-wrapper"}>
+    <S.Wrapper className={'tab-wrapper'}>
       <S.TWrapper>
         <S.DWrapper>
           <h2>{language.swap}</h2>
@@ -72,7 +72,7 @@ export default function Swap() {
         </S.BWrapper>
         <S.FWrapper>
           <FormField
-            type={"number"}
+            type={'number'}
             label={language.from}
             value={amount}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -88,7 +88,7 @@ export default function Swap() {
           </S.Divider>
 
           <FormField
-            type={"number"}
+            type={'number'}
             label={language.to}
             value={getReBarAmount()}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
