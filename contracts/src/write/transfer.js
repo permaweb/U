@@ -1,4 +1,4 @@
-import { assoc, identity, __, pick } from "ramda";
+import { identity, __, pick } from "ramda";
 
 import { fromNullable, of } from "../hyper-either.js";
 import {
