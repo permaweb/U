@@ -17,12 +17,12 @@ const DEFAULT = {
 	neutral14: '#FFFFFF',
 	neutral15: '#536471',
 	neutral16: '#F0F9FE',
-	primary: '#333333',
-	primary2: '#555555',
-	primary3: '#777777',
-	primary4: '#999999',
-	alt1: '#FD8C73',
-	alt2: '#FFD877',
+	primary: '#1E646D',
+	primary2: '#278490',
+	primary3: '#30A1B0',
+	primary4: '#3FBACA',
+	alt1: '#9969A0',
+	alt2: '#9969A0',
 	overlay1: 'rgba(255, 255, 255, 0.75)',
 	negative: '#D24646',
 	negativeHover: '#F26969',
@@ -229,8 +229,8 @@ export const defaultTheme: DefaultTheme = {
 				background: DEFAULT.neutral1,
 			},
 			header: {
-				background: DEFAULT.neutral3,
-				logoFill: DEFAULT.primary,
+				background: DEFAULT.neutral1,
+				logoFill: DEFAULT.neutral11,
 			},
 		},
 		notification: {
@@ -288,14 +288,14 @@ export const defaultTheme: DefaultTheme = {
 		},
 		transparent: DEFAULT.transparent,
 		view: {
-			background: DEFAULT.neutral3,
+			background: DEFAULT.neutral1,
 		},
 		warning: DEFAULT.negative,
 	},
 	typography: {
 		family: {
 			primary: `'DM Sans', sans-serif`,
-			alt1: `'DM Sans', sans-serif`,
+			alt1: `'Space Grotesk', sans-serif;`,
 		},
 		size: {
 			h1: '48px',

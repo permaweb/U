@@ -42,7 +42,7 @@ export const Primary = styled.button<{
 	max-width: ${(props) => (props.useMaxWidth ? STYLING.dimensions.buttonWidth : '100%')};
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 0 25px;
+	padding: 0 15px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -69,7 +69,7 @@ export const Primary = styled.button<{
 		width: 100%;
 		text-overflow: ellipsis;
 		overflow: hidden;
-		font-size: ${(props) => props.theme.typography.size.base};
+		font-size: ${(props) => props.theme.typography.size.small};
 		font-weight: ${(props) => props.theme.typography.weight.bold};
 		color: ${(props) =>
 			props.active ? props.theme.colors.button.primary.active.label : props.theme.colors.button.primary.label};

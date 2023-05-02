@@ -3,6 +3,8 @@ import arrowDownSVG from 'assets/arrow-down.svg';
 import closeSVG from 'assets/close.svg';
 import logoSVG from 'assets/logo.svg';
 import menuSVG from 'assets/menu.svg';
+import arweaveLogoSVG from 'assets/arweave-logo.svg';
+import rebarLogoSVG from 'assets/rebar-logo.svg';
 
 import { IURLView } from './types';
 import { language } from './language';
@@ -13,9 +15,11 @@ import { Transfer } from 'views/Exchange/Transfer';
 
 export const ASSETS = {
 	arrowDown: arrowDownSVG,
+	arweaveLogo: arweaveLogoSVG,
 	close: closeSVG,
 	logo: logoSVG,
 	menu: menuSVG,
+	rebarLogo: rebarLogoSVG,
 	wallets: {
 		arconnect: arconnectWalletPNG,
 	},

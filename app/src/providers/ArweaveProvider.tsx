@@ -109,6 +109,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 	const getUserBalance = async (wallet: string) => {
 		const rawBalance = await fetch(getBalanceEndpoint(wallet));
 		const jsonBalance = await rawBalance.json();
+		// return Number((jsonBalance / 1e12).toFixed(4));
 		return jsonBalance / 1e12;
 	};
 

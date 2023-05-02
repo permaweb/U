@@ -1,35 +1,50 @@
 import React from "react";
+import parse from "html-react-parser";
 import { ReactSVG } from "react-svg";
 
 import { Button } from "components/atoms/Button";
 import { FormField } from "components/atoms/FormField";
 
-import { ASSETS } from 'helpers/config';
+import { ASSETS } from "helpers/config";
 import { useArweaveProvider } from "providers/ArweaveProvider";
 
 import { language } from "helpers/language";
 import * as S from "./styles";
 
-// TODO: Form field logos
 export default function Swap() {
   const arProvider = useArweaveProvider();
 
   const [amount, setAmount] = React.useState<number>(0);
 
   function getAction() {
+    let action: () => void;
+    let disabled: boolean;
+    let label: string;
+
     if (!arProvider.walletAddress) {
-      return (
-        <Button
-          type={"alt1"}
-          label={language.connectWallet}
-          handlePress={() => arProvider.setWalletModalVisible(true)}
-          height={52.5}
-          fullWidth
-        />
-      );
+      action = () => arProvider.setWalletModalVisible(true);
+      disabled = false;
+      label = language.connectWallet;
     } else {
-      null;
+      action = () => console.log(amount);
+      disabled = amount <= 0 || amount > arProvider.availableBalance!;
+      label = language.swap;
     }
+
+    return (
+      <Button
+        type={"alt1"}
+        label={label}
+        handlePress={action}
+        height={52.5}
+        disabled={disabled}
+        fullWidth
+      />
+    );
+  }
+
+  function getReBarAmount() {
+    return amount;
   }
 
   return (
@@ -37,8 +52,18 @@ export default function Swap() {
       <S.TWrapper>
         <S.DWrapper>
           <h2>{language.swap}</h2>
-          <p>{language.swapDescription}</p>
+          <p>{parse(language.swapDescription)}</p>
         </S.DWrapper>
+        <S.BWrapper>
+          <p>
+            <span>{`${language.arBalance}: `}</span>
+            {`${
+              arProvider.walletAddress && arProvider.availableBalance
+                ? Number(arProvider.availableBalance.toFixed(4))
+                : `-`
+            }`}
+          </p>
+        </S.BWrapper>
         <S.FWrapper>
           <FormField
             type={"number"}
@@ -48,8 +73,8 @@ export default function Swap() {
               setAmount(parseFloat(e.target.value))
             }
             disabled={!arProvider.walletAddress}
-            invalid={false}
-            endText={"AR"}
+            invalid={{ status: false, message: null }}
+            logo={ASSETS.arweaveLogo}
           />
 
           <S.Divider>
@@ -59,17 +84,17 @@ export default function Swap() {
           <FormField
             type={"number"}
             label={language.to}
-            value={amount}
+            value={getReBarAmount()}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setAmount(parseFloat(e.target.value))
             }
             disabled={true}
-            invalid={false}
-            endText={"reBAR"}
+            invalid={{ status: false, message: null }}
+            logo={ASSETS.rebarLogo}
           />
         </S.FWrapper>
       </S.TWrapper>
-      {getAction()}
+      <S.AWrapper>{getAction()}</S.AWrapper>
     </S.Wrapper>
   );
 }
