@@ -11,7 +11,7 @@ export const language = {
   to: 'To',
   amount: 'Amount',
   transfer: 'Transfer',
-  transferDescription: 'Transfer rebAR to someone.',
+  transferDescription: 'Transfer rebAR to an arweave address.',
   arTokens: `AR`,
   arBalance: `AR Balance`,
 };
