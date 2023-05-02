@@ -9,7 +9,7 @@ import { useArweaveProvider } from "providers/ArweaveProvider";
 
 import { language } from "helpers/language";
 import * as S from "./styles";
-import { getState } from "api";
+import { env } from "api";
 
 // TODO: Form field logos
 export default function Swap() {
@@ -35,7 +35,7 @@ export default function Swap() {
   }
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
+    env.getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
   }, []);
 
   return (
