@@ -1,18 +1,14 @@
 import React from 'react';
 
-import { ValidationType } from 'arcframework';
-
-import { FormFieldType } from 'helpers/types';
-
 export interface IProps {
 	label?: string;
 	value: number | string;
-	type?: FormFieldType;
+	type?: 'number' | 'password';
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-	invalid: ValidationType;
+	invalid: { status: boolean, message: string | null };
 	disabled: boolean;
 	placeholder?: string;
-	endText?: string;
+	logo?: any;
 	error?: string | null;
 	sm?: boolean;
 	testingCtx?: string;

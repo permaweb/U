@@ -13,6 +13,9 @@ export const ListHeader = styled.div`
 	padding: 20px;
 	border-top-left-radius: ${STYLING.dimensions.borderRadius};
 	border-top-right-radius: ${STYLING.dimensions.borderRadius};
+	border-left: 1px solid ${(props) => props.theme.colors.border.primary};
+    border-right: 1px solid ${(props) => props.theme.colors.border.primary};
+    border-top: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
 export const Content = styled.div`
