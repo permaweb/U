@@ -101,7 +101,6 @@ export default function Swap() {
         </S.FWrapper>
       </S.TWrapper>
       <S.AWrapper>{getAction()}</S.AWrapper>
-      {getAction()}
       <p>Contract ticker: {state?.ticker}</p>
       <p>L1 Mint Contract: {state?.mint_contract}</p>
     </S.Wrapper>
