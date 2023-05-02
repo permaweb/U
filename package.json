@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "(cd contracts && npm test)",
+    "launch": "(cd contracts && npm run deploy:local)",
     "prepare": "husky install"
   },
   "repository": {
