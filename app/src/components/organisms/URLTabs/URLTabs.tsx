@@ -1,10 +1,10 @@
-import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { Button } from "components/atoms/Button";
+import { Button } from 'components/atoms/Button';
 
-import * as S from "./styles";
-import { ICProps, ITProps, IUProps } from "./types";
+import * as S from './styles';
+import { ICProps, ITProps, IUProps } from './types';
 
 function Tab(props: ITProps) {
   function handlePress(e: any) {
@@ -26,7 +26,7 @@ function TabContent(props: ICProps) {
   let TabView: React.ComponentType | null = null;
   for (let i = 0; i < props.tabs.length; i++) {
     const url =
-      typeof props.tabs[i].url === "function"
+      typeof props.tabs[i].url === 'function'
         ? props.tabs[i].url(id)
         : props.tabs[i].url;
     if (url.includes(active)) {
@@ -60,12 +60,12 @@ export default function URLTabs(props: IUProps) {
   };
 
   return (
-    <S.Wrapper className={props.className ? props.className : ""}>
+    <S.Wrapper className={props.className ? props.className : ''}>
       <S.ListHeader>
         <S.List>
           {props.tabs.map((elem, index) => {
             const url =
-              typeof elem.url === "function" ? elem.url(id) : elem.url;
+              typeof elem.url === 'function' ? elem.url(id) : elem.url;
             return (
               <Tab
                 key={index}

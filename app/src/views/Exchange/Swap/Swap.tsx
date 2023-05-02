@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { ReactSVG } from "react-svg";
+import React, { useEffect, useState } from 'react';
+import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
 
-import { ASSETS } from "helpers/config";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import * as S from "./styles";
-import { env } from "api";
+import { language } from 'helpers/language';
+import * as S from './styles';
+import { env } from 'api';
 
 // TODO: Form field logos
 export default function Swap() {
@@ -22,7 +22,7 @@ export default function Swap() {
     if (!arProvider.walletAddress) {
       return (
         <Button
-          type={"alt1"}
+          type={'alt1'}
           label={language.connectWallet}
           handlePress={() => arProvider.setWalletModalVisible(true)}
           height={52.5}
@@ -39,7 +39,7 @@ export default function Swap() {
   }, []);
 
   return (
-    <S.Wrapper className={"tab-wrapper"}>
+    <S.Wrapper className={'tab-wrapper'}>
       <S.TWrapper>
         <S.DWrapper>
           <h2>{language.swap}</h2>
@@ -47,7 +47,7 @@ export default function Swap() {
         </S.DWrapper>
         <S.FWrapper>
           <FormField
-            type={"number"}
+            type={'number'}
             label={language.from}
             value={amount}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -55,7 +55,7 @@ export default function Swap() {
             }
             disabled={!arProvider.walletAddress}
             invalid={false}
-            endText={"AR"}
+            endText={'AR'}
           />
 
           <S.Divider>
@@ -63,7 +63,7 @@ export default function Swap() {
           </S.Divider>
 
           <FormField
-            type={"number"}
+            type={'number'}
             label={language.to}
             value={amount}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -71,7 +71,7 @@ export default function Swap() {
             }
             disabled={true}
             invalid={false}
-            endText={"reBAR"}
+            endText={'reBAR'}
           />
         </S.FWrapper>
       </S.TWrapper>
