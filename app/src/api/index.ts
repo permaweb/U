@@ -1,4 +1,3 @@
-import * as common from './common';
 import { getState } from './get-state';
 import { createMint } from './create-mint';
 import { mint } from './mint';
@@ -9,5 +8,4 @@ export const env = {
   createMint,
   mint,
   transfer,
-  common,
 };

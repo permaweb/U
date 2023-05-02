@@ -1,6 +1,7 @@
 import Async from 'hyper-async';
-import { getWarpFactory } from './common';
+import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
+import BigNumber from 'bignumber.js';
 
 export function transfer(input: {
   contractId: string;
@@ -29,12 +30,8 @@ const warpTransfer = async (input: {
   target: string;
 }) => {
   const { contractId, qty, target } = input;
-  const CACHE = 'https://cache.permapages.app';
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL)
-    await warp
-      .contract(contractId)
-      .syncState(CACHE + '/contract', { validity: true });
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')
@@ -45,6 +42,6 @@ const warpTransfer = async (input: {
   return contract.writeInteraction({
     function: 'transfer',
     target,
-    qty,
+    qty: new BigNumber(qty * 1e6).integerValue(BigNumber.ROUND_DOWN).toNumber(),
   });
 };

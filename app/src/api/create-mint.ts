@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { getWarpFactory } from './common';
+import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 
@@ -20,12 +20,8 @@ export function createMint(input: { contractId: string; qty: number }) {
 
 const createMintL1 = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
-  const CACHE = 'https://cache.permapages.app';
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL)
-    await warp
-      .contract(contractId)
-      .syncState(CACHE + '/contract', { validity: true });
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')
