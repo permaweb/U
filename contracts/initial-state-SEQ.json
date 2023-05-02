@@ -4,5 +4,7 @@
   "balances": {},
   "settings": [["isTradeable", true]],
   "claimable": [],
-  "divisibility": 6
+  "divisibility": 6,
+  "mint_contract": "",
+  "pile": []
 }

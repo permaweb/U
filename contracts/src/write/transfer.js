@@ -1,4 +1,4 @@
-import { assoc, identity, __ } from "ramda";
+import { assoc, identity, __, pick } from "ramda";
 
 import { fromNullable, of } from "../hyper-either.js";
 import {
@@ -38,8 +38,7 @@ export function transfer(state, action) {
     .map(setTargetBalance)
     .map(subtractCallerBalance)
     .map(addTargetBalance)
-    .map(({ state }) => state)
-    .map(assoc("state", __, {}))
+    .map(pick(["state"]))
     .fold((msg) => {
       throw new ContractError(msg || "An error occurred.");
     }, identity);

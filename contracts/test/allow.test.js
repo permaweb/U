@@ -7,7 +7,7 @@ const test = suite("allow");
 test.before(async () => {});
 
 test("should throw (Please specify a target.)", () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = "<justin>";
   assert.throws(
     () =>

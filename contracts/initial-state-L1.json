@@ -1,0 +1,6 @@
+{
+  "ticker": "REBAR",
+  "name": "REBAR",
+  "settings": [["isTradeable", false]],
+  "requests": {}
+}

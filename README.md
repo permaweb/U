@@ -13,8 +13,3 @@ TODO
 ## Summary
 
 TODO
-
-## Packages
-
-- [contract](packages/contract)
-- [app](packages/app)
