@@ -1,7 +1,11 @@
 import BigNumber from "bignumber.js";
 import { Left, Right } from "./hyper-either.js";
 import {
+  fromPairs,
+  toPairs,
   over,
+  pipe,
+  reject,
   ifElse,
   identity,
   lensProp,
@@ -16,19 +20,19 @@ import {
  * @description Contract Error
  *
  * @author @jshaw-ar
- * @param {*} flag What your conditional check is
- * @param {*} message Error message if conditional is true
- * @param {*} p The payload to pass through the func
- * @return {*} p
+ * @param {Boolean} flag What your conditional check is
+ * @param {string} message Error message if conditional is true
+ * @param {{state, action}} p The payload to pass through the func
+ * @return {{state, action}} p
  */
 export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
 
 /**
- * Converts qty to a number (eg. converts 10.0 => 10)
+ * @description Converts qty to a number (eg. converts 10.0 => 10)
  *
  * @author @jshaw-ar
- * @param {*} { state, action }
- * @return {*}
+ * @param {{ state, action }}
+ * @return {{ state, action }}
  */
 export function qtyToNumber({ state, action }) {
   return {
@@ -44,12 +48,12 @@ export function qtyToNumber({ state, action }) {
 }
 
 /**
- * Sets caller balance to 0 if it does not exist
+ * @description Sets caller balance to 0 if it does not exist
  *
  * @author Tom Wilson
  * @export
- * @param {*} { state, action }
- * @return {*}
+ * @param {{ state, action }}
+ * @return {{ state, action }}
  */
 export function setCallerBalance({ state, action }) {
   return {
@@ -66,12 +70,12 @@ export function setCallerBalance({ state, action }) {
 }
 
 /**
- * Sets target balance to 0 if it does not exist
+ * @description Sets target balance to 0 if it does not exist
  *
  * @author Tom Wilson
  * @export
- * @param {*} { state, action }
- * @return {*}
+ * @param {{ state, action }}
+ * @return {{ state, action }}
  */
 export function setTargetBalance({ state, action }) {
   return {
@@ -88,11 +92,11 @@ export function setTargetBalance({ state, action }) {
 }
 
 /**
- * Subtracts qty from caller balance
+ * @description Subtracts qty from caller balance
  *
  * @author @jshaw-ar
- * @param {*} { state, action }
- * @return {*}
+ * @param {{ state, action }}
+ * @return {{ state, action }}
  */
 export function subtractCallerBalance({ state, action }) {
   return {
@@ -109,11 +113,11 @@ export function subtractCallerBalance({ state, action }) {
 }
 
 /**
- * Adds qty from caller balance
+ * @description Adds qty from caller balance
  *
  * @author @jshaw-ar
- * @param {*} { state, action }
- * @return {*}
+ * @param {{ state, action }}
+ * @return {{ state, action }}
  */
 export function addTargetBalance({ state, action }) {
   return {
@@ -130,13 +134,32 @@ export function addTargetBalance({ state, action }) {
 }
 
 /**
- * Uses BigNumber to check if value is an integer.
+ * @description Uses BigNumber to check if value is an integer.
  *
  * @author @jshaw-ar
  * @export
- * @param {*} v value
- * @return {*}
+ * @param {number} v
+ * @return {boolean}
  */
 export function isInteger(v) {
   return new BigNumber(v).isInteger();
 }
+
+/**
+ * @description Uses bignumber.js to round down.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {number} v
+ * @return {number}
+ */
+export function roundDown(v) {
+  return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber();
+}
+
+export const filterInvalid = (requests, height) =>
+  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
+
+export const removeExpired = (pairs, height) => {
+  return reject((r) => height > r[1].expires, pairs);
+};

@@ -4,7 +4,8 @@
   "description": "The utility token of the permaweb",
   "main": "index.js",
   "scripts": {
-    "test": "(cd contract && npm test)",
+    "test": "(cd contracts && npm test)",
+    "launch": "(cd contracts && npm run deploy:local)",
     "prepare": "husky install"
   },
   "repository": {
@@ -19,5 +20,6 @@
   "homepage": "https://github.com/permaweb/rebar#readme",
   "devDependencies": {
     "husky": "^8.0.0"
-  }
+  },
+  "dependencies": {}
 }

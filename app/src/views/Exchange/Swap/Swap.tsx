@@ -10,9 +10,11 @@ import { useArweaveProvider } from "providers/ArweaveProvider";
 
 import { language } from "helpers/language";
 import * as S from "./styles";
+import { getState } from "api";
 
 export default function Swap() {
   const arProvider = useArweaveProvider();
+  const [state, setState] = React.useState<any>();
 
   const [amount, setAmount] = React.useState<number>(0);
 
@@ -46,6 +48,10 @@ export default function Swap() {
   function getReBarAmount() {
     return amount;
   }
+
+  React.useEffect(() => {
+    getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
+  }, []);
 
   return (
     <S.Wrapper className={"tab-wrapper"}>
@@ -95,6 +101,9 @@ export default function Swap() {
         </S.FWrapper>
       </S.TWrapper>
       <S.AWrapper>{getAction()}</S.AWrapper>
+      {getAction()}
+      <p>Contract ticker: {state?.ticker}</p>
+      <p>L1 Mint Contract: {state?.mint_contract}</p>
     </S.Wrapper>
   );
 }

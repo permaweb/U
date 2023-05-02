@@ -39,5 +39,7 @@ testem.log
 Thumbs.db
 
 #Project Docs
+logs
 docs/packages/rebar
-contract/logs
+contracts/logs
+mint-contract/logs
