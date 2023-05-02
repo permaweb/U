@@ -9,9 +9,12 @@ export function getState(tx: string) {
     .fork(
       (e: any) => {
         console.log(e);
-        return { error: "There was an error fetching the contract state" };
+        return { error: "There was an error fetching the contract state." };
       },
-      (state: any) => state
+      (state: any) => {
+        console.log("State", JSON.stringify(state));
+        return state;
+      }
     );
 }
 
