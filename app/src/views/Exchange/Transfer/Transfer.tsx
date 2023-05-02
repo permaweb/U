@@ -40,62 +40,60 @@ export default function Swap() {
   }, []);
 
   return (
-    <S.Wrapper className={'tab-wrapper'}>
-      <S.TWrapper>
-        <S.DWrapper>
-          <h2>{language.transfer}</h2>
-          <p>{language.transferDescription}</p>
-        </S.DWrapper>
-        <S.FWrapper>
-          <FormField
-            type={'string'}
-            label={language.to}
-            value={target || ''}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setTarget(e.target.value)
-            }
-            disabled={!arProvider.walletAddress}
-            invalid={false}
-            endText={'Address'}
-          />
+    <>
+      <S.Wrapper className={'tab-wrapper'}>
+        <S.TWrapper>
+          <S.DWrapper>
+            <h2>{language.transfer}</h2>
+            <p>{language.transferDescription}</p>
+          </S.DWrapper>
+          <S.FWrapper>
+            <FormField
+              label={language.to}
+              value={target || ''}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTarget(e.target.value)
+              }
+              disabled={!arProvider.walletAddress}
+              invalid={{ status: false, message: null }}
+            />
 
-          <S.Divider>
-            <ReactSVG src={ASSETS.arrowDown} />
-          </S.Divider>
+            <S.Divider>
+              <ReactSVG src={ASSETS.arrowDown} />
+            </S.Divider>
 
-          <FormField
-            type={'number'}
-            label={language.amount}
-            value={qty}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setQty(parseFloat(e.target.value))
+            <FormField
+              type={'number'}
+              label={language.amount}
+              value={qty}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setQty(parseFloat(e.target.value))
+              }
+              disabled={!target}
+              invalid={{ status: false, message: null }}
+              logo={ASSETS.rebarLogo}
+            />
+          </S.FWrapper>
+        </S.TWrapper>
+        {getAction()}
+        {qty > 0 && target && (
+          <Button
+            type={'alt1'}
+            label={language.transfer}
+            handlePress={() =>
+              env.transfer({
+                contractId: import.meta.env.VITE_CONTRACT_SEQ,
+                qty,
+                target,
+              })
             }
-            disabled={!target}
-            invalid={false}
-            endText={'reBAR'}
+            height={52.5}
+            fullWidth
           />
-        </S.FWrapper>
-      </S.TWrapper>
-      {getAction()}
-      {qty > 0 && target && (
-        <Button
-          type={'alt1'}
-          label={language.transfer}
-          handlePress={() =>
-            env.transfer({
-              contractId: import.meta.env.VITE_CONTRACT_SEQ,
-              qty,
-              target,
-            })
-          }
-          height={52.5}
-          fullWidth
-        />
-      )}
-      <p>Contract ticker: {state?.ticker}</p>
-      <p>L1 Mint Contract: {state?.mint_contract}</p>
-      <p>Qty: {qty}</p>
-      <p>Target: {target}</p>
-    </S.Wrapper>
+        )}
+      </S.Wrapper>
+      <h1>Balances</h1>
+      <p>{JSON.stringify(state?.balances)}</p>
+    </>
   );
 }
