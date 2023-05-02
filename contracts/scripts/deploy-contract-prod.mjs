@@ -18,9 +18,13 @@ async function deploy(folder) {
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
   const warp = WarpFactory.forMainnet().use(new DeployPlugin());
-  const contractSrc = fs.readFileSync(`${folder}/contract.js`, "utf8");
-  const stateFromFile = JSON.parse(
-    fs.readFileSync(`${folder}/initial-state.json`, "utf8")
+  const contractSrcL1 = fs.readFileSync(`${folder}/contract-L1.js`, "utf8");
+  const stateFromFileL1 = JSON.parse(
+    fs.readFileSync(`${folder}/initial-state-L1.json`, "utf8")
+  );
+  const contractSrcSEQ = fs.readFileSync(`${folder}/contract-SEQ.js`, "utf8");
+  const stateFromFileSEQ = JSON.parse(
+    fs.readFileSync(`${folder}/initial-state-SEQ.json`, "utf8")
   );
   if (!process.env.WALLET_ADDRESS) {
     console.error(
@@ -28,20 +32,37 @@ async function deploy(folder) {
     );
     process.exit(1);
   }
-  const initialState = {
-    ...stateFromFile,
+  const initialStateL1 = {
+    ...stateFromFileL1,
+    ...{
+      owner: process.env.WALLET_ADDRESS,
+    },
+  };
+
+  const initialStateSEQ = {
+    ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
       balances,
     },
   };
 
-  const deploy = await warp.deploy({
+  const deployL1 = await warp.deploy({
     wallet: new ArweaveSigner(jwk),
-    initState: JSON.stringify(initialState),
-    src: contractSrc,
+    initState: JSON.stringify(initialStateL1),
+    src: contractSrcL1,
   });
-  console.log(`contractTxId ${deploy.contractTxId}`);
+
+  const deploySEQ = await warp.deploy({
+    wallet: new ArweaveSigner(jwk),
+    initState: JSON.stringify({
+      ...initialStateSEQ,
+      mint_contract: deployL1.contractTxId,
+    }),
+    src: contractSrcSEQ,
+  });
+  console.log(`L1 contractTxId ${deployL1.contractTxId}`);
+  console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
 }
 deploy(process.argv[2]).catch(console.log);
 
