@@ -1,4 +1,4 @@
-import { WarpFactory } from 'warp-contracts';
+import { WarpFactory, SourceType } from 'warp-contracts';
 import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
 import BigNumber from 'bignumber.js';
 import { compose, prop, fromPairs, toPairs, map } from 'ramda';
@@ -51,6 +51,13 @@ async function deploy(folder) {
     wallet: new ArweaveSigner(jwk),
     initState: JSON.stringify(initialStateL1),
     src: contractSrcL1,
+    evaluationManifest: {
+      evaluationOptions: {
+        sourceType: SourceType.ARWEAVE,
+        unsafeClient: 'skip',
+        internalWrites: false,
+      },
+    },
   });
 
   const deploySEQ = await warp.deploy({
@@ -60,6 +67,12 @@ async function deploy(folder) {
       mint_contract: deployL1.contractTxId,
     }),
     src: contractSrcSEQ,
+    evaluationManifest: {
+      evaluationOptions: {
+        sourceType: SourceType.WARP_SEQUENCER,
+        unsafeClient: 'skip',
+      },
+    },
   });
   console.log(`L1 contractTxId ${deployL1.contractTxId}`);
   console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
