@@ -1,3 +1,3 @@
 export function getBalanceEndpoint(wallet: string) {
-  return `https://arweave.net/wallet/${wallet}/balance`;
+  return `${import.meta.env.VITE_LOCAL ? 'http://localhost:1984' : 'https://arweave.net'}/wallet/${wallet}/balance`;
 }

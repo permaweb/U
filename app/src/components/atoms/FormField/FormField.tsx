@@ -1,5 +1,5 @@
-import React from "react";
-import { ReactSVG } from "react-svg";
+import React from 'react';
+import { ReactSVG } from 'react-svg';
 
 import * as S from './styles';
 import { IProps } from './types';

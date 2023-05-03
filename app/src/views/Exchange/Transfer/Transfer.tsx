@@ -12,7 +12,7 @@ import { useArweaveProvider } from "providers/ArweaveProvider";
 import { language } from "helpers/language";
 import { ResponseType } from "helpers/types";
 import * as S from "./styles";
-import { env } from 'api';
+import { env } from "api";
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
@@ -56,21 +56,21 @@ export default function Transfer() {
     );
   }
 
-  function transferReBar() {
-    console.log(`Transfer ${reBarAmount} reBAR to ${recipient}`);
+  const transferReBar = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      env.transfer({
+    env
+      .transfer({
         contractId: import.meta.env.VITE_CONTRACT_SEQ,
         qty: reBarAmount,
         target: recipient,
+      })
+      .then(() => {
+        setLoading(false);
+        setTransferResult({
+          status: true,
+          message: language.transferSuccess,
+        });
       });
-      setTransferResult({
-        status: true,
-        message: language.transferSuccess,
-      });
-    }, 1000);
   }
 
   return (

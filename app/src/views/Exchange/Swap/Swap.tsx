@@ -2,16 +2,16 @@ import React from 'react';
 import parse from 'html-react-parser';
 import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
-import { Notification } from "components/atoms/Notification";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 
 import { ASSETS } from 'helpers/config';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import { ResponseType } from "helpers/types";
-import * as S from "./styles";
+import { language } from 'helpers/language';
+import { ResponseType } from 'helpers/types';
+import * as S from './styles';
 import { env } from 'api';
 
 // TODO: get reBAR balance
@@ -86,13 +86,13 @@ export default function Swap() {
     <>
       {swapResult && (
         <Notification
-          type={swapResult.status === true ? "success" : "warning"}
+          type={swapResult.status === true ? 'success' : 'warning'}
           message={swapResult.message!}
           callback={() => setSwapResult(null)}
         />
       )}
 
-      <S.Wrapper className={"tab-wrapper"}>
+      <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.swap}</h2>
@@ -110,7 +110,7 @@ export default function Swap() {
           </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.from}
               value={arAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -126,7 +126,7 @@ export default function Swap() {
             </S.Divider>
 
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.to}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
