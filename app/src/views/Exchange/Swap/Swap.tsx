@@ -12,14 +12,18 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { env } from 'api';
+import { StateL1, StateSEQ, env } from 'api';
 
+const { getQueue, getState, createMint } = env;
 // TODO: get reBAR balance
 // TODO: invalid arAmount
 export default function Swap() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<any>();
+  const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
+  const [stateL1, setStateL1] = React.useState<StateL1>();
+  const [queue, setQueue] = React.useState<any>();
+  const [created, setCreated] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [swapResult, setSwapResult] = React.useState<ResponseType | null>(null);
 
@@ -65,17 +69,34 @@ export default function Swap() {
   function swapAR() {
     console.log(`Swap ${arAmount} AR for ${reBarAmount} reBAR`);
     setLoading(true);
-    setTimeout(() => {
+    createMint({
+      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
+      qty: arAmount,
+    }).then((r: any) => {
+      console.log('Create mint response', r);
       setLoading(false);
       setSwapResult({
         status: true,
         message: language.swapSuccess,
       });
-    }, 1000);
+    });
   }
 
   React.useEffect(() => {
-    env.getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
+    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
+      console.log('StateSEQ', s);
+      setStateSEQ(s);
+      getQueue(import.meta.env.VITE_CONTRACT_L1, s.pile).then(
+        (requests: any[]) => {
+          console.log('Requests', JSON.stringify(requests));
+          setQueue(requests);
+        }
+      );
+    });
+    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
+      console.log('StateL1', s);
+      setStateL1(s);
+    });
   }, []);
 
   React.useEffect(() => {
@@ -134,11 +155,14 @@ export default function Swap() {
               }
               disabled={true}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.rebarLogo}
+              logo={ASSETS.RebARLogo}
             />
           </S.FWrapper>
         </S.TWrapper>
         <S.AWrapper>{getAction()}</S.AWrapper>
+        {created && (
+          <p>Mint created! It should be confirmed in like 20 minutes.</p>
+        )}
       </S.Wrapper>
     </>
   );
