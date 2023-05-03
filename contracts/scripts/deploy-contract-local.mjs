@@ -30,6 +30,33 @@ async function deploy(folder) {
       ...stateFromFileL1,
       ...{
         owner: process.env.WALLET_ADDRESS,
+        requests: {
+          '<tx1>': {
+            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 2000000,
+            expires: 120,
+          },
+          '<tx2>': {
+            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 3000000,
+            expires: 220,
+          },
+          '<tx3>': {
+            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 4000000,
+            expires: 320,
+          },
+          '<tx4>': {
+            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 5000000,
+            expires: 420,
+          },
+          '<tx5>': {
+            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 6000000,
+            expires: 520,
+          },
+        },
       },
     };
 
@@ -40,7 +67,7 @@ async function deploy(folder) {
         balances: {
           // NICK, put your wallet here if you want to preload your wallet with bAR locally
           '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 100000000,
-          'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk': 100000000,
+          uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 100000000,
         },
       },
     };
