@@ -33,6 +33,7 @@ export default function FormField(props: IProps) {
         placeholder={props.placeholder ? props.placeholder : ""}
         sm={props.sm}
         data-testid={props.testingCtx}
+        spellCheck={false}
       />
       <S.LogoContainer>
         {props.logo && <ReactSVG src={props.logo} />}

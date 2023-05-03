@@ -1,18 +1,18 @@
-import React from "react";
-import parse from "html-react-parser";
-import { ReactSVG } from "react-svg";
+import React from 'react';
+import parse from 'html-react-parser';
+import { ReactSVG } from 'react-svg';
 
 import { Button } from "components/atoms/Button";
 import { FormField } from "components/atoms/FormField";
 import { Notification } from "components/atoms/Notification";
 
-import { ASSETS } from "helpers/config";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
 import { language } from "helpers/language";
 import { ResponseType } from "helpers/types";
 import * as S from "./styles";
-import { getState } from "api";
+import { env } from 'api';
 
 // TODO: get reBAR balance
 // TODO: invalid arAmount
@@ -51,7 +51,7 @@ export default function Swap() {
 
     return (
       <Button
-        type={"alt1"}
+        type={'alt1'}
         label={label}
         handlePress={action}
         height={52.5}
@@ -75,7 +75,7 @@ export default function Swap() {
   }
 
   React.useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
+    env.getState(import.meta.env.VITE_CONTRACT_SEQ).then(setState);
   }, []);
 
   React.useEffect(() => {
