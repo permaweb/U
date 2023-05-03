@@ -44,7 +44,7 @@ export interface StateL1 {
  * @author @jshaw-ar
  * @interface MintRequest
  */
-interface MintRequest {
+export interface MintRequest {
   target: string;
   qty: number;
   expires: number;
