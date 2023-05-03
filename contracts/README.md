@@ -12,15 +12,15 @@ eg.
 // ./scripts/build.js
 
 replace.sync({
-  files: "./dist/contract.js",
-  from: ["var BigNumber = clone();"],
-  to: "var BigNumberClone = clone();",
+  files: './dist/contract.js',
+  from: ['var BigNumber = clone();'],
+  to: 'var BigNumberClone = clone();',
   countMatches: true,
 });
 replace.sync({
-  files: "./dist/contract.js",
-  from: ["var bignumber_default = BigNumber;"],
-  to: "var bignumber_default = BigNumberClone;",
+  files: './dist/contract.js',
+  from: ['var bignumber_default = BigNumber;'],
+  to: 'var bignumber_default = BigNumberClone;',
   countMatches: true,
 });
 ```
