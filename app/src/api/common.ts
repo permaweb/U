@@ -26,3 +26,17 @@ export const readState = async (tx: string) => {
     .readState();
   return contract.cachedValue.state;
 };
+
+export const viewState = async (tx: string, input: any) => {
+  const warp = getWarpFactory();
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
+  const state = await warp
+    .contract(tx)
+    .setEvaluationOptions({
+      internalWrites: true,
+      allowBigInt: true,
+    })
+    .viewState(input);
+  if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
+  return state.result;
+};
