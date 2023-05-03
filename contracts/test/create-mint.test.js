@@ -16,9 +16,9 @@ test('should create 1 mint request', async () => {
   const caller = '<justin>';
   const output = createMint(env)(
     {
-      name: 'rebar',
+      name: 'RebAR',
       mint_contract: '<mint-contract-2>',
-      ticker: 'rebar',
+      ticker: 'RebAR',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -45,9 +45,9 @@ test('should throw Reward must be an integer.', async () => {
     () =>
       createMint(env)(
         {
-          name: 'rebar',
+          name: 'RebAR',
           mint_contract: '<mint-contract-2>',
-          ticker: 'rebar',
+          ticker: 'RebAR',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],

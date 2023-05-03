@@ -9,8 +9,8 @@ test('should subtract 10 from caller balance', async () => {
   const caller = '<justin>';
   const output = subtractCallerBalance({
     state: {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {
         '<justin>': 20,
       },

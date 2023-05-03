@@ -1,4 +1,4 @@
-# rebar
+# RebAR
 
 The utility token of the permaweb
 

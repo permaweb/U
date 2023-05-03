@@ -13,8 +13,8 @@ test('should throw (Please specify a target.)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -37,8 +37,8 @@ test('should throw (Target cannot be caller.)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -61,8 +61,8 @@ test('should throw (Caller does not have a balance.)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -85,8 +85,8 @@ test('should throw (qty must be an integer.)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -111,8 +111,8 @@ test('should throw (Not enough tokens for transfer.)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -137,8 +137,8 @@ test('should not transfer null amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -163,8 +163,8 @@ test('should not transfer undefined amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -189,8 +189,8 @@ test("should not transfer 'string' amount of tokens", () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -215,8 +215,8 @@ test('should not transfer fractional amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -241,8 +241,8 @@ test('should not transfer without a target', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -267,8 +267,8 @@ test('should not transfer with null target', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -293,8 +293,8 @@ test('should not transfer with undefined target', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -319,8 +319,8 @@ test('should not transfer from non-existing account', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 10,
           },
@@ -345,8 +345,8 @@ test('should not transfer more than owned', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 1000000,
           },
@@ -371,8 +371,8 @@ test('should not transfer 0 tokens', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 1000000,
           },
@@ -397,8 +397,8 @@ test('should not transfer negative amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 1000000,
           },
@@ -423,8 +423,8 @@ test('should not transfer to the same account (caller -> caller)', () => {
     () =>
       transfer(
         {
-          name: 'rebar',
-          ticker: 'rebar',
+          name: 'RebAR',
+          ticker: 'RebAR',
           balances: {
             [caller]: 1000000,
           },
@@ -447,8 +447,8 @@ test('should transfer to empty account', () => {
   const caller = '<justin>';
   const output = transfer(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {
         [caller]: 10,
       },
@@ -471,8 +471,8 @@ test('should transfer to existing account', () => {
   const caller = '<justin>';
   const output = transfer(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {
         [caller]: 10,
         '<tom>': 10,

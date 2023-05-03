@@ -13,8 +13,8 @@ test('caller should have 0 balance', async () => {
   const caller = '<justin>';
   const output = await balance(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -36,8 +36,8 @@ test('caller should have 1 balance', async () => {
   const caller = '<justin>';
   const output = await balance(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {
         '<justin>': 1,
       },
@@ -61,8 +61,8 @@ test('target should have 0 balance', async () => {
   const caller = '<justin>';
   const output = await balance(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -83,8 +83,8 @@ test('target should have 1 balance', async () => {
   const caller = '<justin>';
   const output = await balance(
     {
-      name: 'rebar',
-      ticker: 'rebar',
+      name: 'RebAR',
+      ticker: 'RebAR',
       balances: {
         '<tom>': 1,
       },

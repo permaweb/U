@@ -110,7 +110,7 @@ test.before(async () => {
   );
 });
 
-test('should create mint request for 10 rebar with wallet1', async () => {
+test('should create mint request for 10 RebAR with wallet1', async () => {
   await connectedWallet1L1.writeInteraction(
     { function: 'create-mint' },
     { reward: '10000000000000' }
@@ -119,7 +119,7 @@ test('should create mint request for 10 rebar with wallet1', async () => {
   assert.is(toPairs(state.requests)[0][1]?.qty, 10000000);
 });
 
-test('should mint 10 rebar', async () => {
+test('should mint 10 RebAR', async () => {
   await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
   assert.is(state.balances[wallet1.address], 10000000);
