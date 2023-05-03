@@ -2,35 +2,52 @@ import Async from 'hyper-async';
 import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
+import { StateSEQ } from './interface';
+import {
+  over,
+  ifElse,
+  identity,
+  lensProp,
+  always,
+  isNil,
+  add,
+  subtract,
+  __,
+} from 'ramda';
 
-export function transfer(input: {
+export interface TransferInput {
   contractId: string;
-  qty: number;
+  from: string;
   target: string;
-}) {
+  qty: number;
+  state: StateSEQ;
+}
+
+export function transfer(input: TransferInput) {
   return of(input)
-    .chain((input: { contractId: string; qty: number; target: string }) =>
-      fromPromise(warpTransfer)(input)
-    )
+    .chain((input: TransferInput) => fromPromise(warpTransfer)(input))
+    .map(setTargetBalance)
+    .map(subtractCallerBalance)
+    .map(addTargetBalance)
     .fork(
       (e: any) => {
         console.log(e);
         return { error: 'There was an error fetching the contract state' };
       },
-      (res: any) => {
-        console.log('res', res);
-        return res;
+      (output: {
+        state: StateSEQ;
+        action: { caller: string; input: { qty: number; target: string } };
+      }) => {
+        console.log('Transfer State', output.state);
+        return { ...output.state };
       }
     );
 }
 
-const warpTransfer = async (input: {
-  contractId: string;
-  qty: number;
-  target: string;
-}) => {
-  const { contractId, qty, target } = input;
+const warpTransfer = async (input: TransferInput) => {
+  const { contractId, qty, target, from } = input;
   const warp = getWarpFactory();
+
   if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
   const contract = warp
     .contract(contractId)
@@ -39,9 +56,86 @@ const warpTransfer = async (input: {
       internalWrites: true,
       allowBigInt: true,
     });
-  return contract.writeInteraction({
+  const newQty = new BigNumber(qty * 1e6)
+    .integerValue(BigNumber.ROUND_DOWN)
+    .toNumber();
+  const interaction = await contract.writeInteraction({
     function: 'transfer',
     target,
-    qty: new BigNumber(qty * 1e6).integerValue(BigNumber.ROUND_DOWN).toNumber(),
+    qty: newQty,
   });
+
+  return {
+    state: { ...input.state },
+    action: { caller: from, input: { target, qty: newQty } },
+  };
 };
+
+/**
+ * @description Sets target balance to 0 if it does not exist
+ *
+ * @author Tom Wilson
+ * @export
+ * @param {{ state, action }}
+ * @return {{ state, action }}
+ */
+export function setTargetBalance(input: {
+  state: StateSEQ;
+  action: { caller: string; input: { qty: number; target: string } };
+}) {
+  const { state, action } = input;
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.input.target),
+        ifElse(isNil, always(0), identity),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+export function subtractCallerBalance(input: {
+  state: StateSEQ;
+  action: { caller: string; input: { qty: number; target: string } };
+}) {
+  const { state, action } = input;
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.caller),
+        subtract(__, action.input.qty),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
+
+/**
+ * @description Adds qty from caller balance
+ *
+ * @author @jshaw-ar
+ * @param {{ state, action }}
+ * @return {{ state, action }}
+ */
+export function addTargetBalance(input: {
+  state: StateSEQ;
+  action: { caller: string; input: { qty: number; target: string } };
+}) {
+  const { state, action } = input;
+  return {
+    state: {
+      ...state,
+      balances: over(
+        lensProp(action.input.target),
+        add(action.input.qty),
+        state.balances
+      ),
+    },
+    action,
+  };
+}
