@@ -59,7 +59,7 @@ const warpTransfer = async (input: TransferInput) => {
   const newQty = new BigNumber(qty * 1e6)
     .integerValue(BigNumber.ROUND_DOWN)
     .toNumber();
-  const interaction = await contract.writeInteraction({
+  contract.writeInteraction({
     function: 'transfer',
     target,
     qty: newQty,
@@ -97,6 +97,15 @@ export function setTargetBalance(input: {
   };
 }
 
+/**
+ * @author @jshaw-ar
+ * @export
+ * @param {{
+ *   state: StateSEQ;
+ *   action: { caller: string; input: { qty: number; target: string } };
+ * }} input
+ * @return {*}
+ */
 export function subtractCallerBalance(input: {
   state: StateSEQ;
   action: { caller: string; input: { qty: number; target: string } };
