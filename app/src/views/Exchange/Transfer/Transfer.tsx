@@ -1,28 +1,38 @@
-import React from "react";
-import parse from "html-react-parser";
-import { ReactSVG } from "react-svg";
+import React, { useEffect } from 'react';
+import parse from 'html-react-parser';
+import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
-import { Notification } from "components/atoms/Notification";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 
-import { ASSETS } from "helpers/config";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import { ResponseType } from "helpers/types";
-import * as S from "./styles";
-import { env } from "api";
+import { language } from 'helpers/language';
+import { ResponseType } from 'helpers/types';
+import * as S from './styles';
+import { env } from 'api';
+import { StateSEQ } from 'api';
+
+const { transfer, getState } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
 
+  const [state, setState] = React.useState<StateSEQ | undefined>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [transferResult, setTransferResult] =
     React.useState<ResponseType | null>(null);
 
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
-  const [recipient, setRecipient] = React.useState<string>("");
+  const [recipient, setRecipient] = React.useState<string>('');
+
+  useEffect(() => {
+    getState(import.meta.env.VITE_CONTRACT_SEQ)
+      .then(setState)
+      .catch((e: any) => console.log(e));
+  }, []);
 
   function getAction() {
     let action: () => void;
@@ -45,7 +55,7 @@ export default function Transfer() {
 
     return (
       <Button
-        type={"alt1"}
+        type={'alt1'}
         label={label}
         handlePress={action}
         height={52.5}
@@ -58,31 +68,34 @@ export default function Transfer() {
 
   const transferReBar = async () => {
     setLoading(true);
-    env
-      .transfer({
-        contractId: import.meta.env.VITE_CONTRACT_SEQ,
-        qty: reBarAmount,
-        target: recipient,
-      })
-      .then(() => {
+    transfer({
+      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      from: arProvider.walletAddress as string,
+      qty: reBarAmount * 1e6,
+      target: recipient,
+      state: state as unknown as StateSEQ,
+    })
+      // Same shape as the contract State
+      .then((output: any) => {
+        setState(output);
         setLoading(false);
         setTransferResult({
           status: true,
           message: language.transferSuccess,
         });
       });
-  }
+  };
 
   return (
     <>
       {transferResult && (
         <Notification
-          type={transferResult.status === true ? "success" : "warning"}
+          type={transferResult.status === true ? 'success' : 'warning'}
           message={transferResult.message!}
           callback={() => setTransferResult(null)}
         />
       )}
-      <S.Wrapper className={"tab-wrapper"}>
+      <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.transfer}</h2>
@@ -100,7 +113,7 @@ export default function Transfer() {
           </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.from}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -108,7 +121,7 @@ export default function Transfer() {
               }
               disabled={!arProvider.walletAddress}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.rebarLogo}
+              logo={ASSETS.RebARLogo}
             />
 
             <S.Divider>
