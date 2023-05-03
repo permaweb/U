@@ -1,5 +1,5 @@
-import React from 'react';
-import { ReactSVG } from 'react-svg';
+import React from "react";
+import { ReactSVG } from "react-svg";
 
 import * as S from "./styles";
 import { IProps } from "./types";
@@ -20,9 +20,9 @@ export default function FormField(props: IProps) {
       sm={props.sm}
       disabled={props.disabled}
       invalid={props.invalid.status}
-	  onFocus={() => setFocused(true)}
+      onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
-	  focused={focused}
+      focused={focused}
     >
       {props.label && <S.Label>{props.label}</S.Label>}
       <S.Input
@@ -34,11 +34,9 @@ export default function FormField(props: IProps) {
         sm={props.sm}
         data-testid={props.testingCtx}
       />
-	  <S.LogoContainer>
-		{props.logo && 
-			<ReactSVG src={props.logo} />
-		}
-	  </S.LogoContainer>
+      <S.LogoContainer>
+        {props.logo && <ReactSVG src={props.logo} />}
+      </S.LogoContainer>
     </S.Wrapper>
   );
 }

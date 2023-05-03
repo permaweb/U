@@ -46,7 +46,7 @@ export const defaultTheme: DefaultTheme = {
 		},
 		border: {
 			primary: DEFAULT.neutral5,
-			alt1: DEFAULT.primary3,
+			alt1: DEFAULT.primary,
 			alt2: DEFAULT.primary4,
 			alt3: DEFAULT.neutral6,
 		},

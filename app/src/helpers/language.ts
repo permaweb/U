@@ -8,8 +8,14 @@ export const language = {
 	disconnect: `Disconnect`,
 	fetching: `Fetching`,
 	from: `From`,
+	loading: `Loading`,
 	swap: `Swap`,
 	swapDescription: `Easy way to swap <span>AR</span> into <span>reBAR</span>`,
+	swapFailure: `Swap Failed`,
+	swapSuccess: `Swap Initiated`,
 	to: `To`,
-	transfer: `Transfer`
+	transfer: `Transfer`,
+	transferDescription: `Easy way to transfer <span>reBAR</span> between accounts`,
+	transferRecipientPlaceholder: `Address`,
+	transferSuccess: `Transfer Successfully Sent`
 };
