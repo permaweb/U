@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { getWarpFactory, syncState } from './common';
+import { readState } from './common';
 const { of, fromPromise } = Async;
 
 export function getState(tx: string) {
@@ -17,17 +17,3 @@ export function getState(tx: string) {
       }
     );
 }
-
-const readState = async (tx: string) => {
-  const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
-  const contract = await warp
-    .contract(tx)
-    .connect('use_wallet')
-    .setEvaluationOptions({
-      internalWrites: true,
-      allowBigInt: true,
-    })
-    .readState();
-  return contract.cachedValue.state;
-};
