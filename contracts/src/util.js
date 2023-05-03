@@ -1,5 +1,5 @@
-import BigNumber from "bignumber.js";
-import { Left, Right } from "./hyper-either.js";
+import BigNumber from 'bignumber.js';
+import { Left, Right } from './hyper-either.js';
 import {
   fromPairs,
   toPairs,
@@ -14,7 +14,7 @@ import {
   add,
   subtract,
   __,
-} from "ramda";
+} from 'ramda';
 
 /**
  * @description Contract Error
@@ -157,9 +157,44 @@ export function roundDown(v) {
   return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber();
 }
 
+/**
+ * @description Removes expired and zero qty from array.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {Array} requests
+ * @param {number} height
+ * @return {Array}
+ */
 export const filterInvalid = (requests, height) =>
-  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
+  pipe(
+    toPairs,
+    (pairs) => removeExpired(pairs, height),
+    removeZero,
+    fromPairs
+  )(requests);
 
+/**
+ * @description Removes expired from array.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {Array} requests
+ * @param {number} height
+ * @return {Array} pairs
+ */
 export const removeExpired = (pairs, height) => {
   return reject((r) => height > r[1].expires, pairs);
+};
+
+/**
+ * @description Removes zero qty from array.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {number} height
+ * @return {Array} pairs
+ */
+export const removeZero = (pairs) => {
+  return reject((r) => r[1].qty < 1, pairs);
 };

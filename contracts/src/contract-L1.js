@@ -1,6 +1,6 @@
-import { createMint } from "./write/create-mint.js";
-import { getQueue } from "./read/get-queue.js";
-import { filterInvalid } from "./util.js";
+import { createMint } from './write/create-mint.js';
+import { getQueue } from './read/get-queue.js';
+import { filterInvalid } from './util.js';
 
 export async function handle(state, action) {
   const env = {
@@ -14,9 +14,9 @@ export async function handle(state, action) {
   const requests = filterInvalid(state.requests, env.block.height);
 
   switch (action.input.function) {
-    case "create-mint":
+    case 'create-mint':
       return createMint(env)({ ...state, requests }, action);
-    case "get-queue":
+    case 'get-queue':
       return getQueue(state, action);
     default:
       throw new ContractError(

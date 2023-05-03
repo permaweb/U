@@ -9,7 +9,7 @@ export function setupSmartWeaveEnv(
   globalThis.SmartWeave = {
     transaction: {
       reward: reward || 1,
-      id: id || "<test-tx>",
+      id: id || '<test-tx>',
     },
     block: {
       height: height || 1,

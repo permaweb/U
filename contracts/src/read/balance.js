@@ -1,11 +1,11 @@
-import { of, fromNullable } from "../hyper-either.js";
+import { of, fromNullable } from '../hyper-either.js';
 
 export function balance(state, action) {
   return of({ state, action })
     .chain(fromNullable)
     .fold(
       () => {
-        throw new ContractError("An error occured.");
+        throw new ContractError('An error occured.');
       },
       ({ state, action }) => {
         return {
