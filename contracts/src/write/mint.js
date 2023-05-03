@@ -1,4 +1,4 @@
-import Async from "hyper-async";
+import Async from 'hyper-async';
 const { of, fromPromise } = Async;
 import {
   map,
@@ -20,8 +20,8 @@ import {
   path,
   assoc,
   reduce,
-} from "ramda";
-import { removeExpired } from "../util.js";
+} from 'ramda';
+import { removeExpired } from '../util.js';
 
 /**
  * @description Mint
@@ -33,9 +33,9 @@ export function mint({ viewContractState, block }) {
   return (state, action) => {
     return of(state.mint_contract)
       .chain((id) =>
-        fromPromise(viewContractState)(id, { function: "get-queue" })
+        fromPromise(viewContractState)(id, { function: 'get-queue' })
       )
-      .map(prop("result"))
+      .map(prop('result'))
       .map(toPairs)
       .map(removeExpired(__, block.height))
       .map(notInPile(state, __))

@@ -9,14 +9,14 @@ import { defaultTheme } from 'helpers/themes';
 import { ArweaveProvider } from 'providers/ArweaveProvider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-	<React.StrictMode>
-		<ThemeProvider theme={defaultTheme}>
-			<ArweaveProvider>
-				<HashRouter>
-					<GlobalStyle />
-					<App />
-				</HashRouter>
-			</ArweaveProvider>
-		</ThemeProvider>
-	</React.StrictMode>
+  <React.StrictMode>
+    <ThemeProvider theme={defaultTheme}>
+      <ArweaveProvider>
+        <HashRouter>
+          <GlobalStyle />
+          <App />
+        </HashRouter>
+      </ArweaveProvider>
+    </ThemeProvider>
+  </React.StrictMode>
 );
