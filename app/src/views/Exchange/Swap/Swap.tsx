@@ -30,6 +30,9 @@ export default function Swap() {
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
+  const connectedRebarBalance =
+    stateSEQ?.balances[arProvider?.walletAddress || ''] || 0;
+
   function getAction() {
     let action: () => void;
     let disabled: boolean;
