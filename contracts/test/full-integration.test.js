@@ -1,10 +1,10 @@
-import { suite } from "uvu";
-import * as assert from "uvu/assert";
-import { WarpFactory, LoggerFactory } from "warp-contracts/mjs";
-import { DeployPlugin } from "warp-contracts-plugin-deploy";
-import ArLocal from "arlocal";
-import * as fs from "fs";
-import { toPairs } from "ramda";
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import { WarpFactory, LoggerFactory } from 'warp-contracts/mjs';
+import { DeployPlugin } from 'warp-contracts-plugin-deploy';
+import ArLocal from 'arlocal';
+import * as fs from 'fs';
+import { toPairs } from 'ramda';
 
 // Things that need to be used in multiple blocks
 // for example, we start arlocal in the .before() and stop it in the .after()
@@ -20,12 +20,12 @@ let arlocal;
 let allowTxForClaim1;
 let allowTxForClaim2;
 
-const test = suite("full-integration");
+const test = suite('full-integration');
 
 test.before(async () => {
-  arlocal = new ArLocal.default();
-  await arlocal.start();
-  LoggerFactory.INST.logLevel("error");
+  // arlocal = new ArLocal.default();
+  // await arlocal.start();
+  LoggerFactory.INST.logLevel('error');
   warp = WarpFactory.forLocal().use(new DeployPlugin());
 
   // Generate a wallet
@@ -34,13 +34,13 @@ test.before(async () => {
 
   // Grab the contract and initial state
   const prefix = `./dist/`;
-  const contractSrcL1 = fs.readFileSync(`${prefix}contract-L1.js`, "utf8");
+  const contractSrcL1 = fs.readFileSync(`${prefix}contract-L1.js`, 'utf8');
   const initialStateL1 = JSON.parse(
-    fs.readFileSync(`${prefix}initial-state-L1.json`, "utf8")
+    fs.readFileSync(`${prefix}initial-state-L1.json`, 'utf8')
   );
-  const contractSrcSEQ = fs.readFileSync(`${prefix}contract-SEQ.js`, "utf8");
+  const contractSrcSEQ = fs.readFileSync(`${prefix}contract-SEQ.js`, 'utf8');
   const initialStateSEQ = JSON.parse(
-    fs.readFileSync(`${prefix}initial-state-SEQ.json`, "utf8")
+    fs.readFileSync(`${prefix}initial-state-SEQ.json`, 'utf8')
   );
 
   // Update initial state giving the wallet 100
@@ -49,8 +49,8 @@ test.before(async () => {
     ...{
       owner: wallet1.address,
       requests: {
-        "<expired>": {
-          target: "<jshaw>",
+        '<expired>': {
+          target: '<jshaw>',
           qty: 100,
           expires: 0,
         },
@@ -110,24 +110,24 @@ test.before(async () => {
   );
 });
 
-test("should create mint request for 10 rebar with wallet1", async () => {
+test('should create mint request for 10 rebar with wallet1', async () => {
   await connectedWallet1L1.writeInteraction(
-    { function: "create-mint" },
-    { reward: "10000000000000" }
+    { function: 'create-mint' },
+    { reward: '10000000000000' }
   );
   const state = (await connectedWallet1L1.readState()).cachedValue.state;
   assert.is(toPairs(state.requests)[0][1]?.qty, 10000000);
 });
 
-test("should mint 10 rebar", async () => {
-  await connectedWallet1SEQ.writeInteraction({ function: "mint" });
+test('should mint 10 rebar', async () => {
+  await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
   assert.is(state.balances[wallet1.address], 10000000);
 });
 
-test("transfer 5 to wallet 2", async () => {
+test('transfer 5 to wallet 2', async () => {
   await connectedWallet1SEQ.writeInteraction({
-    function: "transfer",
+    function: 'transfer',
     target: wallet2.address,
     qty: 5000000,
   });
@@ -135,15 +135,15 @@ test("transfer 5 to wallet 2", async () => {
   assert.is(state.balances[wallet2.address], 5000000);
 });
 
-test("allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2", async () => {
+test('allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2', async () => {
   const interaction1 = await connectedWallet2SEQ.writeInteraction({
-    function: "allow",
+    function: 'allow',
     target: wallet1.address,
     qty: 2000000,
   });
 
   const interaction2 = await connectedWallet2SEQ.writeInteraction({
-    function: "allow",
+    function: 'allow',
     target: wallet1.address,
     qty: 1000000,
   });
@@ -156,9 +156,9 @@ test("allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2", async () => 
   allowTxForClaim2 = interaction2.originalTxId;
 });
 
-test("claim 2 with wallet 1", async () => {
+test('claim 2 with wallet 1', async () => {
   await connectedWallet1SEQ.writeInteraction({
-    function: "claim",
+    function: 'claim',
     txID: allowTxForClaim1,
     qty: 2000000,
   });
@@ -167,9 +167,9 @@ test("claim 2 with wallet 1", async () => {
   assert.is(state.balances[wallet2.address], 2000000);
 });
 
-test("should claim with different txID", async () => {
+test('should claim with different txID', async () => {
   await connectedWallet1SEQ.writeInteraction({
-    function: "claim",
+    function: 'claim',
     txID: allowTxForClaim2,
     qty: 1000000,
   });
@@ -178,23 +178,23 @@ test("should claim with different txID", async () => {
   assert.is(state.balances[wallet2.address], 2000000);
 });
 
-test("check balance with target", async () => {
+test('check balance with target', async () => {
   const balanceFunc = await connectedWallet1SEQ.viewState({
-    function: "balance",
+    function: 'balance',
     target: wallet2.address,
   });
   assert.is(balanceFunc.result.balance, 2000000);
 });
 
-test("check balance without target", async () => {
+test('check balance without target', async () => {
   const balanceFunc = await connectedWallet1SEQ.viewState({
-    function: "balance",
+    function: 'balance',
   });
   assert.is(balanceFunc.result.balance, 8000000);
 });
 
 test.after(async () => {
-  await arlocal.stop();
+  // await arlocal.stop();
 });
 
 test.run();
