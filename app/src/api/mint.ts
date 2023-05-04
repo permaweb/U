@@ -1,20 +1,15 @@
 import Async from 'hyper-async';
 import { getWarpFactory, syncState } from './common';
+import { identity } from 'ramda';
 const { of, fromPromise } = Async;
 
 export function mint(contractId: string) {
   return of(contractId)
     .chain(fromPromise(warpMint))
-    .fork(
-      (e: any) => {
-        console.log(e);
-        return { error: 'There was an error fetching the contract state' };
-      },
-      (res: any) => {
-        console.log('res', res);
-        return res;
-      }
-    );
+    .fork((e: any) => {
+      console.log(e);
+      return { error: 'There was an error fetching the contract state' };
+    }, identity);
 }
 
 const warpMint = async (tx: string) => {
