@@ -158,7 +158,7 @@ export default function Swap() {
               }
               disabled={true}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.RebARLogo}
+              logo={ASSETS.rebarLogo}
             />
           </S.FWrapper>
         </S.TWrapper>
