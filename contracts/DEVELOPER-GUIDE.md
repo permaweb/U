@@ -28,8 +28,8 @@ Great question.
 
 There are 2 key points for why the contract was split:
 
-1. The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive RebAR tokens. Rewards cannot be processed through the SEQUENCER.
-2. All other functions (specifically `transfer` function) must go through the Sequencer so that all transactions are evalutated before any interactions are processed.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens.
+1. **GAS**: The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive RebAR tokens.
+2. **GASLESS**:All other functions (specifically `transfer` function) must go through the Sequencer.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens. The results are fast(sub-second), consistent state updates.
 
 ## Architecture
 
