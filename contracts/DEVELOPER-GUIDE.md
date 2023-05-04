@@ -22,6 +22,15 @@ The RebAR contract, formerly known as bAR (https://sonar.warp.cc/#/app/contract/
 1. L1 Contract: This contract will only accept base layer transactions. [Initial State](./initial-state-L1.json)
 2. Sequencer Contract: This contract will only accept WARP_SEQUENCER transactions. [Initial State](./initial-state-SEQ.json)
 
+> Why?
+
+Great question.
+
+There are 2 key points for why the contract was split:
+
+1. The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive RebAR tokens. Rewards cannot be processed through the SEQUENCER.
+2. All other functions (specifically `transfer` function) must go through the Sequencer so that all transactions are evalutated before any interactions are processed.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens.
+
 ## Architecture
 
 As the mint process has been split in 2, below is the architecture of the new process. To find out more about restricting contract interactions and skipping any "unsafe" interaction, checkout these links:
