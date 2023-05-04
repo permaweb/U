@@ -4,6 +4,12 @@ const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 
+/**
+ * @author @jshaw-ar
+ * @export
+ * @param {{ contractId: string; qty: number }} input
+ * @return {*}
+ */
 export function createMint(input: { contractId: string; qty: number }) {
   return of(input)
     .chain(fromPromise(createMintL1))
@@ -13,6 +19,11 @@ export function createMint(input: { contractId: string; qty: number }) {
     }, identity);
 }
 
+/**
+ * @author @jshaw-ar
+ * @param {{ contractId: string; qty: number }} input
+ * @return {*}
+ */
 const createMintL1 = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
   const warp = getWarpFactory();

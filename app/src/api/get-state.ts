@@ -2,6 +2,12 @@ import Async from 'hyper-async';
 import { readState } from './common';
 const { of, fromPromise } = Async;
 
+/**
+ * @author @jshaw-ar
+ * @export
+ * @param {string} tx
+ * @return {*}
+ */
 export function getState(tx: string) {
   return of(tx)
     .chain((tx: string) => fromPromise(readState)(tx))
