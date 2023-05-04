@@ -2,6 +2,7 @@ import { balance } from './read/balance.js';
 import { transfer } from './write/transfer.js';
 import { allow } from './write/allow.js';
 import { claim } from './write/claim.js';
+import { rejectClaimable } from './write/reject.js';
 import { mint } from './write/mint.js';
 
 export async function handle(state, action) {
@@ -24,6 +25,8 @@ export async function handle(state, action) {
       return allow(state, action);
     case 'claim':
       return claim(state, action);
+    case 'reject':
+      return rejectClaimable(state, action);
     default:
       throw new ContractError(
         `No function supplied or function not recognized`
