@@ -1,6 +1,16 @@
 import { fromNullable, of } from '../hyper-either.js';
-import { ce, setCallerBalance } from '../util.js';
-import { assoc, __, compose, add, prop, find, reject, identity } from 'ramda';
+import { ce, claimableByTx, setCallerBalance } from '../util.js';
+import {
+  assoc,
+  __,
+  compose,
+  add,
+  prop,
+  find,
+  reject,
+  identity,
+  filter,
+} from 'ramda';
 /**
  * Claims rebAR from claimables
  *
@@ -20,16 +30,16 @@ export function claim(state, action) {
     .chain(
       ce(
         !(
-          state.claimable.filter((c) => c.txID === action.input.txID).length ===
-          1
+          filter((c) => claimableByTx(c, action.input.txID), state.claimable)
+            .length === 1
         ),
         'There must be 1 claimable with this tx id.'
       )
     )
     .chain(
       ce(
-        state.claimable.filter((c) => c.txID === action.input.txID)[0]?.to !==
-          action.caller,
+        filter((c) => claimableByTx(c, action.input.txID), state.claimable)[0]
+          ?.to !== action.caller,
         'Claim not addressed to caller.'
       )
     )
@@ -48,6 +58,13 @@ export function claim(state, action) {
     }, identity);
 }
 
+/**
+ *
+ *
+ * @author @twilson63
+ * @param {{state, action}} { state, action }
+ * @return {*} state
+ */
 function handleClaim({ state, action }) {
   const txID = action.input.txID;
   const caller = action.caller;
