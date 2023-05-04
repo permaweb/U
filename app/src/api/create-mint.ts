@@ -2,22 +2,28 @@ import Async from 'hyper-async';
 import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
+import { identity } from 'ramda';
 
+/**
+ * @author @jshaw-ar
+ * @export
+ * @param {{ contractId: string; qty: number }} input
+ * @return {*}
+ */
 export function createMint(input: { contractId: string; qty: number }) {
   return of(input)
     .chain(fromPromise(createMintL1))
-    .fork(
-      (e: any) => {
-        console.log(e);
-        return { error: 'There was an error fetching the contract state' };
-      },
-      (res: any) => {
-        console.log('res', res);
-        return res;
-      }
-    );
+    .fork((e: any) => {
+      console.log(e);
+      return { error: 'There was an error fetching the contract state' };
+    }, identity);
 }
 
+/**
+ * @author @jshaw-ar
+ * @param {{ contractId: string; qty: number }} input
+ * @return {*}
+ */
 const createMintL1 = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
   const warp = getWarpFactory();

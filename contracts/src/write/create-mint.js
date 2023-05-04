@@ -25,7 +25,7 @@ const createRequest = ({ state, action, block, transaction }) => {
     requests: {
       [transaction.id]: {
         target: action.caller,
-        qty: roundDown(transaction.reward / 1e6),
+        qty: roundDown((transaction.reward || 0) / 1e6),
         expires: block.height + 720,
       },
       ...state.requests,

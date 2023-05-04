@@ -198,3 +198,14 @@ export const removeExpired = (pairs, height) => {
 export const removeZero = (pairs) => {
   return reject((r) => r[1].qty < 1, pairs);
 };
+
+/**
+ * @description Returns whether or not a claimable maches a tx.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {object} claimable
+ * @param {string} tx
+ * @return {string} boolean
+ */
+export const isClaimableByTx = (claimable, tx) => claimable.txID === tx;

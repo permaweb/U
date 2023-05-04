@@ -1,5 +1,5 @@
 import { fromNullable, of } from '../hyper-either.js';
-import { ce, isClaimableByTx, setCallerBalance } from '../util.js';
+import { ce, isClaimableByTx } from '../util.js';
 import {
   assoc,
   __,
@@ -11,6 +11,7 @@ import {
   identity,
   filter,
 } from 'ramda';
+
 /**
  * Claims rebAR from claimables
  *
@@ -20,38 +21,25 @@ import {
  * @param {*} action
  * @return {*}
  */
-export function claim(state, action) {
+export function rejectClaimable(state, action) {
   return of({ state, action })
     .chain(fromNullable)
-    .chain(
-      ce(!action.input?.txID, 'txID must be passed to the claim function.')
-    )
-    .chain(ce(!action.input?.qty, 'A qty must be specified.'))
+    .chain(ce(!action.input?.tx, 'txID must be passed to the reject function.'))
     .chain(
       ce(
-        !(
-          filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)
-            .length === 1
-        ),
-        'There must be 1 claimable with this tx id.'
+        filter((c) => isClaimableByTx(c, action.input?.tx), state.claimable)
+          .length !== 1,
+        'Claim does not exist.'
       )
     )
     .chain(
       ce(
-        filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)[0]
+        filter((c) => isClaimableByTx(c, action.input?.tx), state.claimable)[0]
           ?.to !== action.caller,
         'Claim not addressed to caller.'
       )
     )
-    .chain(
-      ce(
-        state.claimable.filter((c) => c.txID === action.input.txID)[0]?.qty !==
-          action.input?.qty,
-        'Incorrect qty.'
-      )
-    )
-    .map(setCallerBalance)
-    .map(handleClaim)
+    .map(handleReject)
     .map(assoc('state', __, {}))
     .fold((msg) => {
       throw new ContractError(msg || 'An error occurred.');
@@ -59,23 +47,23 @@ export function claim(state, action) {
 }
 
 /**
- *
- *
- * @author @twilson63
+ * @author @jshaw-ar
  * @param {{state, action}} { state, action }
  * @return {*} state
  */
-function handleClaim({ state, action }) {
-  const txID = action.input.txID;
-  const caller = action.caller;
+function handleReject({ state, action }) {
+  const txID = action.input.tx;
   const byTx = (x) => x.txID === txID;
-
+  const claim = filter(
+    (c) => isClaimableByTx(c, action.input?.tx),
+    state.claimable
+  )[0];
   return {
     ...state,
     balances: {
       ...state.balances,
-      [caller]: compose(
-        add(state.balances[caller]),
+      [claim.from]: compose(
+        add(state.balances[claim.from]),
         prop('qty'),
         find(byTx),
         prop('claimable')

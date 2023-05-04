@@ -1,6 +1,12 @@
-# REBAR Contracts
+# RebAR Contracts
 
-This foler contains the L1 contract to create a reBAR mint, and the SEQUENCER contract for rebAR. The L1 contract initiates a mint on Arweave and when this transaction is confirmed, the SEQUENCER contract can process the mint and update the users balance. Everything else (transfer, Foreign Call Protocol (allow / claim), balance, transfer) happens on the SEQUENCER contract. Once you enter the Permaweb, you are on L2.
+This foler contains the L1 contract to create a RebAR mint, and the SEQUENCER contract for RebAR. The L1 contract initiates a mint on the Arweave base layer and when this transaction is confirmed, the SEQUENCER contract can process the mint and update the users balance. Everything else (transfer, Foreign Call Protocol (allow / claim), balance, transfer) happens on the SEQUENCER contract. Once you enter the Permaweb, you are on L2.
+
+- [RebAR Contracts](#rebar-contracts)
+  - [Build](#build)
+  - [Test](#test)
+  - [Deploy](#deploy)
+  - [Resources](#resources)
 
 ## Build
 
@@ -49,3 +55,8 @@ echo '\nexport PATH_TO_WALLET=<path/wallet.json>' >> ~/.zshrc # or ~/.bashrc ?
 or:
 
 `PATH_TO_WALLET=<path/to/wallet.json> WALLET_ADDRESS=<address> npm run deploy`
+
+## Resources
+
+- [Arweave](https://arweave.org)
+- [Cookbook](https://cookbook.g8way.io)
