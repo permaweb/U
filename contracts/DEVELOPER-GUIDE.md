@@ -219,3 +219,8 @@ await connectedWallet1SEQ.writeInteraction({
   qty: 2000000,
 });
 ```
+
+## Resources
+
+- [Arweave](https://arweave.org)
+- [Cookbook](https://cookbook.g8way.io)

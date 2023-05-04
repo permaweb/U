@@ -49,3 +49,8 @@ echo '\nexport PATH_TO_WALLET=<path/wallet.json>' >> ~/.zshrc # or ~/.bashrc ?
 or:
 
 `PATH_TO_WALLET=<path/to/wallet.json> WALLET_ADDRESS=<address> npm run deploy`
+
+## Resources
+
+- [Arweave](https://arweave.org)
+- [Cookbook](https://cookbook.g8way.io)

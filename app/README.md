@@ -45,3 +45,8 @@ npm run launch
 Replace `<YOUR-ADDRESS>` the arweave wallet you connect to the app.
 
 - http://localhost:1984/mint/<YOUR-ADDRESS>/100000000000000
+
+## Resources
+
+- [Arweave](https://arweave.org)
+- [Cookbook](https://cookbook.g8way.io)
