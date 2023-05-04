@@ -17,7 +17,7 @@ A guide to using the RebAR.
 
 ## Summary
 
-The RebAR contract, formerly known as bAR (https://sonar.warp.cc/#/app/contract/VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA) has been re-architected into two contracts.
+The RebAR contract, is 2 contracts.
 
 1. L1 Contract: This contract will only accept base layer transactions. [Initial State](./initial-state-L1.json)
 2. Sequencer Contract: This contract will only accept WARP_SEQUENCER transactions. [Initial State](./initial-state-SEQ.json)
