@@ -1,5 +1,5 @@
 import { fromNullable, of } from '../hyper-either.js';
-import { ce, claimableByTx, setCallerBalance } from '../util.js';
+import { ce, isClaimableByTx, setCallerBalance } from '../util.js';
 import {
   assoc,
   __,
@@ -30,7 +30,7 @@ export function claim(state, action) {
     .chain(
       ce(
         !(
-          filter((c) => claimableByTx(c, action.input.txID), state.claimable)
+          filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)
             .length === 1
         ),
         'There must be 1 claimable with this tx id.'
@@ -38,7 +38,7 @@ export function claim(state, action) {
     )
     .chain(
       ce(
-        filter((c) => claimableByTx(c, action.input.txID), state.claimable)[0]
+        filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)[0]
           ?.to !== action.caller,
         'Claim not addressed to caller.'
       )
