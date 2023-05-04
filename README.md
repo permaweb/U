@@ -19,8 +19,8 @@ RebAR is fuel for the #Permaweb. #Permaweb users can use RebAR to swap between o
 
 ## Repository
 
-- `contracts/` - RebAR js smart contracts.
-- `app/` - ReactJS UI / Renderer for RebAR.
+- `contracts/` - RebAR js smart contracts. [Read Me](./contracts/README.md)
+- `app/` - ReactJS UI / Renderer for RebAR. [Read Me](./app/README.md)
 
 ## Contact
 
