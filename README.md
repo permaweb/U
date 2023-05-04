@@ -12,7 +12,8 @@ RebAR is fuel for the #Permaweb. #Permaweb users can use RebAR to swap between o
 
 ## Goals
 
-TODO
+- Provide liquidity for #Permaweb users and applications.
+- Do not allow any contract that uses `unsafe client` to interact with the RebAR contract.
 
 ## Repository
 
@@ -21,9 +22,7 @@ TODO
 
 ## Contact
 
-If you have questions or comments about RebAR, visit the [Permaweb Discord](https://discord.gg/fKsTkAuCjB)
-
-For more information about the Arweave project visit https://www.arweave.org.
+If you have questions, visit the [Permaweb Discord](https://discord.gg/fKsTkAuCjB)
 
 ## Resources
 
