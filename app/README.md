@@ -2,6 +2,16 @@
 
 The UI / Renderer for the RebAR SmartWeave contracts.
 
+- [RebAR UI](#rebar-ui)
+  - [Prerequisites](#prerequisites)
+  - [Install](#install)
+  - [Build](#build)
+  - [Run](#run)
+  - [Launch With Contracts](#launch-with-contracts)
+    - [Mint ArLocal AR Tokens](#mint-arlocal-ar-tokens)
+  - [Resources](#resources)
+
+
 ## Prerequisites
 
 - NodeJS v18

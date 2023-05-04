@@ -2,6 +2,19 @@
 
 A guide to using the RebAR.
 
+- [Developers](#developers)
+  - [Summary](#summary)
+  - [Architecture](#architecture)
+  - [Prerequisites](#prerequisites)
+  - [Contract Functions](#contract-functions)
+    - [Create Mint (L1)](#create-mint-l1)
+    - [Get Queue (L1)](#get-queue-l1)
+    - [Mint (SEQ)](#mint-seq)
+    - [Transfer (SEQ)](#transfer-seq)
+    - [Allow (SEQ)](#allow-seq)
+    - [Claim (SEQ)](#claim-seq)
+  - [Resources](#resources)
+
 ## Summary
 
 The RebAR contract, formerly known as bAR (https://sonar.warp.cc/#/app/contract/VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA) has been re-architected into two contracts.

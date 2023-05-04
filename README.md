@@ -8,6 +8,14 @@ RebAR — bAR Reborn.
 
 The fuel of the Permaweb.
 
+- [RebAR](#rebar)
+  - [Goals](#goals)
+  - [Summary](#summary)
+  - [Repository](#repository)
+  - [Contact](#contact)
+  - [Resources](#resources)
+
+
 ## Goals
 
 - Provide liquidity for #Permaweb users and applications.
