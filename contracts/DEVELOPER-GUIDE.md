@@ -65,8 +65,38 @@ await connectedWallet1L1.writeInteraction(
 
 > arweave (npm i arweave)
 
-```
+```js
+import Arweave from 'arweave';
 
+const jwk = JSON.parse(fs.readFileSync('./wallet.json').toString());
+
+// initialize arweave
+const arweave = Arweave.init({
+  host: 'arweave.net',
+  port: 443,
+  protocol: 'https',
+});
+
+const tx = await arweave.createTransaction(
+  {
+    reward: '1000000000000', // 1 AR
+  },
+  jwk
+);
+
+tx.addTag('App-Name', 'SmartWeaveAction');
+tx.addTag('App-Version', '0.3.0');
+tx.addTag('Contract', REBAR_CONTRACT);
+
+const input = JSON.stringify({
+  function: 'create-mint',
+});
+
+tx.addTag('Input', input);
+
+arweave.transactions.sign(tx, jwk);
+
+arweave.transactions.post(tx).then(console.log).catch(console.log);
 ```
 
 ### Get Queue (L1)
