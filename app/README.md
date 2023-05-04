@@ -39,3 +39,9 @@ npx arlocal
 ```sh
 npm run launch
 ```
+
+### Mint ArLocal AR Tokens
+
+Replace `<YOUR-ADDRESS>` the arweave wallet you connect to the app.
+
+- http://localhost:1984/mint/<YOUR-ADDRESS>/100000000000000
