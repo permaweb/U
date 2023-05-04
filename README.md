@@ -1,5 +1,7 @@
 # RebAR
 
+![RebAR logo](https://kocmnja3z4bopl4uzdvzujcwtqkm3yyecr4r5ptqqvrq4mxu52ta.arweave.net/U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY)
+
 Introducing the rebirth of bAR. RebAR — bAR Reborn. The fuel of the Permaweb.
 
 ## Goals
