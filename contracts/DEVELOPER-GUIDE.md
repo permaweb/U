@@ -16,7 +16,7 @@ As the mint process has been split in 2, below is the architecture of the new pr
 - [Contract Manifest](https://docs.warp.cc/docs/sdk/advanced/manifest/).
 - [Contract Evaluation Options](https://docs.warp.cc/docs/sdk/advanced/evaluation-options#sourcetype-evaluation-option).
 
-You can also find diagram of the Foreign Call Protocol (FCP) that is implemented in this contract.
+See below for the Architecture documents of the new mint process, and the Foreign Call Protocol.
 
 - [Mint](./images/mint.png)
 - [FCP](./images/fcp.png)
