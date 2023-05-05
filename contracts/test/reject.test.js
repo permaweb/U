@@ -112,6 +112,7 @@ test('should reject tokens', () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         '<justin>': 0,
       },
@@ -129,6 +130,8 @@ test('should reject tokens', () => {
         },
       ],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { function: 'reject', tx: '<reject-tx>' } }
   );

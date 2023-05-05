@@ -1,6 +1,7 @@
 {
   "ticker": "RebAR",
   "name": "RebAR",
+  "owner": "",
   "balances": {},
   "settings": [
     ["isTradeable", true],

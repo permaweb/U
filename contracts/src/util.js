@@ -209,3 +209,32 @@ export const removeZero = (pairs) => {
  * @return {string} boolean
  */
 export const isClaimableByTx = (claimable, tx) => claimable.txID === tx;
+
+/**
+ * @description Throws an error kill switch is on.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {boolean} on
+ * @throws
+ */
+export const checkKillSwitch = (on) => {
+  if (on) {
+    throw new ContractError('Killswitch.');
+  }
+};
+
+/**
+ * @description Throws an error if caller isnt in whitelist.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {Array} whitelist
+ * @param {string} caller
+ * @throws
+ */
+export const checkWhitelist = (whitelist, caller) => {
+  if (!whitelist.includes(caller)) {
+    throw new ContractError('Unauthorized.');
+  }
+};

@@ -15,6 +15,7 @@ test('caller should have 0 balance', async () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -22,6 +23,8 @@ test('caller should have 0 balance', async () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller }
   );
@@ -38,6 +41,7 @@ test('caller should have 1 balance', async () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         '<justin>': 1,
       },
@@ -47,6 +51,8 @@ test('caller should have 1 balance', async () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller }
   );
@@ -63,6 +69,7 @@ test('target should have 0 balance', async () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -70,6 +77,8 @@ test('target should have 0 balance', async () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { target: '<tom>' } }
   );
@@ -85,6 +94,7 @@ test('target should have 1 balance', async () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         '<tom>': 1,
       },
@@ -94,6 +104,8 @@ test('target should have 1 balance', async () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { target: '<tom>' } }
   );

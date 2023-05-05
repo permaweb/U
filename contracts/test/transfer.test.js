@@ -23,6 +23,8 @@ test('should throw (Please specify a target.)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller }
       ),
@@ -47,6 +49,8 @@ test('should throw (Target cannot be caller.)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: caller } }
       ),
@@ -71,6 +75,8 @@ test('should throw (Caller does not have a balance.)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -97,6 +103,8 @@ test('should throw (qty must be an integer.)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -123,6 +131,8 @@ test('should throw (Not enough tokens for transfer.)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>', qty: 11 } }
       ),
@@ -149,6 +159,8 @@ test('should not transfer null amount of tokens', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>', qty: null } }
       ),
@@ -175,6 +187,8 @@ test('should not transfer undefined amount of tokens', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -182,7 +196,7 @@ test('should not transfer undefined amount of tokens', () => {
   );
 });
 
-test("should not transfer 'string' amount of tokens", () => {
+test('should not transfer <string> amount of tokens', () => {
   setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
@@ -201,6 +215,8 @@ test("should not transfer 'string' amount of tokens", () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>', qty: 'xxx' } }
       ),
@@ -227,6 +243,8 @@ test('should not transfer fractional amount of tokens', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { target: '<tom>', qty: 199999.01 } }
       ),
@@ -253,6 +271,8 @@ test('should not transfer without a target', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 1000000 } }
       ),
@@ -279,6 +299,8 @@ test('should not transfer with null target', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 1000000, target: null } }
       ),
@@ -305,6 +327,8 @@ test('should not transfer with undefined target', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 1000000, target: undefined } }
       ),
@@ -331,6 +355,8 @@ test('should not transfer from non-existing account', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller: '<non-existing>', input: { qty: 1000000, target: '<tom>' } }
       ),
@@ -357,6 +383,8 @@ test('should not transfer more than owned', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 2000000, target: '<tom>' } }
       ),
@@ -383,6 +411,8 @@ test('should not transfer 0 tokens', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 0, target: '<tom>' } }
       ),
@@ -409,6 +439,8 @@ test('should not transfer negative amount of tokens', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: -1, target: '<tom>' } }
       ),
@@ -435,6 +467,8 @@ test('should not transfer to the same account (caller -> caller)', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { qty: 1000000, target: caller } }
       ),
@@ -449,6 +483,7 @@ test('should transfer to empty account', () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         [caller]: 10,
       },
@@ -458,6 +493,8 @@ test('should transfer to empty account', () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { target: '<tom>', qty: 10 } }
   );
@@ -473,6 +510,7 @@ test('should transfer to existing account', () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         [caller]: 10,
         '<tom>': 10,
@@ -483,6 +521,8 @@ test('should transfer to existing account', () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { target: '<tom>', qty: 10 } }
   );

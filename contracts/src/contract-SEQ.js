@@ -1,11 +1,16 @@
 import { balance } from './read/balance.js';
+import { kill } from './write/kill.js';
+import { add, remove } from './write/whitelist.js';
 import { transfer } from './write/transfer.js';
 import { allow } from './write/allow.js';
 import { claim } from './write/claim.js';
 import { rejectClaimable } from './write/reject.js';
 import { mint } from './write/mint.js';
+import { checkKillSwitch, checkWhitelist } from './util.js';
 
 export async function handle(state, action) {
+  checkKillSwitch(state.killswitch);
+  checkWhitelist(state.whitelist, action.caller);
   const input = action.input;
   const env = {
     readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
@@ -15,6 +20,12 @@ export async function handle(state, action) {
     transaction: SmartWeave.transaction,
   };
   switch (input.function) {
+    case 'kill':
+      return await kill(state, action);
+    case 'add':
+      return await add(state, action);
+    case 'remove':
+      return await remove(state, action);
     case 'balance':
       return await balance(state, action);
     case 'mint':

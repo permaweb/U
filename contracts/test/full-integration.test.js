@@ -19,6 +19,8 @@ let arlocal;
 // This will be set after allow, and be used for claiming
 let allowTxForClaim1;
 let allowTxForClaim2;
+// To add to whitelist
+let contractSEQTx;
 
 const test = suite('full-integration');
 
@@ -48,6 +50,7 @@ test.before(async () => {
     ...initialStateL1,
     ...{
       owner: wallet1.address,
+      whitelist: [wallet1.address, wallet2.address],
       requests: {
         '<expired>': {
           target: '<jshaw>',
@@ -62,6 +65,7 @@ test.before(async () => {
     ...initialStateSEQ,
     ...{
       owner: wallet1.address,
+      whitelist: [wallet1.address, wallet2.address],
     },
   };
 
@@ -82,6 +86,9 @@ test.before(async () => {
     }),
     src: contractSrcSEQ,
   });
+
+  // SET THIS FOR THE ADD TO WHITE LIST
+  contractSEQTx = contractSEQ.contractTxId;
 
   // Connect wallet to contract
   connectedWallet1L1 = warp
@@ -117,6 +124,18 @@ test('should create mint request for 10 RebAR with wallet1', async () => {
   );
   const state = (await connectedWallet1L1.readState()).cachedValue.state;
   assert.is(toPairs(state.requests)[0][1]?.qty, 10000000);
+});
+
+test('should add SEQ contract to white list', async () => {
+  await connectedWallet1L1.writeInteraction(
+    {
+      function: 'add',
+      addr: contractSEQTx,
+    },
+    { reward: '1' }
+  );
+  const state = (await connectedWallet1L1.readState()).cachedValue.state;
+  assert.is(state.whitelist.includes(contractSEQTx), true);
 });
 
 test('should mint 10 RebAR', async () => {
@@ -191,6 +210,25 @@ test('check balance without target', async () => {
     function: 'balance',
   });
   assert.is(balanceFunc.result.balance, 8000000);
+});
+
+test('should kill L1 contract', async () => {
+  await connectedWallet1L1.writeInteraction(
+    {
+      function: 'kill',
+    },
+    { reward: '1' }
+  );
+  const state = (await connectedWallet1L1.readState()).cachedValue.state;
+  assert.is(state.killswitch, true);
+});
+
+test('should kill SEQ contract', async () => {
+  await connectedWallet1SEQ.writeInteraction({
+    function: 'kill',
+  });
+  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
+  assert.is(state.killswitch, true);
 });
 
 test.after(async () => {

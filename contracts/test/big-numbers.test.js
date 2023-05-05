@@ -17,6 +17,7 @@ let wallet2;
 let connectedWallet2L1;
 let connectedWallet2SEQ;
 let arlocal;
+let contractSEQTx;
 
 const test = suite('big-numbers');
 
@@ -46,6 +47,7 @@ test.before(async () => {
     ...initialStateL1,
     ...{
       owner: wallet1.address,
+      whitelist: [wallet1.address, wallet2.address],
       requests: {
         '<expired>': {
           target: '<jshaw>',
@@ -60,6 +62,7 @@ test.before(async () => {
     ...initialStateSEQ,
     ...{
       owner: wallet1.address,
+      whitelist: [wallet1.address, wallet2.address],
     },
   };
 
@@ -80,6 +83,9 @@ test.before(async () => {
     }),
     src: contractSrcSEQ,
   });
+
+  // SET THIS FOR THE ADD TO WHITE LIST
+  contractSEQTx = contractSEQ.contractTxId;
 
   // Connect wallet to contract
   connectedWallet1L1 = warp
@@ -120,7 +126,17 @@ test('should create-mint 1000 * 1e12', async () => {
   const state = (await connectedWallet1L1.readState()).cachedValue.state;
   assert.is(toPairs(state.requests)[0][1]?.qty, 1000000000);
 });
-
+test('should add SEQ contract to white list', async () => {
+  await connectedWallet1L1.writeInteraction(
+    {
+      function: 'add',
+      addr: contractSEQTx,
+    },
+    { reward: '1' }
+  );
+  const state = (await connectedWallet1L1.readState()).cachedValue.state;
+  assert.is(state.whitelist.includes(contractSEQTx), true);
+});
 test('should mint 1000 * 1e12', async () => {
   await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
