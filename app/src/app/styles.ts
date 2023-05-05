@@ -172,4 +172,10 @@ export const GlobalStyle = createGlobalStyle`
     border-right: 1px solid ${(props) => props.theme.colors.border.primary};
     border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
   }
+
+  .border-wrapper {
+    background: ${(props) => props.theme.colors.container.primary.background};
+    border-radius: ${STYLING.dimensions.borderRadius};
+    border: 1px solid ${(props) => props.theme.colors.border.primary};
+  }
 `;

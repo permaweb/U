@@ -19,3 +19,5 @@ export type ButtonType =
   | 'alt3'
   | 'success'
   | 'warning';
+
+export type MintStatusType = 'pending' | 'confirmed';

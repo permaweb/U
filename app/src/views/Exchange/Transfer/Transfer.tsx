@@ -105,7 +105,7 @@ export default function Transfer() {
             <p>
               <span>{`${language.arBalance}: `}</span>
               {`${
-                arProvider.walletAddress && arProvider.availableBalance
+                arProvider.walletAddress && arProvider.availableBalance !== null
                   ? Number(arProvider.availableBalance.toFixed(4))
                   : `-`
               }`}
@@ -121,7 +121,7 @@ export default function Transfer() {
               }
               disabled={!arProvider.walletAddress}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.RebARLogo}
+              logo={ASSETS.rebarLogo}
             />
 
             <S.Divider>
