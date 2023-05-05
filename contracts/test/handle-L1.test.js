@@ -35,6 +35,7 @@ test.before(async () => {
     ...state,
     ...{
       owner: wallet1.address,
+      whitelist: [...state.whitelist, wallet1.address],
       requests: {
         zero_qty: {
           target: '<jshaw>',
@@ -93,15 +94,15 @@ test('should filter out expired requests and create a request for 10000000', asy
   assert.is(state.requests[interaction.originalTxId].qty, 10000000);
 });
 
-test('should not create request if no reward is added.', async () => {
+test('Should create requests for 0 if no reward is added.', async () => {
   const interaction = await connectedWallet1.writeInteraction({
     function: 'create-mint',
   });
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
 });
 
-test('should not create request if reward is undefined.', async () => {
+test('Should create requests for 0 if reward is undefined.', async () => {
   const interaction = await connectedWallet1.writeInteraction(
     {
       function: 'create-mint',
@@ -109,10 +110,10 @@ test('should not create request if reward is undefined.', async () => {
     { reward: undefined }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
 });
 
-test('should not create requests if reward is null.', async () => {
+test('Should create requests for 0 if reward is null', async () => {
   const interaction = await connectedWallet1.writeInteraction(
     {
       function: 'create-mint',
@@ -120,7 +121,7 @@ test('should not create requests if reward is null.', async () => {
     { reward: null }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
 });
 
 test('should create a request for 0 if reward is string xxx.', async () => {
