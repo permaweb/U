@@ -35,7 +35,7 @@ test.before(async () => {
     ...state,
     ...{
       owner: wallet1.address,
-      whitelist: [...state.whitelist, wallet1.address],
+      whitelist: [wallet1.address],
       requests: {
         zero_qty: {
           target: '<jshaw>',
