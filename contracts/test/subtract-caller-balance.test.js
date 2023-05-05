@@ -11,6 +11,7 @@ test('should subtract 10 from caller balance', async () => {
     state: {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {
         '<justin>': 20,
       },
@@ -20,6 +21,8 @@ test('should subtract 10 from caller balance', async () => {
       ],
       claimable: [],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     action: { caller, input: { qty: 10 } },
   });

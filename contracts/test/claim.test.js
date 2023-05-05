@@ -23,6 +23,8 @@ test('should not allow claiming without txId', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller }
       ),
@@ -47,6 +49,8 @@ test('should not allow claiming with null txID', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { txID: null } }
       ),
@@ -71,6 +75,8 @@ test('should not allow claiming with non-existing txID', () => {
 
           claimable: [],
           divisibility: 6,
+          whitelist: [],
+          killswitch: false,
         },
         { caller, input: { txID: '<test-claim>', qty: 1 } }
       ),
@@ -267,6 +273,7 @@ test('should claim tokens', () => {
     {
       name: 'RebAR',
       ticker: 'RebAR',
+      owner: '',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -281,6 +288,8 @@ test('should claim tokens', () => {
         },
       ],
       divisibility: 6,
+      whitelist: [],
+      killswitch: false,
     },
     { caller, input: { txID: '<test-claim>', qty: 11 } }
   );
