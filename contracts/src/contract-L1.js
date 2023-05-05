@@ -1,6 +1,6 @@
 import { getQueue } from './read/get-queue.js';
 import { createMint } from './write/create-mint.js';
-import { kill } from './write/kill.js';
+import { killContract } from './write/kill.js';
 import { add, remove } from './write/whitelist.js';
 import { filterInvalid, checkKillSwitch, checkWhitelist } from './util.js';
 
@@ -22,7 +22,7 @@ export async function handle(state, action) {
 
   switch (action.input.function) {
     case 'kill':
-      return await kill(state, action);
+      return await killContract(state, action);
     case 'add':
       return await add(state, action);
     case 'remove':

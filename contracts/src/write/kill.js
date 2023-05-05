@@ -3,7 +3,7 @@ import { assoc, __, identity } from 'ramda';
 import { of, fromNullable } from '../hyper-either.js';
 import { ce } from '../util.js';
 
-export function kill(state, action) {
+export function killContract(state, action) {
   return of({ state, action })
     .chain(fromNullable)
     .chain(ce(action.caller !== state.owner, 'Only owner.'))

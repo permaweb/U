@@ -1,6 +1,6 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { kill } from '../src/write/kill.js';
+import { killContract } from '../src/write/kill.js';
 import { setupSmartWeaveEnv } from './setup.js';
 const test = suite('kill');
 
@@ -11,7 +11,7 @@ test('should throw Only owner.', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      kill(
+      killContract(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -34,7 +34,7 @@ test('should throw Only owner.', () => {
 
 test('should kill', () => {
   const caller = '<justin>';
-  const output = kill(
+  const output = killContract(
     {
       name: 'RebAR',
       ticker: 'RebAR',

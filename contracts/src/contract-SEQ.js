@@ -1,5 +1,5 @@
 import { balance } from './read/balance.js';
-import { kill } from './write/kill.js';
+import { killContract } from './write/kill.js';
 import { add, remove } from './write/whitelist.js';
 import { transfer } from './write/transfer.js';
 import { allow } from './write/allow.js';
@@ -21,7 +21,7 @@ export async function handle(state, action) {
   };
   switch (input.function) {
     case 'kill':
-      return await kill(state, action);
+      return await killContract(state, action);
     case 'add':
       return await add(state, action);
     case 'remove':
