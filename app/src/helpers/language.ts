@@ -11,7 +11,7 @@ export const language = {
   from: `From`,
   loading: `Loading`,
   qty: `Qty`,
-  requestQueue: `Request`,
+  requestQueue: `Request Queue`,
   swap: `Swap`,
   swapDescription: `Easy way to swap <span>AR</span> into <span>reBAR</span>`,
   swapFailure: `Swap Failed`,
