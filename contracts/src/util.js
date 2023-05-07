@@ -179,7 +179,7 @@ export const filterInvalid = (requests, height) =>
  * @return {Array} pairs
  */
 export const removeExpired = (pairs, height) => {
-  return pairs.filter((request) => height > request[1].expires);
+  return pairs.filter((request) => request[1].expires > height);
 };
 
 /**
