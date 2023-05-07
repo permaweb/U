@@ -37,7 +37,7 @@ export function mint({ viewContractState, block }) {
       )
       .map(prop('result'))
       .map(toPairs)
-      .map(removeExpired(__, block.height))
+      .map((pairs) => removeExpired(pairs, block.height))
       .map(notInPile(state, __))
       .map((requests) => ({ state, requests }))
       .map(addToPile)
