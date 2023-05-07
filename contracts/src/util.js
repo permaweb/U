@@ -167,12 +167,7 @@ export function roundDown(v) {
  * @return {Array}
  */
 export const filterInvalid = (requests, height) =>
-  pipe(
-    toPairs,
-    (pairs) => removeExpired(pairs, height),
-    removeZero,
-    fromPairs
-  )(requests);
+  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
 
 /**
  * @description Removes expired from array.
@@ -184,19 +179,7 @@ export const filterInvalid = (requests, height) =>
  * @return {Array} pairs
  */
 export const removeExpired = (pairs, height) => {
-  return reject((r) => height > r[1].expires, pairs);
-};
-
-/**
- * @description Removes zero qty from array.
- *
- * @author @jshaw-ar
- * @export
- * @param {number} height
- * @return {Array} pairs
- */
-export const removeZero = (pairs) => {
-  return reject((r) => r[1].qty < 1, pairs);
+  return pairs.filter((request) => height > request[1].expires);
 };
 
 /**
