@@ -1,19 +1,19 @@
-import React from "react";
-import parse from "html-react-parser";
-import { ReactSVG } from "react-svg";
+import React from 'react';
+import parse from 'html-react-parser';
+import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
-import { Notification } from "components/atoms/Notification";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 
-import { ASSETS } from "helpers/config";
-import { formatAddress } from "helpers/utils";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { formatAddress } from 'helpers/utils';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import { ResponseType } from "helpers/types";
-import * as S from "./styles";
-import { StateL1, StateSEQ, env } from "api";
+import { language } from 'helpers/language';
+import { ResponseType } from 'helpers/types';
+import * as S from './styles';
+import { StateL1, StateSEQ, env } from 'api';
 
 const { getQueue, getState, createMint } = env;
 
@@ -31,7 +31,7 @@ export default function Swap() {
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
   const connectedRebarBalance =
-    stateSEQ?.balances[arProvider?.walletAddress || ""] || 0;
+    stateSEQ?.balances[arProvider?.walletAddress || ''] || 0;
 
   function getAction() {
     let action: () => void;
@@ -58,7 +58,7 @@ export default function Swap() {
 
     return (
       <Button
-        type={"alt1"}
+        type={'alt1'}
         label={label}
         handlePress={action}
         height={52.5}
@@ -72,10 +72,10 @@ export default function Swap() {
   function swapAR() {
     setLoading(true);
     createMint({
-      contractId: import.meta.env.VITE_CONTRACT_L1 || "",
+      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
       qty: arAmount,
     }).then((r: any) => {
-      console.log("Create mint response", r);
+      console.log('Create mint response', r);
       setLoading(false);
       setSwapResult({
         status: true,
@@ -86,7 +86,7 @@ export default function Swap() {
 
   React.useEffect(() => {
     getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      console.log("StateSEQ", s);
+      console.log('StateSEQ', s);
       setStateSEQ(s);
       getQueue(import.meta.env.VITE_CONTRACT_L1, s.pile).then(
         (requests: any[]) => {
@@ -109,13 +109,13 @@ export default function Swap() {
     <>
       {swapResult && (
         <Notification
-          type={swapResult.status === true ? "success" : "warning"}
+          type={swapResult.status === true ? 'success' : 'warning'}
           message={swapResult.message!}
           callback={() => setSwapResult(null)}
         />
       )}
 
-      <S.Wrapper className={"tab-wrapper"}>
+      <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.swap}</h2>
@@ -133,7 +133,7 @@ export default function Swap() {
           </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.from}
               value={arAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -149,7 +149,7 @@ export default function Swap() {
             </S.Divider>
 
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.to}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -182,7 +182,7 @@ export default function Swap() {
                   </S.DetailSubheader>
                   <S.DetailLine
                     key={index}
-                    type={"pending"}
+                    type={'pending'}
                     ownerLine={
                       arProvider.walletAddress
                         ? arProvider.walletAddress === tx[1].target
