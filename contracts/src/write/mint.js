@@ -21,7 +21,7 @@ import {
   assoc,
   reduce,
 } from 'ramda';
-import { removeExpired, removeZero } from '../util.js';
+import { removeExpired } from '../util.js';
 
 /**
  * @description Mint
