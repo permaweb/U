@@ -21,7 +21,7 @@ import {
   assoc,
   reduce,
 } from 'ramda';
-import { removeExpired } from '../util.js';
+import { removeExpired, removeZero } from '../util.js';
 
 /**
  * @description Mint
@@ -38,6 +38,7 @@ export function mint({ viewContractState, block }) {
       .map(prop('result'))
       .map(toPairs)
       .map(removeExpired(__, block.height))
+      .map(removeZero)
       .map(notInPile(state, __))
       .map((requests) => ({ state, requests }))
       .map(addToPile)
