@@ -79,7 +79,7 @@ test.before(async () => {
   await fetch(`http://localhost:1984/mine`);
 });
 
-test('should filter out expired requests and create a request for 10000000', async () => {
+test('should create a request for 10000000', async () => {
   // See initialState for how the requests
   // are preloaded into the state of the contract
   const interaction = await connectedWallet1.writeInteraction(
@@ -87,20 +87,18 @@ test('should filter out expired requests and create a request for 10000000', asy
     { reward: '10000000000000' }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests['expired'], undefined);
-  assert.is(state.requests['zero_qty'], undefined);
   assert.is(state.requests[interaction.originalTxId].qty, 10000000);
 });
 
-test('should create a request for 0 ferons if no reward is added.', async () => {
+test('should not create mint if no reward is added.', async () => {
   const interaction = await connectedWallet1.writeInteraction({
     function: 'create-mint',
   });
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
+  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
 });
 
-test('should create a request for 0 ferons if reward is undefined.', async () => {
+test('should not create mint if reward is undefined.', async () => {
   const interaction = await connectedWallet1.writeInteraction(
     {
       function: 'create-mint',
@@ -108,10 +106,10 @@ test('should create a request for 0 ferons if reward is undefined.', async () =>
     { reward: undefined }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
+  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
 });
 
-test('should create a request for 0 ferons if reward is null.', async () => {
+test('should not create mint if reward is null.', async () => {
   const interaction = await connectedWallet1.writeInteraction(
     {
       function: 'create-mint',
@@ -119,7 +117,7 @@ test('should create a request for 0 ferons if reward is null.', async () => {
     { reward: null }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, 0);
+  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
 });
 
 test('should create a request for 0 if reward is string xxx.', async () => {
