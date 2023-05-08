@@ -274,6 +274,18 @@ test('should claim tokens', () => {
       ],
       claimable: [
         {
+          txID: '<test-claim3>',
+          to: caller,
+          qty: 11,
+          from: '<tom>',
+        },
+        {
+          txID: '<test-claim2>',
+          to: caller,
+          qty: 11,
+          from: '<tom>',
+        },
+        {
           txID: '<test-claim>',
           to: caller,
           qty: 11,
@@ -287,7 +299,7 @@ test('should claim tokens', () => {
 
   const { state } = output;
   assert.is(state.balances[caller], 11);
-  assert.is(state.claimable.length, 0);
+  assert.is(state.claimable.length, 2);
 });
 
 test.after(async () => {});

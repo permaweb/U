@@ -1,28 +1,42 @@
 import { of } from '../hyper-either.js';
-import { __, identity, assoc } from 'ramda';
-import { roundDown } from '../util.js';
+import { ce, roundDown } from '../util.js';
 
+/**
+ * @description Creates an expiring request for the SEQUENCER contract to process (mint).
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} state
+ * @param {*} action
+ * @return {*} {state}
+ */
 export function createMint({ block, transaction }) {
   return (state, action) => {
     return of({ state, action, block, transaction })
-      .map(createRequest)
-      .map(assoc('state', __, {}))
-      .fold((msg) => {
-        throw new ContractError(msg || 'An error occurred.');
-      }, identity);
+      .chain(
+        ce(
+          roundDown(transaction.reward / 1e6) < 1,
+          'You must mint at least 1 feron.'
+        )
+      )
+      .map(({ state, action, block, transaction }) => ({
+        state: {
+          ...state,
+          requests: {
+            [transaction.id]: {
+              target: action.caller,
+              qty: roundDown(transaction.reward / 1e6),
+              expires: block.height + 720,
+            },
+            ...state.requests,
+          },
+        },
+      }))
+      .fold(
+        (msg) => {
+          throw new ContractError(msg || 'An error occurred.');
+        },
+        (state) => state
+      );
   };
 }
-
-const createRequest = ({ state, action, block, transaction }) => {
-  return {
-    ...state,
-    requests: {
-      [transaction.id]: {
-        target: action.caller,
-        qty: roundDown((transaction.reward || 0) / 1e6),
-        expires: block.height + 720,
-      },
-      ...state.requests,
-    },
-  };
-};

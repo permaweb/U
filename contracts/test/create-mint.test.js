@@ -35,30 +35,31 @@ test('should create 1 mint request', async () => {
   assert.is(state.requests['<tx>'].expires, 721);
 });
 
-test('should create a request for 0 if no reward is sent', async () => {
+test('should throw You must mint at least 1 feron.', () => {
   const env = setupSmartWeaveEnv(
     999999, // reward
     0, // height
     '<tx>'
   );
-  const output = createMint(env)(
-    {
-      name: 'RebAR',
-      mint_contract: '<mint-contract-2>',
-      ticker: 'RebAR',
-      balances: {},
-      settings: [
-        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-        ['isTradeable', true],
-      ],
-      claimable: [],
-      divisibility: 6,
-    },
-    { caller: '<justin>' }
+  assert.throws(
+    () =>
+      createMint(env)(
+        {
+          name: 'RebAR',
+          mint_contract: '<mint-contract-2>',
+          ticker: 'RebAR',
+          balances: {},
+          settings: [
+            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+            ['isTradeable', true],
+          ],
+          claimable: [],
+          divisibility: 6,
+        },
+        { caller: '<justin>' }
+      ),
+    /You must mint at least 1 feron./
   );
-
-  const { state } = output;
-  assert.is(state.requests['<tx>'].qty, 0);
 });
 test.after(async () => {});
 

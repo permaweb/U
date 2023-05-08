@@ -1,20 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Left, Right } from './hyper-either.js';
-import {
-  fromPairs,
-  toPairs,
-  over,
-  pipe,
-  reject,
-  ifElse,
-  identity,
-  lensProp,
-  always,
-  isNil,
-  add,
-  subtract,
-  __,
-} from 'ramda';
+import { fromPairs, toPairs, pipe } from 'ramda';
 
 /**
  * @description Contract Error
@@ -26,112 +12,6 @@ import {
  * @return {{state, action}} p
  */
 export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
-
-/**
- * @description Converts qty to a number (eg. converts 10.0 => 10)
- *
- * @author @jshaw-ar
- * @param {{ state, action }}
- * @return {{ state, action }}
- */
-export function qtyToNumber({ state, action }) {
-  return {
-    state,
-    action: {
-      ...action,
-      input: {
-        ...action.input,
-        qty: new BigNumber(action.input?.qty).toNumber(),
-      },
-    },
-  };
-}
-
-/**
- * @description Sets caller balance to 0 if it does not exist
- *
- * @author Tom Wilson
- * @export
- * @param {{ state, action }}
- * @return {{ state, action }}
- */
-export function setCallerBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.caller),
-        ifElse(isNil, always(0), identity),
-        state.balances
-      ),
-    },
-    action,
-  };
-}
-
-/**
- * @description Sets target balance to 0 if it does not exist
- *
- * @author Tom Wilson
- * @export
- * @param {{ state, action }}
- * @return {{ state, action }}
- */
-export function setTargetBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.input.target),
-        ifElse(isNil, always(0), identity),
-        state.balances
-      ),
-    },
-    action,
-  };
-}
-
-/**
- * @description Subtracts qty from caller balance
- *
- * @author @jshaw-ar
- * @param {{ state, action }}
- * @return {{ state, action }}
- */
-export function subtractCallerBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.caller),
-        subtract(__, action.input.qty),
-        state.balances
-      ),
-    },
-    action,
-  };
-}
-
-/**
- * @description Adds qty from caller balance
- *
- * @author @jshaw-ar
- * @param {{ state, action }}
- * @return {{ state, action }}
- */
-export function addTargetBalance({ state, action }) {
-  return {
-    state: {
-      ...state,
-      balances: over(
-        lensProp(action.input.target),
-        add(action.input.qty),
-        state.balances
-      ),
-    },
-    action,
-  };
-}
 
 /**
  * @description Uses BigNumber to check if value is an integer.
@@ -167,12 +47,7 @@ export function roundDown(v) {
  * @return {Array}
  */
 export const filterInvalid = (requests, height) =>
-  pipe(
-    toPairs,
-    (pairs) => removeExpired(pairs, height),
-    removeZero,
-    fromPairs
-  )(requests);
+  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
 
 /**
  * @description Removes expired from array.
@@ -183,29 +58,5 @@ export const filterInvalid = (requests, height) =>
  * @param {number} height
  * @return {Array} pairs
  */
-export const removeExpired = (pairs, height) => {
-  return reject((r) => height > r[1].expires, pairs);
-};
-
-/**
- * @description Removes zero qty from array.
- *
- * @author @jshaw-ar
- * @export
- * @param {number} height
- * @return {Array} pairs
- */
-export const removeZero = (pairs) => {
-  return reject((r) => r[1].qty < 1, pairs);
-};
-
-/**
- * @description Returns whether or not a claimable maches a tx.
- *
- * @author @jshaw-ar
- * @export
- * @param {object} claimable
- * @param {string} tx
- * @return {string} boolean
- */
-export const isClaimableByTx = (claimable, tx) => claimable.txID === tx;
+export const removeExpired = (pairs, height) =>
+  pairs.filter((request) => request[1].expires > height);

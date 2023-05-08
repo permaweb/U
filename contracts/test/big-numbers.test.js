@@ -118,6 +118,7 @@ test('should create-mint 1000 * 1e12', async () => {
     }
   );
   const state = (await connectedWallet1L1.readState()).cachedValue.state;
+
   assert.is(toPairs(state.requests)[0][1]?.qty, 1000000000);
 });
 
