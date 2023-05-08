@@ -60,14 +60,3 @@ export const filterInvalid = (requests, height) =>
  */
 export const removeExpired = (pairs, height) =>
   pairs.filter((request) => request[1].expires > height);
-
-/**
- * @description Returns whether or not a claimable maches a tx.
- *
- * @author @jshaw-ar
- * @export
- * @param {object} claimable
- * @param {string} tx
- * @return {string} boolean
- */
-export const isClaimableByTx = (claimable, tx) => claimable.txID === tx;
