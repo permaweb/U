@@ -2,13 +2,13 @@ import { fromNullable, of } from '../hyper-either.js';
 import { ce } from '../util.js';
 
 /**
- * Claims rebAR from claimables
+ * @description Claims rebAR from claimables
  *
  * @author @jshaw-ar
  * @export
  * @param {*} state
  * @param {*} action
- * @return {*}
+ * @return {*} {state}
  */
 export function claim(state, action) {
   return of({ state, action })

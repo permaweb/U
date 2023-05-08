@@ -1,6 +1,15 @@
 import { of, fromNullable } from '../hyper-either.js';
 import { ce, isInteger, roundDown } from '../util.js';
 
+/**
+ * @description Creates a transfer that can be claimed.
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} state
+ * @param {*} action
+ * @return {*} {state}
+ */
 export function allow(state, action) {
   return of({ state, action })
     .chain(fromNullable)

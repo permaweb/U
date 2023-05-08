@@ -2,7 +2,7 @@ import { fromNullable, of } from '../hyper-either.js';
 import { ce } from '../util.js';
 
 /**
- * Claims rebAR from claimables
+ * Rejects a claim, and sends tokens back to the from value of the claim.
  *
  * @author @jshaw-ar
  * @export

@@ -1,6 +1,15 @@
 import { of } from '../hyper-either.js';
 import { ce, roundDown } from '../util.js';
 
+/**
+ * @description Creates an expiring request for the SEQUENCER contract to process (mint).
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {*} state
+ * @param {*} action
+ * @return {*} {state}
+ */
 export function createMint({ block, transaction }) {
   return (state, action) => {
     return of({ state, action, block, transaction })
