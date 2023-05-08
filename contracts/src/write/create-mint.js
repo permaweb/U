@@ -1,5 +1,4 @@
 import { of } from '../hyper-either.js';
-import { __, identity, assoc } from 'ramda';
 import { ce, roundDown } from '../util.js';
 
 export function createMint({ block, transaction }) {
@@ -11,24 +10,24 @@ export function createMint({ block, transaction }) {
           'You must mint at least 1 feron.'
         )
       )
-      .map(createRequest)
-      .map(assoc('state', __, {}))
-      .fold((msg) => {
-        throw new ContractError(msg || 'An error occurred.');
-      }, identity);
+      .map(({ state, action, block, transaction }) => ({
+        state: {
+          ...state,
+          requests: {
+            [transaction.id]: {
+              target: action.caller,
+              qty: roundDown(transaction.reward / 1e6),
+              expires: block.height + 720,
+            },
+            ...state.requests,
+          },
+        },
+      }))
+      .fold(
+        (msg) => {
+          throw new ContractError(msg || 'An error occurred.');
+        },
+        (state) => state
+      );
   };
 }
-
-const createRequest = ({ state, action, block, transaction }) => {
-  return {
-    ...state,
-    requests: {
-      [transaction.id]: {
-        target: action.caller,
-        qty: roundDown(transaction.reward / 1e6),
-        expires: block.height + 720,
-      },
-      ...state.requests,
-    },
-  };
-};

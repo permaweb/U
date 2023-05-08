@@ -1,16 +1,6 @@
 import { fromNullable, of } from '../hyper-either.js';
-import { ce, isClaimableByTx, setCallerBalance } from '../util.js';
-import {
-  assoc,
-  __,
-  compose,
-  add,
-  prop,
-  find,
-  reject,
-  identity,
-  filter,
-} from 'ramda';
+import { ce } from '../util.js';
+
 /**
  * Claims rebAR from claimables
  *
@@ -29,17 +19,15 @@ export function claim(state, action) {
     .chain(ce(!action.input?.qty, 'A qty must be specified.'))
     .chain(
       ce(
-        !(
-          filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)
-            .length === 1
-        ),
+        state.claimable.filter((c) => c.txID === action.input.txID).length !==
+          1,
         'There must be 1 claimable with this tx id.'
       )
     )
     .chain(
       ce(
-        filter((c) => isClaimableByTx(c, action.input.txID), state.claimable)[0]
-          ?.to !== action.caller,
+        state.claimable.filter((c) => c.txID === action.input?.txID)[0]?.to !==
+          action.caller,
         'Claim not addressed to caller.'
       )
     )
@@ -50,37 +38,25 @@ export function claim(state, action) {
         'Incorrect qty.'
       )
     )
-    .map(setCallerBalance)
-    .map(handleClaim)
-    .map(assoc('state', __, {}))
-    .fold((msg) => {
-      throw new ContractError(msg || 'An error occurred.');
-    }, identity);
-}
-
-/**
- *
- *
- * @author @twilson63
- * @param {{state, action}} { state, action }
- * @return {*} state
- */
-function handleClaim({ state, action }) {
-  const txID = action.input.txID;
-  const caller = action.caller;
-  const byTx = (x) => x.txID === txID;
-
-  return {
-    ...state,
-    balances: {
-      ...state.balances,
-      [caller]: compose(
-        add(state.balances[caller]),
-        prop('qty'),
-        find(byTx),
-        prop('claimable')
-      )(state),
-    },
-    claimable: compose(reject(byTx), prop('claimable'))(state),
-  };
+    .map(({ state, action }) => {
+      // find the index to remove
+      const indexToRemove = state.claimable.findIndex(
+        (claim) => claim.txID === action.input.txID
+      );
+      // select the claim
+      const claim = state.claimable[indexToRemove];
+      // set balance to previous balance or zero
+      const balance = state.balances[action.caller] || 0;
+      // update caller balance
+      state.balances[action.caller] = balance + claim.qty;
+      // remove claim
+      state.claimable.splice(indexToRemove, 1);
+      return { state };
+    })
+    .fold(
+      (msg) => {
+        throw new ContractError(msg || 'An error occurred.');
+      },
+      (state) => state
+    );
 }

@@ -1,7 +1,5 @@
-import { assoc, __, identity } from 'ramda';
-
 import { of, fromNullable } from '../hyper-either.js';
-import { ce, isInteger, qtyToNumber, subtractCallerBalance } from '../util.js';
+import { ce, isInteger, roundDown } from '../util.js';
 
 export function allow(state, action) {
   return of({ state, action })
@@ -19,7 +17,7 @@ export function allow(state, action) {
     .chain(ce(!isInteger(action.input?.qty), 'qty must be an integer.'))
     .chain(
       ce(
-        action.input?.qty < 1,
+        roundDown(action.input?.qty) < 1,
         'Invalid token transfer. qty must be an integer greater than 0.'
       )
     )
@@ -29,26 +27,21 @@ export function allow(state, action) {
         'Not enough tokens for allow.'
       )
     )
-    .map(qtyToNumber)
-    .map(subtractCallerBalance)
-    .map(createClaim)
-    .map(assoc('state', __, {}))
-    .fold((msg) => {
-      throw new ContractError(msg || 'An error occurred.');
-    }, identity);
-}
-
-function createClaim({ state, action }) {
-  return {
-    ...state,
-    claimable: [
-      ...state.claimable,
-      {
+    .map(({ state, action }) => {
+      const safeQty = roundDown(action.input.qty);
+      state.balances[action.caller] -= safeQty;
+      state.claimable.push({
         from: action.caller,
         to: action.input.target,
-        qty: action.input.qty,
+        qty: safeQty,
         txID: SmartWeave.transaction.id,
+      });
+      return { state };
+    })
+    .fold(
+      (msg) => {
+        throw new ContractError(msg || 'An error occurred.');
       },
-    ],
-  };
+      (state) => state
+    );
 }
