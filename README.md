@@ -2,11 +2,7 @@
 
 ![RebAR logo](https://kocmnja3z4bopl4uzdvzujcwtqkm3yyecr4r5ptqqvrq4mxu52ta.arweave.net/U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY)
 
-Introducing the rebirth of bAR...
-
-RebAR — bAR Reborn.
-
-The fuel of the Permaweb.
+Introducing the rebirth of bAR. RebAR — bAR Reborn. The fuel of the Permaweb.
 
 - [RebAR](#rebar)
   - [Goals](#goals)
@@ -23,7 +19,7 @@ The fuel of the Permaweb.
 
 ## Summary
 
-RebAR is fuel for the #Permaweb. #Permaweb users can use RebAR to swap between other tokens, and interact with applications living on the permaweb that use RebAR. Developers can use RebAR in their applications like many other applications on the #Permaweb. Applications can leverage the Foreign Call Protocol (allow / claim) to make "contract to contract" transactions possible using internal writes. It will allow users to buy, sell, and interact with any asset on the Permaweb.
+RebAR is fuel for the Permaweb. Permaweb users can use RebAR to swap between other tokens, and interact with applications living on the permaweb that use RebAR. Developers can use RebAR in their applications like many other applications on the Permaweb. Applications can leverage the Foreign Call Protocol (allow / claim) to make "contract to contract" transactions possible using internal writes. It will allow users to buy, sell, and interact with any asset on the Permaweb.
 
 ## Repository
 
