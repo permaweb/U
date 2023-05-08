@@ -101,7 +101,7 @@ test('should throw Claim does not exist.', () => {
         },
         { caller, input: { function: 'reject', tx: '<not-exist>' } }
       ),
-    /Claim does not exist./
+    /There must be 1 claimable with this tx id./
   );
 });
 
