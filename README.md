@@ -14,7 +14,7 @@ Introducing the rebirth of bAR. RebAR — bAR Reborn. The fuel of the Permaweb.
 
 ## Goals
 
-- Provide liquidity for #Permaweb users and applications.
+- Provide liquidity for Permaweb users and applications.
 - Do not allow any contract that uses `unsafe client` to interact with the RebAR contract.
 
 ## Summary
