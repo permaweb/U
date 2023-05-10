@@ -17,7 +17,9 @@ export function setupSmartWeaveEnv(
     contracts: {
       readContractState: async (contract) => readContractState,
       write: async () => Promise.resolve(write),
-      viewContractState: async (contract, input) => viewContractState,
+      viewContractState: async (contract, input) => ({
+        result: viewContractState,
+      }),
     },
   };
   globalThis.ContractError = ContractError;
