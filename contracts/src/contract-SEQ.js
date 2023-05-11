@@ -13,18 +13,19 @@ export async function handle(state, action) {
     write: SmartWeave.contracts.write.bind(SmartWeave),
     block: SmartWeave.block,
     transaction: SmartWeave.transaction,
+    kv: SmartWeave.kv,
   };
   switch (input.function) {
     case 'balance':
-      return await balance(state, action);
+      return balance(state, action);
     case 'mint':
       return mint(env)(state, action).toPromise();
     case 'transfer':
-      return await transfer(state, action);
+      return transfer(env)(state, action);
     case 'allow':
-      return allow(state, action);
+      return allow(env)(state, action);
     case 'claim':
-      return claim(state, action);
+      return claim(env)(state, action);
     case 'reject':
       return rejectClaimable(state, action);
     default:
