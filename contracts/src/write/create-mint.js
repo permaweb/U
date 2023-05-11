@@ -19,24 +19,19 @@ export function createMint({ block, transaction }) {
           'You must mint at least 1 feron.'
         )
       )
-      .map(({ state, action, block, transaction }) => ({
-        state: {
-          ...state,
-          requests: {
-            [transaction.id]: {
-              target: action.caller,
-              qty: roundDown(transaction.reward / 1e6),
-              expires: block.height + 720,
-            },
-            ...state.requests,
-          },
-        },
-      }))
+      .map(({ state, action, block, transaction }) => {
+        state.requests[transaction.id] = {
+          target: action.caller,
+          qty: roundDown(transaction.reward / 1e6),
+          expires: block.height + 720,
+        };
+        return state;
+      })
       .fold(
         (msg) => {
           throw new ContractError(msg || 'An error occurred.');
         },
-        (state) => state
+        (state) => ({ state })
       );
   };
 }
