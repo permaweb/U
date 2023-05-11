@@ -4,14 +4,12 @@ import { rejectClaimable } from '../src/write/reject.js';
 import { setupSmartWeaveEnv } from './setup.js';
 const test = suite('reject');
 
-test.before(async () => {});
-
 test('should throw txID must be passed to the reject function.', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      rejectClaimable(
+      rejectClaimable(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -40,11 +38,11 @@ test('should throw txID must be passed to the reject function.', () => {
 });
 
 test('should throw Claim not addressed to caller.', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      rejectClaimable(
+      rejectClaimable(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -73,11 +71,11 @@ test('should throw Claim not addressed to caller.', () => {
 });
 
 test('should throw Claim does not exist.', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      rejectClaimable(
+      rejectClaimable(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -105,16 +103,13 @@ test('should throw Claim does not exist.', () => {
   );
 });
 
-test('should reject tokens', () => {
-  setupSmartWeaveEnv();
+test('should reject tokens', async () => {
+  const env = setupSmartWeaveEnv();
   const caller = '<some-contract>';
-  const output = rejectClaimable(
+  const output = await rejectClaimable(env)(
     {
       name: 'RebAR',
       ticker: 'RebAR',
-      balances: {
-        '<justin>': 0,
-      },
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -134,10 +129,8 @@ test('should reject tokens', () => {
   );
 
   const { state } = output;
-  assert.is(state.balances['<justin>'], 5);
+  assert.is(await env.kv.get('<justin>'), 5);
   assert.is(state.claimable.length, 0);
 });
-
-test.after(async () => {});
 
 test.run();

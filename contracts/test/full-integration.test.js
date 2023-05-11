@@ -81,6 +81,11 @@ test.before(async () => {
       mint_contract: contractL1.contractTxId,
     }),
     src: contractSrcSEQ,
+    evaluationManifest: {
+      evaluationOptions: {
+        useKVStorage: true,
+      },
+    },
   });
 
   // Connect wallet to contract
@@ -90,7 +95,11 @@ test.before(async () => {
     .connect(wallet1.jwk);
   connectedWallet1SEQ = warp
     .contract(contractSEQ.contractTxId)
-    .setEvaluationOptions({ internalWrites: true, mineArLocalBlocks: true })
+    .setEvaluationOptions({
+      internalWrites: true,
+      mineArLocalBlocks: true,
+      useKVStorage: true,
+    })
     .connect(wallet1.jwk);
 
   connectedWallet2L1 = warp
@@ -120,9 +129,15 @@ test('should create mint request for 10 RebAR with wallet1', async () => {
 });
 
 test('should mint 10 RebAR', async () => {
-  await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
+  await connectedWallet1SEQ.writeInteraction({
+    function: 'mint',
+  });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  assert.is(state.balances[wallet1.address], 10000000);
+  const balance = (
+    await connectedWallet1SEQ.getStorageValues([wallet1.address])
+  ).cachedValue.get(wallet1.address);
+  assert.is(balance, 10000000);
+  assert.is(state.pile.length, 1);
 });
 
 test('transfer 5 to wallet 2', async () => {
@@ -131,8 +146,11 @@ test('transfer 5 to wallet 2', async () => {
     target: wallet2.address,
     qty: 5000000,
   });
-  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  assert.is(state.balances[wallet2.address], 5000000);
+  await connectedWallet1SEQ.readState();
+  const result = (
+    await connectedWallet1SEQ.getStorageValues([wallet2.address])
+  ).cachedValue.get(wallet2.address);
+  assert.is(result, 5000000);
 });
 
 test('allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2', async () => {
@@ -150,7 +168,7 @@ test('allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2', async () => 
 
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
   assert.is(state.claimable.length, 2);
-
+  console.log('STATE', state, interaction1.originalTxId);
   // Set the allow tx for claim next
   allowTxForClaim1 = interaction1.originalTxId;
   allowTxForClaim2 = interaction2.originalTxId;
@@ -163,8 +181,17 @@ test('claim 2 with wallet 1', async () => {
     qty: 2000000,
   });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  assert.is(state.balances[wallet1.address], 7000000);
-  assert.is(state.balances[wallet2.address], 2000000);
+
+  const result = (
+    await connectedWallet1SEQ.getStorageValues([
+      wallet2.address,
+      wallet1.address,
+    ])
+  ).cachedValue;
+  const balance1 = await result.get(wallet1.address);
+  const balance2 = await result.get(wallet2.address);
+  assert.is(balance1, 7000000);
+  assert.is(balance2, 2000000);
 });
 
 test('should claim with different txID', async () => {
@@ -174,23 +201,32 @@ test('should claim with different txID', async () => {
     qty: 1000000,
   });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  assert.is(state.balances[wallet1.address], 8000000);
-  assert.is(state.balances[wallet2.address], 2000000);
+  const result = (
+    await connectedWallet1SEQ.getStorageValues([
+      wallet2.address,
+      wallet1.address,
+    ])
+  ).cachedValue;
+  const balance1 = await result.get(wallet1.address);
+  const balance2 = await result.get(wallet2.address);
+  assert.is(balance1, 8000000);
+  assert.is(balance2, 2000000);
 });
 
 test('check balance with target', async () => {
-  const balanceFunc = await connectedWallet1SEQ.viewState({
+  const interaction = await connectedWallet1SEQ.viewState({
     function: 'balance',
     target: wallet2.address,
   });
-  assert.is(balanceFunc.result.balance, 2000000);
+
+  assert.is(interaction.result.balance, 2000000);
 });
 
 test('check balance without target', async () => {
-  const balanceFunc = await connectedWallet1SEQ.viewState({
+  const interaction = await connectedWallet1SEQ.viewState({
     function: 'balance',
   });
-  assert.is(balanceFunc.result.balance, 8000000);
+  assert.is(interaction.result.balance, 8000000);
 });
 
 test.after(async () => {

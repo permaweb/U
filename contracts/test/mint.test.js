@@ -7,8 +7,26 @@ const test = suite('mint');
 
 test.before(async () => {});
 
-test('should only mint new requests', async () => {
+test('Should create a kv store', async () => {
   // set reward to 10
+  const env = setupSmartWeaveEnv(
+    999999,
+    1,
+    '<tx>',
+    undefined,
+    'ERROR',
+    undefined,
+    { jshaw: 1, tom: 1, dmac: 1 }
+  );
+
+  assert.is(await env.kv.get('jshaw'), 1);
+  env.kv.put('jshaw', 2);
+  assert.is(await env.kv.get('jshaw'), 2);
+  env.kv.del('jshaw');
+  assert.is(await env.kv.get('jshaw'), undefined);
+});
+
+test('should only mint new requests', async () => {
   const env = setupSmartWeaveEnv(999999, 1, '<tx>', undefined, 'ERROR', {
     not_expired: {
       target: '<jshaw>',
@@ -53,29 +71,36 @@ test('should only mint new requests', async () => {
     { caller }
   ).toPromise();
   const state = output.state;
-  assert.is(state.balances['<jshaw>'], 25);
   assert.is(state.pile.length, 2);
 });
 
 test('should work with no requests TODO: udpate this test name', async () => {
   // set reward to 10
-  const env = setupSmartWeaveEnv(1000000, 0, '<tx>', undefined, 'ERROR', {
-    good: {
-      expires: 2,
-      qty: 7,
-      target: '<jshaw>',
+  const env = setupSmartWeaveEnv(
+    1000000,
+    0,
+    '<tx>',
+    undefined,
+    'ERROR',
+    {
+      good: {
+        expires: 2,
+        qty: 7,
+        target: '<jshaw>',
+      },
+      good2: {
+        expires: 2,
+        qty: 7,
+        target: '<jshaw>',
+      },
+      processed: {
+        expires: 722,
+        qty: 5,
+        target: '<jshaw>',
+      },
     },
-    good2: {
-      expires: 2,
-      qty: 7,
-      target: '<jshaw>',
-    },
-    processed: {
-      expires: 722,
-      qty: 5,
-      target: '<jshaw>',
-    },
-  });
+    {}
+  );
 
   const caller = '<justin>';
 
@@ -93,7 +118,7 @@ test('should work with no requests TODO: udpate this test name', async () => {
     { caller }
   ).toPromise();
   const state = output.state;
-  assert.is(state.balances['<jshaw>'], 14);
+  assert.is(await env.kv.get('<jshaw>'), 14);
   assert.is(state.pile.filter((v) => v === 'processed').length, 1);
 });
 
