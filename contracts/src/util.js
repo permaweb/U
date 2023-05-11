@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js';
 import { Left, Right } from './hyper-either.js';
 import { fromPairs, toPairs, pipe } from 'ramda';
-
+import { Rejected, Resolved } from 'hyper-async';
 /**
- * @description Contract Error
+ * @description Contract Error (use with hyper-either)
  *
  * @author @jshaw-ar
  * @param {Boolean} flag What your conditional check is
@@ -12,6 +12,18 @@ import { fromPairs, toPairs, pipe } from 'ramda';
  * @return {{state, action}} p
  */
 export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
+
+/**
+ * @description Contract Error Async (use with hyper-async)
+ *
+ * @author @jshaw-ar
+ * @param {Boolean} flag What your conditional check is
+ * @param {string} message Error message if conditional is true
+ * @param {{state, action}} p The payload to pass through the func
+ * @return {{state, action}} p
+ */
+export const ceAsync = (flag, message) => (p) =>
+  flag ? Rejected(message) : Resolved(p);
 
 /**
  * @description Uses BigNumber to check if value is an integer.
@@ -60,3 +72,66 @@ export const filterInvalid = (requests, height) =>
  */
 export const removeExpired = (pairs, height) =>
   pairs.filter((request) => request[1].expires > height);
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @param {*} target
+ * @param {*} balance
+ * @param {*} kv
+ */
+export const getTargetBalance = async (target, balance, kv) => ({
+  balance,
+  targetBalance: (await kv.get(target)) || 0,
+});
+
+/**
+ * @description Adds the balance based on a
+ *
+ * @author @jshaw-ar
+ * @param {*} state
+ * @param {*} action
+ * @param {*} kv
+ * @return {*}
+ */
+export const addClaimBalanceTo = async (state, action, kv) => {
+  const indexToRemove = state.claimable.findIndex(
+    (claim) => claim.txID === action.input.txID
+  );
+  const claim = state.claimable[indexToRemove];
+  const balance = (await kv.get(claim.to)) || 0;
+  await kv.put(claim.to, balance + claim.qty);
+  return indexToRemove;
+};
+
+/**
+ * @description Adds the balance based on a
+ *
+ * @author @jshaw-ar
+ * @param {*} state
+ * @param {*} action
+ * @param {*} kv
+ * @return {*}
+ */
+export const addClaimBalanceFrom = async (state, action, kv) => {
+  const indexToRemove = state.claimable.findIndex(
+    (claim) => claim.txID === action.input.tx
+  );
+  const claim = state.claimable[indexToRemove];
+  const balance = (await kv.get(claim.from)) || 0;
+  await kv.put(claim.from, balance + claim.qty);
+  return indexToRemove;
+};
+
+/**
+ * @description Gets the balance from the key value store
+ *
+ * @author @jshaw-ar
+ * @param {string} caller
+ * @param {*} kv (SmartWeave object)
+ * @return {number} balance
+ */
+export const getBalance = async (caller, kv) => {
+  return kv.get(caller);
+};
