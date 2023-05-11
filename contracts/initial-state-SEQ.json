@@ -1,7 +1,6 @@
 {
   "ticker": "RebAR",
   "name": "RebAR",
-  "balances": {},
   "settings": [
     ["isTradeable", true],
     ["communityLogo", "U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY"]
