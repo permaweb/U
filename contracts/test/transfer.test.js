@@ -4,454 +4,389 @@ import { transfer } from '../src/write/transfer.js';
 import { setupSmartWeaveEnv } from './setup.js';
 const test = suite('transfer');
 
-test.before(async () => {});
+// test.before(async () => {});
 
 test('should throw (Please specify a target.)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {},
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller }
-      ),
-    /Please specify a target./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller }
+  ).catch((e) => {
+    assert.equal(e.message, 'Please specify a target.');
+  });
 });
 
 test('should throw (Target cannot be caller.)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {},
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: caller } }
-      ),
-    /Target cannot be caller./
-  );
-});
-
-test('should throw (Caller does not have a balance.)', () => {
-  setupSmartWeaveEnv();
-  const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {},
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
-
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>' } }
-      ),
-    /Caller does not have a balance./
-  );
-});
-
-test('should throw (qty must be an integer.)', () => {
-  setupSmartWeaveEnv();
-  const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
-
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>' } }
-      ),
-    /qty must be an integer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: caller } }
+  ).catch((e) => {
+    assert.equal(e.message, 'Target cannot be caller.');
+  });
 });
 
 test('should throw (Not enough tokens for transfer.)', () => {
-  setupSmartWeaveEnv();
+  const newENv = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(newENv)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>', qty: 11 } }
-      ),
-    /Not enough tokens for transfer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: 'tom', qty: 5 } }
+  ).catch((e) => {
+    assert.is(e.message, 'Error: Not enough tokens for transfer.');
+  });
+});
+
+test('should throw (qty must be an integer.)', () => {
+  const env = setupSmartWeaveEnv();
+  const caller = '<justin>';
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>' } }
+  ).catch((e) => {
+    assert.equal(e.message, 'qty must be an integer.');
+  });
+});
+
+test('should throw (Not enough tokens for transfer.)', () => {
+  const env = setupSmartWeaveEnv();
+  const caller = '<justin>';
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>', qty: 11 } }
+  ).catch((e) => {
+    assert.is(e.message, 'Error: Not enough tokens for transfer.');
+  });
 });
 
 test('should not transfer null amount of tokens', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>', qty: null } }
-      ),
-    /qty must be an integer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>', qty: null } }
+  ).catch((e) => {
+    assert.equal(e.message, 'qty must be an integer.');
+  });
 });
 
 test('should not transfer undefined amount of tokens', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>' } }
-      ),
-    /qty must be an integer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>' } }
+  ).catch((e) => {
+    assert.equal(e.message, 'qty must be an integer.');
+  });
 });
 
 test("should not transfer 'string' amount of tokens", () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>', qty: 'xxx' } }
-      ),
-    /qty must be an integer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>', qty: 'xxx' } }
+  ).catch((e) => {
+    assert.equal(e.message, 'qty must be an integer.');
+  });
 });
 
 test('should not transfer fractional amount of tokens', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { target: '<tom>', qty: 199999.01 } }
-      ),
-    /qty must be an integer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { target: '<tom>', qty: 199999.01 } }
+  ).catch((e) => {
+    assert.equal(e.message, 'qty must be an integer.');
+  });
 });
 
 test('should not transfer without a target', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 1000000 } }
-      ),
-    /Please specify a target./
-  );
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 1000000 } }
+  ).catch((e) => {
+    assert.equal(e.message, 'Please specify a target.');
+  });
 });
 
 test('should not transfer with null target', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 1000000, target: null } }
-      ),
-    /Please specify a target./
-  );
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 1000000, target: null } }
+  ).catch((e) => {
+    assert.equal(e.message, 'Please specify a target.');
+  });
 });
 
 test('should not transfer with undefined target', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 1000000, target: undefined } }
-      ),
-    /Please specify a target./
-  );
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 1000000, target: undefined } }
+  ).catch((e) => {
+    assert.equal(e.message, 'Please specify a target.');
+  });
 });
 
-test('should not transfer from non-existing account', () => {
-  setupSmartWeaveEnv();
+test('should not transfer from non-existing account (in kv store)', () => {
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 10,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller: '<non-existing>', input: { qty: 1000000, target: '<tom>' } }
-      ),
-    /Caller does not have a balance./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller: '<non-existing>', input: { qty: 1000000, target: '<tom>' } }
+  ).catch((e) => {
+    assert.is(e.message, 'Error: Not enough tokens for transfer.');
+  });
 });
 
 test('should not transfer more than owned', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 1000000,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 2000000, target: '<tom>' } }
-      ),
-    /Not enough tokens for transfer./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 2000000, target: '<tom>' } }
+  ).catch((e) => {
+    assert.is(e.message, 'Error: Not enough tokens for transfer.');
+  });
 });
 
 test('should not transfer 0 tokens', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 1000000,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 0, target: '<tom>' } }
-      ),
-    /Invalid token transfer. qty must be an integer greater than 0./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 0, target: '<tom>' } }
+  ).catch((e) => {
+    assert.equal(
+      e.message,
+      'Invalid token transfer. qty must be an integer greater than 0.'
+    );
+  });
 });
 
 test('should not transfer negative amount of tokens', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 1000000,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
+  transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
 
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: -1, target: '<tom>' } }
-      ),
-    /Invalid token transfer. qty must be an integer greater than 0./
-  );
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: -1, target: '<tom>' } }
+  ).catch((e) => {
+    assert.equal(
+      e.message,
+      'Invalid token transfer. qty must be an integer greater than 0.'
+    );
+  });
 });
 
 test('should not transfer to the same account (caller -> caller)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  assert.throws(
-    () =>
-      transfer(
-        {
-          name: 'RebAR',
-          ticker: 'RebAR',
-          balances: {
-            [caller]: 1000000,
-          },
-          settings: [
-            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-            ['isTradeable', true],
-          ],
-
-          claimable: [],
-          divisibility: 6,
-        },
-        { caller, input: { qty: 1000000, target: caller } }
-      ),
-    /Target cannot be caller./
-  );
-});
-
-test('should transfer to empty account', () => {
-  setupSmartWeaveEnv();
-  const caller = '<justin>';
-  const output = transfer(
+  transfer(env)(
     {
       name: 'RebAR',
       ticker: 'RebAR',
-      balances: {
-        [caller]: 10,
-      },
+      settings: [
+        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+        ['isTradeable', true],
+      ],
+
+      claimable: [],
+      divisibility: 6,
+    },
+    { caller, input: { qty: 1000000, target: caller } }
+  ).catch((e) => {
+    assert.equal(e.message, 'Target cannot be caller.');
+  });
+});
+
+test('should transfer to empty account', async () => {
+  const caller = '<justin>';
+  const env = setupSmartWeaveEnv(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    { [caller]: 20 }
+  );
+  await transfer(env)(
+    {
+      name: 'RebAR',
+      ticker: 'RebAR',
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -461,22 +396,24 @@ test('should transfer to empty account', () => {
     },
     { caller, input: { target: '<tom>', qty: 10 } }
   );
-  const { state } = output;
-  assert.equal(state.balances[caller], 0);
-  assert.equal(state.balances['<tom>'], 10);
+  assert.equal(await env.kv.get('<tom>'), 10);
 });
 
-test('should transfer to existing account', () => {
-  setupSmartWeaveEnv();
+test('should transfer to existing account', async () => {
   const caller = '<justin>';
-  const output = transfer(
+  const env = setupSmartWeaveEnv(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    { [caller]: 20, '<tom>': 1 }
+  );
+  await transfer(env)(
     {
       name: 'RebAR',
       ticker: 'RebAR',
-      balances: {
-        [caller]: 10,
-        '<tom>': 10,
-      },
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -487,11 +424,10 @@ test('should transfer to existing account', () => {
     { caller, input: { target: '<tom>', qty: 10 } }
   );
 
-  const { state } = output;
-  assert.equal(state.balances[caller], 0);
-  assert.equal(state.balances['<tom>'], 20);
+  assert.equal(await env.kv.get(caller), 10);
+  assert.equal(await env.kv.get('<tom>'), 11);
 });
 
-test.after(async () => {});
+// test.after(async () => {});
 
 test.run();

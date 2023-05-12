@@ -20,6 +20,7 @@ test('should create 1 mint request', async () => {
       mint_contract: '<mint-contract-2>',
       ticker: 'RebAR',
       balances: {},
+      requests: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -49,6 +50,7 @@ test('should throw You must mint at least 1 feron.', () => {
           mint_contract: '<mint-contract-2>',
           ticker: 'RebAR',
           balances: {},
+          requests: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],

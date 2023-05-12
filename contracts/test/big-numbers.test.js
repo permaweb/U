@@ -84,11 +84,18 @@ test.before(async () => {
   // Connect wallet to contract
   connectedWallet1L1 = warp
     .contract(contractL1.contractTxId)
-    .setEvaluationOptions({ internalWrites: true, mineArLocalBlocks: true })
+    .setEvaluationOptions({
+      internalWrites: true,
+      mineArLocalBlocks: true,
+    })
     .connect(wallet1.jwk);
   connectedWallet1SEQ = warp
     .contract(contractSEQ.contractTxId)
-    .setEvaluationOptions({ internalWrites: true, mineArLocalBlocks: true })
+    .setEvaluationOptions({
+      internalWrites: true,
+      mineArLocalBlocks: true,
+      useKVStorage: true,
+    })
     .connect(wallet1.jwk);
 
   connectedWallet2L1 = warp
@@ -124,8 +131,11 @@ test('should create-mint 1000 * 1e12', async () => {
 
 test('should mint 1000 * 1e12', async () => {
   await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
-  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  assert.is(state.balances[wallet1.address], 1000000000);
+  (await connectedWallet1SEQ.readState()).cachedValue.state;
+  const balance = (
+    await connectedWallet1SEQ.getStorageValues([wallet1.address])
+  ).cachedValue.get(wallet1.address);
+  assert.is(balance, 1000000000);
 });
 
 test('should transfer 1000 * 1e6', async () => {
@@ -136,9 +146,11 @@ test('should transfer 1000 * 1e6', async () => {
       .integerValue(BigNumber.ROUND_DOWN)
       .toNumber(),
   });
-  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-
-  assert.is(state.balances[wallet2.address], 1000000000);
+  await connectedWallet1SEQ.readState();
+  const balance = (
+    await connectedWallet1SEQ.getStorageValues([wallet2.address])
+  ).cachedValue.get(wallet2.address);
+  assert.is(balance, 1000000000);
 });
 
 test.after(async () => {

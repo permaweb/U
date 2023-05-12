@@ -1,20 +1,10 @@
-import { of, fromNullable } from '../hyper-either.js';
-
-export function balance(state, action) {
-  return of({ state, action })
-    .chain(fromNullable)
-    .fold(
-      () => {
-        throw new ContractError('An error occured.');
-      },
-      ({ state, action }) => {
-        return {
-          result: {
-            target: action.input?.target || action.caller,
-            ticker: state.ticker,
-            balance: state.balances[action.input?.target || action.caller] || 0,
-          },
-        };
-      }
-    );
+export async function balance(state, action) {
+  const addr = action?.input?.target || action.caller;
+  return {
+    result: {
+      target: addr,
+      ticker: state.ticker,
+      balance: (await SmartWeave.kv.get(addr)) || 0,
+    },
+  };
 }

@@ -7,11 +7,11 @@ const test = suite('claim');
 test.before(async () => {});
 
 test('should not allow claiming without txId', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -31,11 +31,11 @@ test('should not allow claiming without txId', () => {
 });
 
 test('should not allow claiming with null txID', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -55,11 +55,11 @@ test('should not allow claiming with null txID', () => {
 });
 
 test('should not allow claiming with non-existing txID', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -79,11 +79,11 @@ test('should not allow claiming with non-existing txID', () => {
 });
 
 test('should throw (Claim not addressed to caller.)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -108,11 +108,11 @@ test('should throw (Claim not addressed to caller.)', () => {
 });
 
 test('should throw (Incorrect qty.)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -138,11 +138,11 @@ test('should throw (Incorrect qty.)', () => {
 });
 
 test('should throw (Incorrect qty.)', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -168,11 +168,11 @@ test('should throw (Incorrect qty.)', () => {
 });
 
 test('should not allow claiming with null quantity', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -198,11 +198,11 @@ test('should not allow claiming with null quantity', () => {
 });
 
 test('should not allow claiming with incorrect quantity', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -231,11 +231,11 @@ test('should not allow claiming with incorrect quantity', () => {
 });
 
 test('should not allow claiming with null quantity', () => {
-  setupSmartWeaveEnv();
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
   assert.throws(
     () =>
-      claim(
+      claim(env)(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -260,10 +260,10 @@ test('should not allow claiming with null quantity', () => {
   );
 });
 
-test('should claim tokens', () => {
-  setupSmartWeaveEnv();
+test('should claim tokens', async () => {
+  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  const output = claim(
+  const output = await claim(env)(
     {
       name: 'RebAR',
       ticker: 'RebAR',
@@ -298,8 +298,8 @@ test('should claim tokens', () => {
   );
 
   const { state } = output;
-  assert.is(state.balances[caller], 11);
   assert.is(state.claimable.length, 2);
+  assert.is(await env.kv.get('<justin>'), 11);
 });
 
 test.after(async () => {});
