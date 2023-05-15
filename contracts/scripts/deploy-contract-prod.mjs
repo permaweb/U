@@ -43,7 +43,7 @@ async function deploy(folder) {
     ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
-      balances,
+      initialBalances: balances,
     },
   };
 
@@ -71,6 +71,7 @@ async function deploy(folder) {
       evaluationOptions: {
         sourceType: SourceType.WARP_SEQUENCER,
         unsafeClient: 'skip',
+        useKVStorage: true,
       },
     },
   });
