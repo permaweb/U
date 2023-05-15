@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { Left, Right } from './hyper-either.js';
-import { fromPairs, toPairs, pipe } from 'ramda';
 import { Rejected, Resolved } from 'hyper-async';
 
 /**
@@ -51,28 +50,16 @@ export function roundDown(v) {
 }
 
 /**
- * @description Removes expired and zero qty from array.
- *
- * @author @jshaw-ar
- * @export
- * @param {Array} requests
- * @param {number} height
- * @return {Array}
- */
-export const filterInvalid = (requests, height) =>
-  pipe(toPairs, (pairs) => removeExpired(pairs, height), fromPairs)(requests);
-
-/**
  * @description Removes expired from array.
  *
  * @author @jshaw-ar
  * @export
- * @param {Array} requests
+ * @param {Array} queue
  * @param {number} height
- * @return {Array} pairs
+ * @return {Array}
  */
-export const removeExpired = (pairs, height) =>
-  pairs.filter((request) => request[1].expires > height);
+export const removeExpired = (queue, height) =>
+  queue.filter((request) => request.expires > height);
 
 /**
  *

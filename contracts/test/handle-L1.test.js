@@ -35,21 +35,24 @@ test.before(async () => {
     ...state,
     ...{
       owner: wallet1.address,
-      requests: {
-        zero_qty: {
+      requests: [
+        {
+          tx: 'zero_qty',
           target: '<jshaw>',
           qty: 0,
           expires: 722,
         },
-        expired: {
+        {
+          tx: 'expired',
           expires: 0,
         },
-        'not-expired': {
+        {
+          tx: 'not-expired',
           expires: 2,
           qty: 5,
           target: '<jshaw>',
         },
-      },
+      ],
     },
   };
 
@@ -87,7 +90,10 @@ test('should create a request for 10000000', async () => {
     { reward: '10000000000000' }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId].qty, 10000000);
+  const request = state.requests.filter(
+    (r) => r.tx === interaction.originalTxId
+  )[0];
+  assert.is(request.qty, 10000000);
 });
 
 test('should not create mint if no reward is added.', async () => {
@@ -95,7 +101,10 @@ test('should not create mint if no reward is added.', async () => {
     function: 'create-mint',
   });
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  const request = state.requests.filter(
+    (r) => r.tx === interaction.originalTxId
+  )[0];
+  assert.is(request?.qty, undefined);
 });
 
 test('should not create mint if reward is undefined.', async () => {
@@ -106,7 +115,10 @@ test('should not create mint if reward is undefined.', async () => {
     { reward: undefined }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  const request = state.requests.filter(
+    (r) => r.tx === interaction.originalTxId
+  )[0];
+  assert.is(request?.qty, undefined);
 });
 
 test('should not create mint if reward is null.', async () => {
@@ -117,7 +129,10 @@ test('should not create mint if reward is null.', async () => {
     { reward: null }
   );
   const state = (await connectedWallet1.readState()).cachedValue.state;
-  assert.is(state.requests[interaction.originalTxId]?.qty, undefined);
+  const request = state.requests.filter(
+    (r) => r.tx === interaction.originalTxId
+  )[0];
+  assert.is(request?.qty, undefined);
 });
 
 test('should create a request for 0 if reward is string xxx.', async () => {

@@ -2,7 +2,6 @@ import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
 import { mint } from '../src/write/mint.js';
 import { setupSmartWeaveEnv } from './setup.js';
-import { toPairs } from 'ramda';
 const test = suite('mint');
 
 test.before(async () => {});
@@ -27,33 +26,48 @@ test('Should create a kv store', async () => {
 });
 
 test('should only mint new requests', async () => {
-  const env = setupSmartWeaveEnv(999999, 1, '<tx>', undefined, 'ERROR', {
-    not_expired: {
-      target: '<jshaw>',
-      qty: 25,
-      expires: 721,
-    },
-    expired2: {
-      expires: 0,
-      qty: 5,
-      target: '<jshaw>',
-    },
-    expired3: {
-      expires: 0,
-      qty: 5,
-      target: '<jshaw>',
-    },
-    expired4: {
-      expires: 0,
-      qty: 5,
-      target: '<jshaw>',
-    },
-    processed: {
-      expires: 721,
-      qty: 5,
-      target: '<jshaw>',
-    },
-  });
+  const env = setupSmartWeaveEnv(
+    999999,
+    1,
+    '<tx>',
+    undefined,
+    'ERROR',
+    [
+      {
+        tx: 'not_expired',
+        target: '<jshaw>',
+        qty: 25,
+        expires: 721,
+      },
+      { tx: 'not_expired2', target: '<jshaw>', qty: 25, expires: 721 },
+      { tx: 'not_expired3', target: '<tom>', qty: 25, expires: 721 },
+      {
+        tx: 'expired2',
+        expires: 0,
+        qty: 5,
+        target: '<jshaw>',
+      },
+      {
+        tx: 'expired3',
+        expires: 0,
+        qty: 5,
+        target: '<jshaw>',
+      },
+      {
+        tx: 'expired4',
+        expires: 0,
+        qty: 5,
+        target: '<jshaw>',
+      },
+      {
+        tx: 'processed',
+        expires: 721,
+        qty: 5,
+        target: '<jshaw>',
+      },
+    ],
+    undefined
+  );
 
   const caller = '<justin>';
 
@@ -71,7 +85,10 @@ test('should only mint new requests', async () => {
     { caller }
   ).toPromise();
   const state = output.state;
-  assert.is(state.pile.length, 2);
+
+  assert.is(await env.kv.get('<jshaw>'), 50);
+  assert.is(await env.kv.get('<tom>'), 25);
+  assert.is(state.pile.length, 4);
 });
 
 test('should work with no requests TODO: udpate this test name', async () => {
@@ -82,23 +99,26 @@ test('should work with no requests TODO: udpate this test name', async () => {
     '<tx>',
     undefined,
     'ERROR',
-    {
-      good: {
+    [
+      {
+        tx: 'good',
         expires: 2,
         qty: 7,
         target: '<jshaw>',
       },
-      good2: {
+      {
+        tx: 'good2',
         expires: 2,
         qty: 7,
         target: '<jshaw>',
       },
-      processed: {
+      {
+        tx: 'processed',
         expires: 722,
         qty: 5,
         target: '<jshaw>',
       },
-    },
+    ],
     {}
   );
 

@@ -30,33 +30,38 @@ async function deploy(folder) {
       ...stateFromFileL1,
       ...{
         owner: process.env.WALLET_ADDRESS,
-        requests: {
-          '<tx1>': {
+        requests: [
+          {
+            tx: '<tx1>',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 2000000,
             expires: 120,
           },
-          '<tx2>': {
+          {
+            tx: '<tx2>',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 3000000,
             expires: 220,
           },
-          '<tx3>': {
+          {
+            tx: '<tx3>',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 4000000,
             expires: 320,
           },
-          '<tx4>': {
+          {
+            tx: '<tx4>',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 5000000,
             expires: 420,
           },
-          '<tx5>': {
+          {
+            tx: '<tx5>',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 6000000,
             expires: 520,
           },
-        },
+        ],
       },
     };
 

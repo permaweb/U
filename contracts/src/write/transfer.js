@@ -1,7 +1,6 @@
 import Async from 'hyper-async';
 const { of, fromPromise } = Async;
-import { ceAsync, getBalance } from '../util.js';
-import { isInteger, roundDown } from '../util.js';
+import { isInteger, roundDown, ceAsync, getBalance } from '../util.js';
 
 /**
  * @description Transfers RebAR tokens to another address.

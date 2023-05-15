@@ -46,13 +46,14 @@ test.before(async () => {
     ...initialStateL1,
     ...{
       owner: wallet1.address,
-      requests: {
-        '<expired>': {
+      requests: [
+        {
+          tx: '<expired>',
           target: '<jshaw>',
           qty: 100,
           expires: 0,
         },
-      },
+      ],
     },
   };
 
@@ -116,7 +117,7 @@ test.before(async () => {
 });
 
 test('should create-mint 1000 * 1e12', async () => {
-  await connectedWallet1L1.writeInteraction(
+  const interaction = await connectedWallet1L1.writeInteraction(
     { function: 'create-mint' },
     {
       reward: new BigNumber(1000 * 1e12)
@@ -125,8 +126,10 @@ test('should create-mint 1000 * 1e12', async () => {
     }
   );
   const state = (await connectedWallet1L1.readState()).cachedValue.state;
-
-  assert.is(toPairs(state.requests)[0][1]?.qty, 1000000000);
+  const request = state.requests.filter(
+    (r) => r.tx === interaction.originalTxId
+  )[0];
+  assert.is(request?.qty, 1000000000);
 });
 
 test('should mint 1000 * 1e12', async () => {

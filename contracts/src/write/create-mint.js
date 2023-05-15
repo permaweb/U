@@ -20,11 +20,12 @@ export function createMint({ block, transaction }) {
         )
       )
       .map(({ state, action, block, transaction }) => {
-        state.requests[transaction.id] = {
+        state.requests.push({
+          tx: transaction.id,
           target: action.caller,
           qty: roundDown(transaction.reward / 1e6),
           expires: block.height + 720,
-        };
+        });
         return state;
       })
       .fold(

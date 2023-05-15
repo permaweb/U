@@ -20,7 +20,7 @@ test('should create 1 mint request', async () => {
       mint_contract: '<mint-contract-2>',
       ticker: 'RebAR',
       balances: {},
-      requests: {},
+      requests: [],
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -31,9 +31,10 @@ test('should create 1 mint request', async () => {
     { caller }
   );
   const state = output.state;
-  assert.is(state.requests['<tx>'].target, '<justin>');
-  assert.is(state.requests['<tx>'].qty, 1000000);
-  assert.is(state.requests['<tx>'].expires, 721);
+  const tx = state.requests.filter((r) => r.tx === '<tx>')[0];
+  assert.is(tx.target, '<justin>');
+  assert.is(tx.qty, 1000000);
+  assert.is(tx.expires, 721);
 });
 
 test('should throw You must mint at least 1 feron.', () => {
@@ -50,7 +51,7 @@ test('should throw You must mint at least 1 feron.', () => {
           mint_contract: '<mint-contract-2>',
           ticker: 'RebAR',
           balances: {},
-          requests: {},
+          requests: [],
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
