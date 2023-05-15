@@ -1,5 +1,4 @@
 import { WarpFactory } from 'warp-contracts';
-import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 
 import fs from 'fs';
 
@@ -7,7 +6,7 @@ async function read(contractId, address) {
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
-  const warp = WarpFactory.forMainnet().use(new DeployPlugin());
+  const warp = WarpFactory.forMainnet();
 
   const connected = warp
     .contract(contractId)
