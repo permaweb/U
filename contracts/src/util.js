@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { Left, Right } from './hyper-either.js';
 import { fromPairs, toPairs, pipe } from 'ramda';
 import { Rejected, Resolved } from 'hyper-async';
+
 /**
  * @description Contract Error (use with hyper-either)
  *

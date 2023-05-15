@@ -168,7 +168,6 @@ test('allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2', async () => 
 
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
   assert.is(state.claimable.length, 2);
-  console.log('STATE', state, interaction1.originalTxId);
   // Set the allow tx for claim next
   allowTxForClaim1 = interaction1.originalTxId;
   allowTxForClaim2 = interaction2.originalTxId;

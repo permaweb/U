@@ -7,6 +7,7 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
+import { getAnsName } from 'api/ans';
 
 export default function WalletConnect(props: { callback?: () => void }) {
   const arProvider = useArweaveProvider();
@@ -14,6 +15,14 @@ export default function WalletConnect(props: { callback?: () => void }) {
   const [showWallet, setShowWallet] = React.useState<boolean>(false);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [copied, setCopied] = React.useState<boolean>(false);
+  const [ans, setAns] = React.useState<string | undefined>();
+  const [ansError, setAnsError] = React.useState<string | undefined>();
+
+  // ANS effect
+  React.useEffect(() => {
+    if (arProvider.walletAddress && !ans && !ansError)
+      getAnsName(arProvider.walletAddress).then(setAns).catch(setAnsError);
+  }, [arProvider.walletAddress]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -65,7 +74,7 @@ export default function WalletConnect(props: { callback?: () => void }) {
       <S.Wrapper>
         <Button
           type={'alt1'}
-          label={getWalletLabel()}
+          label={ans ? ans : getWalletLabel()}
           handlePress={handlePress}
           useMaxWidth
         />

@@ -1,6 +1,6 @@
 import Async from 'hyper-async';
-import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
+import { getWarpFactory, syncState } from './common';
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 
