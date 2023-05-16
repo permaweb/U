@@ -43,7 +43,7 @@ async function deploy(folder) {
     ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
-      initialBalances: balances,
+      balances,
     },
   };
 
@@ -72,11 +72,30 @@ async function deploy(folder) {
         sourceType: SourceType.WARP_SEQUENCER,
         unsafeClient: 'skip',
         useKVStorage: true,
+        useConstructor: true,
       },
     },
   });
   console.log(`L1 contractTxId ${deployL1.contractTxId}`);
   console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
+
+  const connected = warp
+    .contract(deploySEQ.contractTxId)
+    .setEvaluationOptions({
+      internalWrites: true,
+      unsafeClient: 'skip',
+      useKVStorage: true,
+      useConstructor: true,
+    })
+    .connect(jwk);
+  const state = (await connected.readState()).cachedValue.state;
+  const balance = (
+    await connected.getStorageValues([
+      '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+    ])
+  ).cachedValue.get('9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4');
+
+  console.log('State / Balances', JSON.stringify({ state, balance }));
 }
 deploy(process.argv[2]).catch(console.log);
 

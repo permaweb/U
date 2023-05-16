@@ -15,6 +15,19 @@ export async function handle(state, action) {
     transaction: SmartWeave.transaction,
     kv: SmartWeave.kv,
   };
+
+  if (input.function === '__init') {
+    const balances = action.input.args.balances;
+    await Promise.all(
+      Object.keys(balances).map((k) => SmartWeave.kv.put(k, balances[k]))
+    );
+    const state = {
+      ...action.input.args,
+      balances: {},
+    };
+    return { state };
+  }
+
   switch (input.function) {
     case 'balance':
       return balance(state, action);
