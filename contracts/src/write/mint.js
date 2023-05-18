@@ -23,8 +23,9 @@ export function mint({ viewContractState, block, kv }) {
       )
       .map((queue) => {
         for (let i = 0; i < queue.length; i++) {
-          const tx = queue[i].tx;
-          state.pile.push(tx);
+          const tx = queue[i]?.tx;
+          const expires = queue[i]?.expires;
+          state.pile[tx] = expires;
         }
       })
       .map(() => ({ state }));
@@ -40,33 +41,39 @@ export function mint({ viewContractState, block, kv }) {
  * @param {Array} pairs
  * @return {Array} pairs
  */
-export const notInPile = (state, requests) =>
-  requests.filter((request) => !state.pile.includes(request.tx));
+export const notInPile = (state, requests) => {
+  const set = new Set(Object.keys(state.pile));
+  return requests.filter((request) => !set.has(request.tx));
+};
 
 /**
- * @description Combines any targets that are the same and returns the combined qty
- *
+ * @description Combines quantities by target in the given array of requests.
  * @author @jshaw-ar
- * @param {*} requests
- * @return {*}
+ * @param {Array<{ target: string, qty: number }>} requests - The array of requests.
+ * @returns {{ combinedTargets: Array<{ target: string, qty: number }>, requests: Array<{ target: string, qty: number }> }} The combined targets and original requests.
  */
 function combineQuantitiesByTarget(requests) {
-  const combinedArr = [];
+  const combinedMap = new Map();
 
-  requests.forEach((request) => {
-    const existingTargetIndex = combinedArr.findIndex(
-      (combinedItem) => combinedItem.target === request.target
-    );
-
-    if (existingTargetIndex !== -1) {
-      combinedArr[existingTargetIndex].qty += request.qty;
+  for (let i = 0; i < requests.length; i++) {
+    const request = requests[i];
+    if (combinedMap.has(request.target)) {
+      combinedMap.set(
+        request.target,
+        combinedMap.get(request.target) + request.qty
+      );
     } else {
-      combinedArr.push({ target: request.target, qty: request.qty });
+      combinedMap.set(request.target, request.qty);
     }
-  });
+  }
+
+  const combinedTargets = Array.from(combinedMap, ([target, qty]) => ({
+    target,
+    qty,
+  }));
 
   return {
-    combinedTargets: combinedArr,
+    combinedTargets,
     requests,
   };
 }
