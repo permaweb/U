@@ -11,7 +11,7 @@ export interface StateSEQ {
   };
   settings: any[];
   claimable: Claimable[];
-  divisibility: 6;
+  divisibility: 1e6;
   pile: string[];
 }
 

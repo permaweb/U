@@ -22,7 +22,7 @@ test('should not allow claiming without txId', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller }
       ),
@@ -46,7 +46,7 @@ test('should not allow claiming with null txID', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: null } }
       ),
@@ -70,7 +70,7 @@ test('should not allow claiming with non-existing txID', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>', qty: 1 } }
       ),
@@ -99,7 +99,7 @@ test('should throw (Claim not addressed to caller.)', () => {
               to: '<tom>',
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>', qty: 1 } }
       ),
@@ -129,7 +129,7 @@ test('should throw (Incorrect qty.)', () => {
               qty: 11,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>', qty: 10 } }
       ),
@@ -159,7 +159,7 @@ test('should throw (Incorrect qty.)', () => {
               qty: 11,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>' } }
       ),
@@ -189,7 +189,7 @@ test('should not allow claiming with null quantity', () => {
               qty: 11,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>', qty: null } }
       ),
@@ -222,7 +222,7 @@ test('should not allow claiming with incorrect quantity', () => {
               qty: 11,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { txID: '<test-claim>', qty: 10 } }
       ),
@@ -252,7 +252,7 @@ test('should not allow claiming with null quantity', () => {
               qty: 11,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller: '<incorrect>', input: { txID: '<test-claim>', qty: 11 } }
       ),
@@ -292,7 +292,7 @@ test('should claim tokens', async () => {
           from: '<tom>',
         },
       ],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { txID: '<test-claim>', qty: 11 } }
   );
