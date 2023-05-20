@@ -15,7 +15,7 @@ export function createMint({ block, transaction }) {
     return of({ state, action, block, transaction })
       .chain(
         ce(
-          roundDown(transaction.reward / 1e6) < 1,
+          roundDown(transaction.reward / state.divisibility) < 1,
           'You must mint at least 1 feron.'
         )
       )
@@ -23,7 +23,7 @@ export function createMint({ block, transaction }) {
         state.requests.push({
           tx: transaction.id,
           target: action.caller,
-          qty: roundDown(transaction.reward / 1e6),
+          qty: roundDown(transaction.reward / state.divisibility),
           expires: block.height + 720,
         });
         return state;
