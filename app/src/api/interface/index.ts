@@ -6,13 +6,12 @@
 export interface StateSEQ {
   ticker: string;
   name: string;
-  balances: {
-    [address: string]: number;
-  };
   settings: any[];
   claimable: Claimable[];
   divisibility: 1e6;
-  pile: string[];
+  pile: {
+    [tx: string]: number;
+  };
 }
 
 /**
