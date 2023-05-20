@@ -47,4 +47,5 @@ export interface MintRequest {
   target: string;
   qty: number;
   expires: number;
+  tx: string;
 }

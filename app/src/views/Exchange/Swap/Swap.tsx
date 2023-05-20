@@ -13,7 +13,7 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { StateL1, StateSEQ, env } from 'api';
+import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
 const { getQueue, getState, createMint } = env;
 
@@ -171,32 +171,34 @@ export default function Swap() {
         {queue && (
           <>
             <S.DHeader>
-              <p>{language.requestQueue}</p>
+              <p>
+                {language.requestQueue} ({queue?.length || 0})
+              </p>
             </S.DHeader>
-            {queue.map((tx: any, index: number) => {
-              const widthPercentage = 100 / Object.keys(tx[1]).length;
+            {queue.map((request: MintRequest, index: number) => {
+              const widthPercentage = 100 / 4;
               return (
                 <React.Fragment key={index}>
                   <S.DetailSubheader>
-                    <p>{tx[0]}</p>
+                    <p>{request.tx}</p>
                   </S.DetailSubheader>
                   <S.DetailLine
                     key={index}
                     type={'pending'}
                     ownerLine={
                       arProvider.walletAddress
-                        ? arProvider.walletAddress === tx[1].target
+                        ? arProvider.walletAddress === request.target
                         : false
                     }
                   >
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${formatAddress(tx[1].target, false)}`}</p>
+                      <p>{`${formatAddress(request.target, false)}`}</p>
                     </S.DetailValue>
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <S.Qty>{`${language.qty}: ${tx[1].qty}`}</S.Qty>
+                      <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
                     </S.DetailValue>
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${language.expires}: ${tx[1].expires}`}</p>
+                      <p>{`${language.expires}: ${request.expires}`}</p>
                     </S.DetailValue>
                   </S.DetailLine>
                 </React.Fragment>
