@@ -29,11 +29,6 @@ export async function handle(state, action) {
     kv: SmartWeave.kv,
   };
 
-  // remove expired requests in the pile to prevent state bloat.
-  state.pile = Object.fromEntries(
-    Object.entries(state.pile).filter((e) => e[1] >= env.block.height)
-  );
-
   switch (input.function) {
     case 'balance':
       return balance(state, action);
