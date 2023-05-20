@@ -25,7 +25,7 @@ function getBalances(state) {
   )(state);
 }
 
-const test = suite('full-integration');
+const test = suite('migration');
 
 test.before(async () => {
   // arlocal = new ArLocal.default();
@@ -69,6 +69,7 @@ test.before(async () => {
     src: contractSrcSEQ,
     evaluationManifest: {
       evaluationOptions: {
+        sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
         useKVStorage: true,
