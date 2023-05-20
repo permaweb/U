@@ -7,14 +7,6 @@ import { mint } from './write/mint.js';
 
 export async function handle(state, action) {
   const input = action.input;
-  const env = {
-    readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
-    viewContractState: SmartWeave.contracts.viewContractState.bind(SmartWeave),
-    write: SmartWeave.contracts.write.bind(SmartWeave),
-    block: SmartWeave.block,
-    transaction: SmartWeave.transaction,
-    kv: SmartWeave.kv,
-  };
 
   if (input.function === '__init') {
     const balances = action.input.args.balances;
@@ -27,6 +19,20 @@ export async function handle(state, action) {
     };
     return { state };
   }
+
+  const env = {
+    readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
+    viewContractState: SmartWeave.contracts.viewContractState.bind(SmartWeave),
+    write: SmartWeave.contracts.write.bind(SmartWeave),
+    block: SmartWeave.block,
+    transaction: SmartWeave.transaction,
+    kv: SmartWeave.kv,
+  };
+
+  // remove expired requests in the pile to prevent state bloat.
+  state.pile = Object.fromEntries(
+    Object.entries(state.pile).filter((e) => e[1] >= env.block.height)
+  );
 
   switch (input.function) {
     case 'balance':
