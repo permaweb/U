@@ -70,7 +70,8 @@ async function deploy(folder) {
       ...{
         owner: process.env.WALLET_ADDRESS,
         balances: {
-          // NICK, put your wallet here if you want to preload your wallet with bAR locally
+          // put your wallet here if you want to preload your wallet with bAR locally
+          ...balances,
           '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 100000000,
           uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 100000000,
         },
