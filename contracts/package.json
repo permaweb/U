@@ -8,7 +8,11 @@
     "test": "npm run build && uvu test",
     "build": "rm -r dist; node ./scripts/build.js && cp initial-state-SEQ.json dist/initial-state-SEQ.json && cp initial-state-L1.json dist/initial-state-L1.json",
     "deploy": "npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-prod.mjs ./dist",
-    "deploy:local": "npm i && npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-local.mjs ./dist"
+    "deploy:local": "npm i && npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-local.mjs ./dist",
+    "read-state:local": "node ./scripts/read-state-local.mjs hKNr_sLYmAinNkMlvkjjABXRqxqKV9MWuPxtLEUWHc0",
+    "perf:setup": "node --max-old-space-size=10240 ./perf/perf-setup.mjs dist",
+    "perf:load-wallets": "node --max-old-space-size=8192 ./perf/wallets-setup.mjs",
+    "perf": "node --inspect ./perf/perf.mjs dist"
   },
   "keywords": [],
   "author": "Forward Research",
