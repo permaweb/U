@@ -150,12 +150,12 @@ test('should mint 10 RebAR', async () => {
     function: 'mint',
   });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  console.log('state', state);
   const balance = (
     await connectedWallet1SEQ.getStorageValues([wallet1.address])
   ).cachedValue.get(wallet1.address);
   assert.is(balance, 10000000);
-  // assert.is(state.pile.length, 1);
+  const pile = toPairs(state.pile);
+  assert.is(pile.length, 1);
 });
 
 test('transfer 5 to wallet 2', async () => {
@@ -197,7 +197,7 @@ test('claim 2 with wallet 1', async () => {
     txID: allowTxForClaim1,
     qty: 2000000,
   });
-  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
+  (await connectedWallet1SEQ.readState()).cachedValue.state;
 
   const result = (
     await connectedWallet1SEQ.getStorageValues([
@@ -217,7 +217,7 @@ test('should claim with different txID', async () => {
     txID: allowTxForClaim2,
     qty: 1000000,
   });
-  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
+  (await connectedWallet1SEQ.readState()).cachedValue.state;
   const result = (
     await connectedWallet1SEQ.getStorageValues([
       wallet2.address,
