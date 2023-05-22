@@ -8,6 +8,7 @@ Introducing the rebirth of bAR. RebAR — bAR Reborn. The fuel of the Permaweb.
   - [Goals](#goals)
   - [Summary](#summary)
   - [Repository](#repository)
+  - [Developer Guide](#developer-guide)
   - [Contact](#contact)
   - [Resources](#resources)
 
@@ -25,6 +26,10 @@ RebAR is fuel for the Permaweb. Permaweb users can use RebAR to swap between oth
 
 - `contracts/` - RebAR js smart contracts. [README](./contracts/README.md)
 - `app/` - ReactJS UI / Renderer for RebAR. [README](./app/README.md)
+
+## Developer Guide
+
+- [Developer Guide](./contracts/DEVELOPER-GUIDE.md)
 
 ## Contact
 
