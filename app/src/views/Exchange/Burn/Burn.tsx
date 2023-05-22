@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import parse from 'html-react-parser';
 import { ReactSVG } from 'react-svg';
 
@@ -80,7 +80,7 @@ export default function Burn() {
     });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
       setStateSEQ(s);
       getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
@@ -92,7 +92,7 @@ export default function Burn() {
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setRebarAmount(arAmount);
   }, [arAmount]);
 
@@ -171,7 +171,7 @@ export default function Burn() {
               return (
                 <React.Fragment key={index}>
                   <S.DetailSubheader>
-                    <p>{request.tx}</p>
+                    <p>{`${language.requestTransaction}: ${formatAddress(request.tx, true)}`}</p>
                   </S.DetailSubheader>
                   <S.DetailLine
                     key={index}
@@ -183,7 +183,7 @@ export default function Burn() {
                     }
                   >
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${formatAddress(request.target, false)}`}</p>
+                      <p>{`${formatAddress(request.target, true)}`}</p>
                     </S.DetailValue>
                     <S.DetailValue widthPercentage={widthPercentage}>
                       <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>

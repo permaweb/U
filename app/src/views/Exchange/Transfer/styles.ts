@@ -33,9 +33,6 @@ export const BWrapper = styled.div`
         margin: 20px 0 0 0;
         color: ${(props) => props.theme.colors.font.primary.alt8};
     }
-    span {
-7};
-    }
 `;
 
 export const FWrapper = styled.div`
@@ -56,5 +53,3 @@ export const Divider = styled.div`
 export const AWrapper = styled.div`
   margin: 20px 0 0 0;
 `;
-
-export const ConnectWrapper = styled.div``;

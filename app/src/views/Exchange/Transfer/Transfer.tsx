@@ -131,7 +131,7 @@ export default function Transfer() {
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || 0}`}
+              {`${connectedRebarBalance || '-'}`}
             </p>
           </S.BWrapper>
           <S.FWrapper>
