@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import parse from 'html-react-parser';
-import { useArweaveProvider } from 'providers/ArweaveProvider';
+import React, { useEffect } from "react";
+import parse from "html-react-parser";
+import { useArweaveProvider } from "providers/ArweaveProvider";
 
-import { Button } from 'components/atoms/Button';
-import { Notification } from 'components/atoms/Notification';
-import { formatAddress } from 'helpers/utils';
-import { language } from 'helpers/language';
-import * as S from './styles';
-import { Claimable, env, StateSEQ } from 'api';
-import { ResponseType } from 'helpers/types';
+import { Button } from "components/atoms/Button";
+import { Notification } from "components/atoms/Notification";
+import { formatAddress } from "helpers/utils";
+import { language } from "helpers/language";
+import * as S from "./styles";
+import { Claimable, env, StateSEQ } from "api";
+import { ResponseType } from "helpers/types";
 
 const { getState, getRebarBalance, claim } = env;
 
@@ -50,7 +50,7 @@ export default function Claim() {
         arProvider.walletAddress
       )
         .then(setConnectedRebarBalance)
-        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+        .catch((e: any) => setConnectedRebarBalanceError(e.message || "Error"));
     }
   }, [state, connectedClaims]);
 
@@ -75,7 +75,7 @@ export default function Claim() {
 
     return (
       <Button
-        type={'alt1'}
+        type={"alt1"}
         label={label}
         handlePress={action}
         height={52.5}
@@ -180,12 +180,12 @@ export default function Claim() {
     <>
       {claimNotification && (
         <Notification
-          type={claimNotification.status === true ? 'success' : 'warning'}
+          type={claimNotification.status === true ? "success" : "warning"}
           message={claimNotification.message!}
           callback={() => setClaimNotification(null)}
         />
       )}
-      <S.Wrapper className={'tab-wrapper'}>
+      <S.Wrapper className={"tab-wrapper"}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.claim}</h2>
@@ -194,7 +194,7 @@ export default function Claim() {
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || '-'}`}
+              {`${connectedRebarBalance || "-"}`}
             </p>
           </S.BWrapper>
           <S.CWrapper>{getClaims()}</S.CWrapper>

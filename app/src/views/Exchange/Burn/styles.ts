@@ -39,16 +39,16 @@ export const DWrapper = styled.div`
 `;
 
 export const BWrapper = styled.div`
-  p,
-  span {
-    font-weight: ${(props) => props.theme.typography.weight.bold};
-    font-family: ${(props) => props.theme.typography.family.alt1};
-    font-size: 24px;
-  }
-  p {
-    margin: 20px 0 0 0;
-    color: ${(props) => props.theme.colors.font.primary.alt8};
-  }
+    p, span {
+        line-height: 1.5;
+        font-weight: ${(props) => props.theme.typography.weight.bold};
+        font-family: ${(props) => props.theme.typography.family.alt1};
+        font-size: 24px;
+    }
+    p {
+        margin: 20px 0 0 0;
+        color: ${(props) => props.theme.colors.font.primary.alt8};
+    }
 `;
 
 export const FWrapper = styled.div`
@@ -71,7 +71,7 @@ export const AWrapper = styled.div`
 `;
 
 export const MintActionWrapper = styled.div`
-  margin: 20px 0;
+  margin: 20px 0
 `;
 
 export const DetailWrapper = styled.div`
