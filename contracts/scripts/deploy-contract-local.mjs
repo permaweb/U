@@ -1,4 +1,4 @@
-import { WarpFactory } from 'warp-contracts';
+import { WarpFactory, SourceType } from 'warp-contracts';
 import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 import BigNumber from 'bignumber.js';
 import { compose, prop, fromPairs, toPairs, map } from 'ramda';
@@ -71,10 +71,30 @@ async function deploy(folder) {
         owner: process.env.WALLET_ADDRESS,
         balances: {
           // put your wallet here if you want to preload your wallet with bAR locally
-          ...balances,
-          '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 100000000,
-          uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 100000000,
+          // ...balances,
+          '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 1000000000000000,
+          uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 1000000000000000,
         },
+        claimable: [
+          {
+            to: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+            from: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 10000,
+            txID: '<tx1>',
+          },
+          {
+            to: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+            from: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 10000,
+            txID: '<tx2>',
+          },
+          {
+            from: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+            to: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+            qty: 10000,
+            txID: '<tx3>',
+          },
+        ],
       },
     };
 
@@ -90,6 +110,15 @@ async function deploy(folder) {
         ...initialStateSEQ,
         mint_contract: deployL1.contractTxId,
       }),
+      evaluationManifest: {
+        evaluationOptions: {
+          sourceType: SourceType.WARP_SEQUENCER,
+          internalWrites: true,
+          unsafeClient: 'skip',
+          useKVStorage: true,
+          useConstructor: true,
+        },
+      },
       src: contractSrcSEQ,
     });
     console.log(`L1 contractTxId ${deployL1.contractTxId}`);
