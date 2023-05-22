@@ -27,8 +27,11 @@ async function read(contractId) {
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;
   console.log('State', JSON.stringify({ state }));
-  const balances = (await connected.getStorageValues(fiveHundoWallets))
-    .cachedValue;
+  const balances = (
+    await connected.getStorageValues([
+      '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+    ])
+  ).cachedValue;
 
   const obj = Object.fromEntries(balances);
   console.log('Balances', obj);
