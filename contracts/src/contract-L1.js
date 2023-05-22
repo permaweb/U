@@ -11,13 +11,13 @@ export async function handle(state, action) {
     transaction: SmartWeave.transaction,
   };
 
-  const requests = removeExpired(state.requests, env.block.height);
+  state.requests = removeExpired(state.requests, env.block.height);
 
   switch (action.input.function) {
     case 'create-mint':
-      return createMint(env)({ ...state, requests }, action);
+      return createMint(env)(state, action);
     case 'get-queue':
-      return getQueue({ ...state, requests }, action);
+      return getQueue(state, action);
     default:
       throw new ContractError(
         `No function supplied or function not recognized`
