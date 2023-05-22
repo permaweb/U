@@ -18,7 +18,7 @@ export interface StateSEQ {
  * @author @jshaw-ar
  * @interface Claimable
  */
-interface Claimable {
+export interface Claimable {
   to: string;
   from: string;
   txID: string;
