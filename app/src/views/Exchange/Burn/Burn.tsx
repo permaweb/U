@@ -17,7 +17,7 @@ import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
 const { getQueue, getState, createMint } = env;
 
-export default function Swap() {
+export default function Burn() {
   const arProvider = useArweaveProvider();
 
   const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
@@ -25,13 +25,10 @@ export default function Swap() {
   const [queue, setQueue] = React.useState<any>();
   const [created, setCreated] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [swapResult, setSwapResult] = React.useState<ResponseType | null>(null);
+  const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
 
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
-
-  const connectedRebarBalance =
-    stateSEQ?.balances[arProvider?.walletAddress || ''] || 0;
 
   function getAction() {
     let action: () => void;
@@ -52,8 +49,8 @@ export default function Swap() {
 
       label = language.connectWallet;
     } else {
-      action = () => swapAR();
-      label = language.swap;
+      action = () => burnAR();
+      label = language.burn;
     }
 
     return (
@@ -69,30 +66,26 @@ export default function Swap() {
     );
   }
 
-  function swapAR() {
+  function burnAR() {
     setLoading(true);
     createMint({
       contractId: import.meta.env.VITE_CONTRACT_L1 || '',
       qty: arAmount,
     }).then((r: any) => {
-      console.log('Create mint response', r);
       setLoading(false);
-      setSwapResult({
+      setBurnResult({
         status: true,
-        message: language.swapSuccess,
+        message: language.burnSuccess,
       });
     });
   }
 
   React.useEffect(() => {
     getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      console.log('StateSEQ', s);
       setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1, s.pile).then(
-        (requests: any[]) => {
-          setQueue(requests);
-        }
-      );
+      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
+        setQueue(requests);
+      });
     });
     getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
       setStateL1(s);
@@ -103,23 +96,21 @@ export default function Swap() {
     setRebarAmount(arAmount);
   }, [arAmount]);
 
-  console.log(queue);
-
   return (
     <>
-      {swapResult && (
+      {burnResult && (
         <Notification
-          type={swapResult.status === true ? 'success' : 'warning'}
-          message={swapResult.message!}
-          callback={() => setSwapResult(null)}
+          type={burnResult.status === true ? 'success' : 'warning'}
+          message={burnResult.message!}
+          callback={() => setBurnResult(null)}
         />
       )}
 
       <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
-            <h2>{language.swap}</h2>
-            <p>{parse(language.swapDescription)}</p>
+            <h2>{language.burn}</h2>
+            <p>{parse(language.burnDescription)}</p>
           </S.DWrapper>
           <S.BWrapper>
             <p>
