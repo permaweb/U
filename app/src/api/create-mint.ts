@@ -14,7 +14,6 @@ export function createMint(input: { contractId: string; qty: number }) {
   return of(input)
     .chain(fromPromise(createMintL1))
     .fork((e: any) => {
-      console.log(e);
       return { error: 'There was an error fetching the contract state' };
     }, identity);
 }
