@@ -1,23 +1,21 @@
 import Async from 'hyper-async';
 import { getWarpFactory, syncState } from './common';
 const { of, fromPromise } = Async;
-import BigNumber from 'bignumber.js';
 
-export interface TransferInput {
+export interface ClaimInput {
   contractId: string;
-  from: string;
-  target: string;
+  tx: string;
   qty: number;
 }
 
-export function transfer(input: TransferInput) {
+export function claim(input: ClaimInput) {
   return of(input)
-    .chain((input: TransferInput) => fromPromise(warpTransfer)(input))
+    .chain((input: ClaimInput) => fromPromise(warpClaim)(input))
     .toPromise();
 }
 
-const warpTransfer = async (input: TransferInput) => {
-  const { contractId, qty, target, from } = input;
+const warpClaim = async (input: ClaimInput) => {
+  const { contractId, qty, tx } = input;
   const warp = getWarpFactory();
 
   if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
@@ -31,14 +29,11 @@ const warpTransfer = async (input: TransferInput) => {
       useConstructor: true,
       allowBigInt: true,
     });
-  const newQty = new BigNumber(qty * 1e6)
-    .integerValue(BigNumber.ROUND_DOWN)
-    .toNumber();
 
   const interaction = await contract.writeInteraction({
-    function: 'transfer',
-    target,
-    qty: newQty,
+    function: 'claim',
+    txID: tx,
+    qty,
   });
 
   if (interaction?.originalTxId) {

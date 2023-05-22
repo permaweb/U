@@ -13,11 +13,11 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { StateL1, StateSEQ, env } from 'api';
+import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
 const { getQueue, getState, createMint } = env;
 
-export default function Swap() {
+export default function Burn() {
   const arProvider = useArweaveProvider();
 
   const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
@@ -25,13 +25,10 @@ export default function Swap() {
   const [queue, setQueue] = React.useState<any>();
   const [created, setCreated] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [swapResult, setSwapResult] = React.useState<ResponseType | null>(null);
+  const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
 
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
-
-  const connectedRebarBalance =
-    stateSEQ?.balances[arProvider?.walletAddress || ''] || 0;
 
   function getAction() {
     let action: () => void;
@@ -52,8 +49,8 @@ export default function Swap() {
 
       label = language.connectWallet;
     } else {
-      action = () => swapAR();
-      label = language.swap;
+      action = () => burnAR();
+      label = language.burn;
     }
 
     return (
@@ -69,30 +66,26 @@ export default function Swap() {
     );
   }
 
-  function swapAR() {
+  function burnAR() {
     setLoading(true);
     createMint({
       contractId: import.meta.env.VITE_CONTRACT_L1 || '',
       qty: arAmount,
     }).then((r: any) => {
-      console.log('Create mint response', r);
       setLoading(false);
-      setSwapResult({
+      setBurnResult({
         status: true,
-        message: language.swapSuccess,
+        message: language.burnSuccess,
       });
     });
   }
 
   React.useEffect(() => {
     getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      console.log('StateSEQ', s);
       setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1, s.pile).then(
-        (requests: any[]) => {
-          setQueue(requests);
-        }
-      );
+      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
+        setQueue(requests);
+      });
     });
     getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
       setStateL1(s);
@@ -103,23 +96,21 @@ export default function Swap() {
     setRebarAmount(arAmount);
   }, [arAmount]);
 
-  console.log(queue);
-
   return (
     <>
-      {swapResult && (
+      {burnResult && (
         <Notification
-          type={swapResult.status === true ? 'success' : 'warning'}
-          message={swapResult.message!}
-          callback={() => setSwapResult(null)}
+          type={burnResult.status === true ? 'success' : 'warning'}
+          message={burnResult.message!}
+          callback={() => setBurnResult(null)}
         />
       )}
 
       <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
-            <h2>{language.swap}</h2>
-            <p>{parse(language.swapDescription)}</p>
+            <h2>{language.burn}</h2>
+            <p>{parse(language.burnDescription)}</p>
           </S.DWrapper>
           <S.BWrapper>
             <p>
@@ -171,32 +162,34 @@ export default function Swap() {
         {queue && (
           <>
             <S.DHeader>
-              <p>{language.requestQueue}</p>
+              <p>
+                {language.requestQueue} ({queue?.length || 0})
+              </p>
             </S.DHeader>
-            {queue.map((tx: any, index: number) => {
-              const widthPercentage = 100 / Object.keys(tx[1]).length;
+            {queue.map((request: MintRequest, index: number) => {
+              const widthPercentage = 100 / 4;
               return (
                 <React.Fragment key={index}>
                   <S.DetailSubheader>
-                    <p>{tx[0]}</p>
+                    <p>{request.tx}</p>
                   </S.DetailSubheader>
                   <S.DetailLine
                     key={index}
                     type={'pending'}
                     ownerLine={
                       arProvider.walletAddress
-                        ? arProvider.walletAddress === tx[1].target
+                        ? arProvider.walletAddress === request.target
                         : false
                     }
                   >
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${formatAddress(tx[1].target, false)}`}</p>
+                      <p>{`${formatAddress(request.target, false)}`}</p>
                     </S.DetailValue>
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <S.Qty>{`${language.qty}: ${tx[1].qty}`}</S.Qty>
+                      <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
                     </S.DetailValue>
                     <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${language.expires}: ${tx[1].expires}`}</p>
+                      <p>{`${language.expires}: ${request.expires}`}</p>
                     </S.DetailValue>
                   </S.DetailLine>
                 </React.Fragment>

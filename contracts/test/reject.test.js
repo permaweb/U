@@ -29,7 +29,7 @@ test('should throw txID must be passed to the reject function.', () => {
               qty: 5,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { function: 'reject' } }
       ),
@@ -62,7 +62,7 @@ test('should throw Claim not addressed to caller.', () => {
               qty: 5,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { function: 'reject', tx: '<reject-tx>' } }
       ),
@@ -95,7 +95,7 @@ test('should throw Claim does not exist.', () => {
               qty: 5,
             },
           ],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { function: 'reject', tx: '<not-exist>' } }
       ),
@@ -123,7 +123,7 @@ test('should reject tokens', async () => {
           qty: 5,
         },
       ],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { function: 'reject', tx: '<reject-tx>' } }
   );

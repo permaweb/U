@@ -42,6 +42,9 @@ export const readState = async (tx: string) => {
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
+      unsafeClient: 'skip',
+      useKVStorage: true,
+      useConstructor: true,
       allowBigInt: true,
     })
     .readState();
@@ -68,4 +71,31 @@ export const viewState = async (tx: string, input: any) => {
     .viewState(input);
   if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
   return state.result;
+};
+
+/**
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {string} tx
+ * @param {any} input
+ * @return {*}
+ */
+export const getKV = async (tx: string, address: string) => {
+  const warp = getWarpFactory();
+  const connected = warp
+    .contract(tx)
+    .setEvaluationOptions({
+      internalWrites: true,
+      unsafeClient: 'skip',
+      useKVStorage: true,
+      useConstructor: true,
+      allowBigInt: true,
+    })
+    .connect('use_wallet');
+  (await connected.readState()).cachedValue.state;
+
+  return (
+    (await connected.getStorageValues([address])).cachedValue.get(address) || 0
+  );
 };

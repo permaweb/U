@@ -6,20 +6,19 @@
 export interface StateSEQ {
   ticker: string;
   name: string;
-  balances: {
-    [address: string]: number;
-  };
   settings: any[];
   claimable: Claimable[];
-  divisibility: 6;
-  pile: string[];
+  divisibility: 1e6;
+  pile: {
+    [tx: string]: number;
+  };
 }
 
 /**
  * @author @jshaw-ar
  * @interface Claimable
  */
-interface Claimable {
+export interface Claimable {
   to: string;
   from: string;
   txID: string;
@@ -48,4 +47,5 @@ export interface MintRequest {
   target: string;
   qty: number;
   expires: number;
+  tx: string;
 }

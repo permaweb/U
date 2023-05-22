@@ -17,9 +17,6 @@ export function getState(tx: string) {
         console.log(e);
         return { error: 'There was an error fetching the contract state.' };
       },
-      (state: any) => {
-        console.log('State', JSON.stringify(state));
-        return state;
-      }
+      (state: any) => state
     );
 }

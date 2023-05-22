@@ -6,7 +6,7 @@
     ["communityLogo", "U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY"]
   ],
   "claimable": [],
-  "divisibility": 6,
   "mint_contract": "",
-  "pile": []
+  "pile": {},
+  "divisibility": 1e6
 }

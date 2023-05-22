@@ -70,6 +70,7 @@ async function deploy(folder) {
     evaluationManifest: {
       evaluationOptions: {
         sourceType: SourceType.WARP_SEQUENCER,
+        internalWrites: true,
         unsafeClient: 'skip',
         useKVStorage: true,
         useConstructor: true,

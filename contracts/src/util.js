@@ -59,7 +59,7 @@ export function roundDown(v) {
  * @return {Array}
  */
 export const removeExpired = (queue, height) =>
-  queue.filter((request) => request.expires > height);
+  queue.filter((request) => request?.expires > height);
 
 /**
  *

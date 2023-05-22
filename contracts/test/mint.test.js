@@ -78,9 +78,9 @@ test('should only mint new requests', async () => {
       balances: {},
       settings: [['isTradeable', true]],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
       mint_contract: '<mint-contract>',
-      pile: ['processed'],
+      pile: { processed: 1 },
     },
     { caller }
   ).toPromise();
@@ -88,7 +88,7 @@ test('should only mint new requests', async () => {
 
   assert.is(await env.kv.get('<jshaw>'), 50);
   assert.is(await env.kv.get('<tom>'), 25);
-  assert.is(state.pile.length, 4);
+  assert.is(Object.keys(state.pile).length, 4);
 });
 
 test('should work with no requests TODO: udpate this test name', async () => {
@@ -131,15 +131,15 @@ test('should work with no requests TODO: udpate this test name', async () => {
       balances: {},
       settings: [['isTradeable', true]],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
       mint_contract: '<mint-contract>',
-      pile: ['processed'],
+      pile: { processed: 1 },
     },
     { caller }
   ).toPromise();
   const state = output.state;
   assert.is(await env.kv.get('<jshaw>'), 14);
-  assert.is(state.pile.filter((v) => v === 'processed').length, 1);
+  assert.is(state.pile['processed'], 1);
 });
 
 test.after(async () => {});

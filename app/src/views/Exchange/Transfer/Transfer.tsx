@@ -15,12 +15,17 @@ import * as S from './styles';
 import { env } from 'api';
 import { StateSEQ } from 'api';
 
-const { transfer, getState } = env;
+const { transfer, getState, getRebarBalance } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
 
   const [state, setState] = React.useState<StateSEQ | undefined>();
+  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+    number | undefined
+  >();
+  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
+    React.useState<string | undefined>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [transferResult, setTransferResult] =
     React.useState<ResponseType | null>(null);
@@ -34,6 +39,17 @@ export default function Transfer() {
       .catch((e: any) => console.log(e));
   }, []);
 
+  useEffect(() => {
+    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
+      getRebarBalance(
+        import.meta.env.VITE_CONTRACT_SEQ,
+        arProvider.walletAddress
+      )
+        .then(setConnectedRebarBalance)
+        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    }
+  }, [state]);
+
   function getAction() {
     let action: () => void;
     let disabled: boolean;
@@ -42,7 +58,7 @@ export default function Transfer() {
     if (!arProvider.walletAddress) {
       disabled = false;
     } else {
-      disabled = reBarAmount <= 0 || !recipient || loading; // TODO: Check on reBAR balance
+      disabled = reBarAmount <= 0 || !recipient || loading; // TODO: Check on RebAR balance
     }
 
     if (!arProvider.walletAddress) {
@@ -71,17 +87,28 @@ export default function Transfer() {
     transfer({
       contractId: import.meta.env.VITE_CONTRACT_SEQ,
       from: arProvider.walletAddress as string,
-      qty: reBarAmount * 1e6,
+      qty: reBarAmount,
       target: recipient,
-      state: state as unknown as StateSEQ,
     })
       // Same shape as the contract State
       .then((output: any) => {
-        setState(output);
         setLoading(false);
         setTransferResult({
           status: true,
           message: language.transferSuccess,
+        });
+        if (connectedRebarBalance) {
+          setConnectedRebarBalance(
+            Math.floor(connectedRebarBalance) - Math.floor(reBarAmount)
+          );
+        }
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setLoading(false);
+        setTransferResult({
+          status: false,
+          message: language.transferFailure,
         });
       });
   };
@@ -103,12 +130,8 @@ export default function Transfer() {
           </S.DWrapper>
           <S.BWrapper>
             <p>
-              <span>{`${language.arBalance}: `}</span>
-              {`${
-                arProvider.walletAddress && arProvider.availableBalance !== null
-                  ? Number(arProvider.availableBalance.toFixed(4))
-                  : `-`
-              }`}
+              <span>{`${language.rebarBalance}: `}</span>
+              {`${connectedRebarBalance || 0}`}
             </p>
           </S.BWrapper>
           <S.FWrapper>

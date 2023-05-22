@@ -44,3 +44,5 @@ docs/packages/rebar
 contracts/logs
 mint-contract/logs
 cache/
+
+contracts/perf/wallets.json

@@ -26,7 +26,7 @@ test('should create 1 mint request', async () => {
         ['isTradeable', true],
       ],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller }
   );
@@ -57,7 +57,7 @@ test('should throw You must mint at least 1 feron.', () => {
             ['isTradeable', true],
           ],
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller: '<justin>' }
       ),

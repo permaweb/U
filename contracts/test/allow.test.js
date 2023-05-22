@@ -22,7 +22,7 @@ test('should throw (Please specify a target.)', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller }
       ),
@@ -46,7 +46,7 @@ test('should throw (Target cannot be caller.)', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: caller } }
       ),
@@ -70,7 +70,7 @@ test('should throw (qty must be an integer.)', async () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -96,7 +96,7 @@ test('should throw (qty must be an integer.)', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -120,7 +120,7 @@ test('should throw (Not enough tokens for allow.)', () => {
       ],
 
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { target: '<tom>', qty: 11 } }
   ).catch((e) => {
@@ -146,7 +146,7 @@ test('should not allow null amount of tokens', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>', qty: null } }
       ),
@@ -172,7 +172,7 @@ test('should not allow without providing quantity', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>' } }
       ),
@@ -198,7 +198,7 @@ test('should not transfer corrupted amount of tokens', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>', qty: 'xxx' } }
       ),
@@ -224,7 +224,7 @@ test('should not allow fractional value', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { target: '<tom>', qty: 9.8 } }
       ),
@@ -249,7 +249,7 @@ test('should not allow without a target', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: 10 } }
       ),
@@ -275,7 +275,7 @@ test('should not allow with null target', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: 10, target: null } }
       ),
@@ -301,7 +301,7 @@ test('should not allow with undefined target', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: 10, target: undefined } }
       ),
@@ -327,7 +327,7 @@ test('should not transfer negative amount of tokens', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: -1, target: '<tom>' } }
       ),
@@ -353,7 +353,7 @@ test('should not transfer 0 tokens', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: 0, target: '<tom>' } }
       ),
@@ -379,7 +379,7 @@ test('should not transfer to the same account', () => {
           ],
 
           claimable: [],
-          divisibility: 6,
+          divisibility: 1e6,
         },
         { caller, input: { qty: 0, target: caller } }
       ),
@@ -412,7 +412,7 @@ test('should not transfer to the same account', () => {
       ],
 
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller: '<non-existing>', input: { qty: 5, target: '<tom>' } }
   ).catch((e) => {
@@ -441,7 +441,7 @@ test('should not transfer more than owned', () => {
         ['isTradeable', true],
       ],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { qty: 11, target: '<tom>' } }
   ).catch((e) => {
@@ -470,7 +470,7 @@ test('should transfer to empty account', async () => {
         ['isTradeable', true],
       ],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { target: '<tom>', qty: 10 } }
   );
@@ -502,7 +502,7 @@ test('should allow to existing account', async () => {
         ['isTradeable', true],
       ],
       claimable: [],
-      divisibility: 6,
+      divisibility: 1e6,
     },
     { caller, input: { target: '<tom>', qty: 10 } }
   );

@@ -11,7 +11,6 @@ async function fetchAnsName(address: string) {
   );
 
   if (!res.ok) {
-    console.log('Bad response:', res.status, res.statusText);
     throw new Error(res.statusText);
   }
 
