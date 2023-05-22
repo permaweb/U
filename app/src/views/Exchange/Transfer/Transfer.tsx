@@ -131,13 +131,13 @@ export default function Transfer() {
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || 0}`}
+              {`${connectedRebarBalance || '-'}`}
             </p>
           </S.BWrapper>
           <S.FWrapper>
             <FormField
               type={'number'}
-              label={language.from}
+              label={language.amount}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setRebarAmount(parseFloat(e.target.value))

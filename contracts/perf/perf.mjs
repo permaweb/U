@@ -1,7 +1,7 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { WarpFactory, LoggerFactory, SourceType } from 'warp-contracts/mjs';
+import { WarpFactory, SourceType } from 'warp-contracts/mjs';
 import { DeployPlugin } from 'warp-contracts-plugin-deploy';
 
 const __filename = fileURLToPath(import.meta.url);

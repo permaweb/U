@@ -1,21 +1,21 @@
-import React from 'react';
-import parse from 'html-react-parser';
-import { ReactSVG } from 'react-svg';
+import React, { useEffect } from "react";
+import parse from "html-react-parser";
+import { ReactSVG } from "react-svg";
 
-import { Button } from 'components/atoms/Button';
-import { FormField } from 'components/atoms/FormField';
-import { Notification } from 'components/atoms/Notification';
+import { Button } from "components/atoms/Button";
+import { FormField } from "components/atoms/FormField";
+import { Notification } from "components/atoms/Notification";
 
-import { ASSETS } from 'helpers/config';
-import { formatAddress } from 'helpers/utils';
-import { useArweaveProvider } from 'providers/ArweaveProvider';
+import { ASSETS } from "helpers/config";
+import { formatAddress } from "helpers/utils";
+import { useArweaveProvider } from "providers/ArweaveProvider";
 
-import { language } from 'helpers/language';
-import { ResponseType } from 'helpers/types';
-import * as S from './styles';
-import { MintRequest, StateL1, StateSEQ, env } from 'api';
+import { language } from "helpers/language";
+import { ResponseType } from "helpers/types";
+import * as S from "./styles";
+import { MintRequest, StateL1, StateSEQ, env } from "api";
 
-const { getQueue, getState, createMint } = env;
+const { getQueue, getState, createMint, mint } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
@@ -23,12 +23,28 @@ export default function Burn() {
   const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
   const [stateL1, setStateL1] = React.useState<StateL1>();
   const [queue, setQueue] = React.useState<any>();
-  const [created, setCreated] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
+  const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
 
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
+
+  useEffect(() => {
+    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
+      setStateSEQ(s);
+      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
+        setQueue(requests);
+      });
+    });
+    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
+      setStateL1(s);
+    });
+  }, [mintResult]);
+
+  useEffect(() => {
+    setRebarAmount(arAmount);
+  }, [arAmount]);
 
   function getAction() {
     let action: () => void;
@@ -55,7 +71,7 @@ export default function Burn() {
 
     return (
       <Button
-        type={'alt1'}
+        type={"alt1"}
         label={label}
         handlePress={action}
         height={52.5}
@@ -69,7 +85,7 @@ export default function Burn() {
   function burnAR() {
     setLoading(true);
     createMint({
-      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
+      contractId: import.meta.env.VITE_CONTRACT_L1 || "",
       qty: arAmount,
     }).then((r: any) => {
       setLoading(false);
@@ -80,33 +96,33 @@ export default function Burn() {
     });
   }
 
-  React.useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
-        setQueue(requests);
-      });
-    });
-    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
-      setStateL1(s);
-    });
-  }, []);
-
-  React.useEffect(() => {
-    setRebarAmount(arAmount);
-  }, [arAmount]);
+  function mintRequests() {
+    mint(import.meta.env.VITE_CONTRACT_SEQ);
+    setMintResult({
+      status: true,
+      message: language.mintExecuted
+    })
+  }
 
   return (
     <>
       {burnResult && (
         <Notification
-          type={burnResult.status === true ? 'success' : 'warning'}
+          type={burnResult.status === true ? "success" : "warning"}
           message={burnResult.message!}
           callback={() => setBurnResult(null)}
         />
       )}
 
-      <S.Wrapper className={'tab-wrapper'}>
+      {mintResult && (
+        <Notification
+          type={mintResult.status === true ? "success" : "warning"}
+          message={mintResult.message!}
+          callback={() => setMintResult(null)}
+        />
+      )}
+
+      <S.Wrapper className={"tab-wrapper"}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.burn}</h2>
@@ -124,7 +140,7 @@ export default function Burn() {
           </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={'number'}
+              type={"number"}
               label={language.from}
               value={arAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -140,7 +156,7 @@ export default function Burn() {
             </S.Divider>
 
             <FormField
-              type={'number'}
+              type={"number"}
               label={language.to}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -153,51 +169,61 @@ export default function Burn() {
           </S.FWrapper>
         </S.TWrapper>
         <S.AWrapper>{getAction()}</S.AWrapper>
-        {created && (
-          <p>Mint created! It should be confirmed in like 20 minutes.</p>
-        )}
       </S.Wrapper>
 
-      <S.DetailWrapper>
-        {queue && (
-          <>
-            <S.DHeader>
-              <p>
-                {language.requestQueue} ({queue?.length || 0})
-              </p>
-            </S.DHeader>
-            {queue.map((request: MintRequest, index: number) => {
-              const widthPercentage = 100 / 4;
-              return (
-                <React.Fragment key={index}>
-                  <S.DetailSubheader>
-                    <p>{request.tx}</p>
-                  </S.DetailSubheader>
-                  <S.DetailLine
-                    key={index}
-                    type={'pending'}
-                    ownerLine={
-                      arProvider.walletAddress
-                        ? arProvider.walletAddress === request.target
-                        : false
-                    }
-                  >
-                    <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${formatAddress(request.target, false)}`}</p>
-                    </S.DetailValue>
-                    <S.DetailValue widthPercentage={widthPercentage}>
-                      <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
-                    </S.DetailValue>
-                    <S.DetailValue widthPercentage={widthPercentage}>
-                      <p>{`${language.expires}: ${request.expires}`}</p>
-                    </S.DetailValue>
-                  </S.DetailLine>
-                </React.Fragment>
-              );
-            })}
-          </>
-        )}
-      </S.DetailWrapper>
+      <S.MintActionWrapper>
+        <Button
+          type={"alt1"}
+          label={language.mint}
+          tooltip={language.mintDescription}
+          handlePress={() => mintRequests()}
+          height={52.5}
+          disabled={false}
+          loading={loading}
+          fullWidth
+        />
+      </S.MintActionWrapper>
+
+      {queue && (
+        <S.DetailWrapper>
+          <S.DHeader>
+            <p>
+              {language.requestQueue} ({queue?.length || 0})
+            </p>
+          </S.DHeader>
+          {queue.map((request: MintRequest, index: number) => {
+            return (
+              <React.Fragment key={index}>
+                <S.DetailSubheader>
+                  <p>{`${language.requestTransaction}: ${formatAddress(
+                    request.tx,
+                    true
+                  )}`}</p>
+                </S.DetailSubheader>
+                <S.DetailLine
+                  key={index}
+                  type={"pending"}
+                  ownerLine={
+                    arProvider.walletAddress
+                      ? arProvider.walletAddress === request.target
+                      : false
+                  }
+                >
+                  <S.DetailValue>
+                    <p>{`${formatAddress(request.target, true)}`}</p>
+                  </S.DetailValue>
+                  <S.DetailValue>
+                    <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
+                  </S.DetailValue>
+                  <S.DetailValue>
+                    <p>{`${language.expires}: ${request.expires}`}</p>
+                  </S.DetailValue>
+                </S.DetailLine>
+              </React.Fragment>
+            );
+          })}
+        </S.DetailWrapper>
+      )}
     </>
   );
 }

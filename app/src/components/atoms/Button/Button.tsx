@@ -84,6 +84,7 @@ export default function Button(props: IProps) {
     <StyledButton
       tabIndex={props.noFocus ? -1 : 0}
       type={props.formSubmit ? 'submit' : 'button'}
+      title={props.tooltip ? props.tooltip : null}
       onClick={props.handlePress}
       onKeyPress={handlePress}
       disabled={props.disabled}

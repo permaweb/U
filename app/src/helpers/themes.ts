@@ -8,7 +8,7 @@ const DEFAULT = {
   neutral5: '#D0D7DE',
   neutral6: '#D9D9D9',
   neutral7: '#777777',
-  neutral8: '#ACACAC',
+  neutral8: '#717171',
   neutral9: '#F6F8FA',
   neutral10: '#BABABA',
   neutral11: '#000000',
@@ -21,14 +21,15 @@ const DEFAULT = {
   primary2: '#278490',
   primary3: '#30A1B0',
   primary4: '#3FBACA',
+  primary5: '#F3FDFF',
   alt1: '#9969A0',
   alt2: '#9969A0',
   overlay1: 'rgba(255, 255, 255, 0.75)',
   negative: '#D24646',
   negativeHover: '#F26969',
   negativeShadow: '#F27979',
-  positive: '#13FF00',
-  positiveHover: '#3FCA66',
+  positive: '#48D67C',
+  positiveHover: '#37FB72',
   neutral: '#FFB600',
   transparent: 'rgba(255, 255, 255, 0)',
   semiTransparent: 'rgba(255, 255, 255, 0.5)',
@@ -142,7 +143,7 @@ export const defaultTheme: DefaultTheme = {
         background: DEFAULT.neutral5,
       },
       alt7: {
-        background: DEFAULT.neutral2,
+        background: DEFAULT.primary5,
       },
     },
     font: {
@@ -252,13 +253,13 @@ export const defaultTheme: DefaultTheme = {
         background: DEFAULT.neutral2,
       },
       ownerLine: {
-        background: DEFAULT.neutral4,
+        background: DEFAULT.neutral9,
       },
       pending: {
-        background: DEFAULT.neutral8,
+        background: DEFAULT.neutral2,
       },
       subheader: {
-        background: DEFAULT.neutral10,
+        background: DEFAULT.neutral1,
       },
     },
     shadow: {
@@ -300,6 +301,7 @@ export const defaultTheme: DefaultTheme = {
     size: {
       h1: '48px',
       h2: '24px',
+      lg: '18px',
       base: '16px',
       small: '15px',
       xSmall: '14px',

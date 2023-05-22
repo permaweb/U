@@ -13,6 +13,7 @@ export const TWrapper = styled.div``;
 
 export const DWrapper = styled.div`
   p {
+    line-height: 1.5;
     margin: 10px 0 0 0;
     color: ${(props) => props.theme.colors.font.primary.alt7};
     font-weight: ${(props) => props.theme.typography.weight.medium};
@@ -25,6 +26,7 @@ export const DWrapper = styled.div`
 
 export const BWrapper = styled.div`
     p, span {
+      line-height: 1.5;
         font-weight: ${(props) => props.theme.typography.weight.bold};
         font-family: ${(props) => props.theme.typography.family.alt1};
         font-size: 24px;
@@ -32,9 +34,6 @@ export const BWrapper = styled.div`
     p {
         margin: 20px 0 0 0;
         color: ${(props) => props.theme.colors.font.primary.alt8};
-    }
-    span {
-7};
     }
 `;
 
@@ -56,5 +55,3 @@ export const Divider = styled.div`
 export const AWrapper = styled.div`
   margin: 20px 0 0 0;
 `;
-
-export const ConnectWrapper = styled.div``;
