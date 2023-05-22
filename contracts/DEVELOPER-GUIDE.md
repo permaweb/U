@@ -123,7 +123,7 @@ arweave.transactions.post(tx).then(console.log).catch(console.log);
 
 ### Get Queue (L1)
 
-The `get-queue` function returns `state.requests`. The object structure is `{"<tx1>": { qty: number, expires: number(block), target: "<addr>"}, "<tx2>": { qty: number, expires: number(block), target: "<addr>"}, ...}`.
+The `get-queue` function returns `state.requests`. The structure is `[{ qty: number, expires: number(block), target: "<addr>", tx: "<tx-id>"}]`.
 
 > Input
 
