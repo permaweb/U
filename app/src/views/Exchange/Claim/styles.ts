@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { open, fadeIn2 } from 'helpers/animations';
+import { STYLING } from 'helpers/styling';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -33,6 +34,23 @@ export const BWrapper = styled.div`
         margin: 20px 0 0 0;
         color: ${(props) => props.theme.colors.font.primary.alt8};
     }
+`;
+
+export const CWrapper = styled.div`
+    height: 273.5px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+      width: 0px;
+    }
+    margin: 20px 0 0 0;
+    border: 1px solid red;
+`;
+
+export const CDetailLine = styled.button`
+  background: ${(props) => props.theme.colors.container.primary.background};
+  border-radius: ${STYLING.dimensions.borderRadius};
+  border: 1px solid ${(props) => props.theme.colors.border.primary};
 `;
 
 export const AWrapper = styled.div`

@@ -162,7 +162,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .tab-wrapper {
-    min-height: 500px;
+    min-height: 540px;
     width: 100%;
     padding: 40px;
     background: ${(props) => props.theme.colors.container.primary.background};

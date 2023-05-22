@@ -21,3 +21,5 @@ export type ButtonType =
   | 'warning';
 
 export type MintStatusType = 'pending' | 'confirmed';
+
+export type RefType = { current: HTMLElement };

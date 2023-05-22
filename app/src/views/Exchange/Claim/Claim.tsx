@@ -87,27 +87,16 @@ export default function Claim() {
     console.log("Claim rebar");
   };
 
-  return (
-    <>
-      <S.Wrapper className={"tab-wrapper"}>
-        <S.TWrapper>
-          <S.DWrapper>
-            <h2>{language.claim}</h2>
-            <p>{parse(language.claimDescription)}</p>
-          </S.DWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || "-"}`}
-            </p>
-          </S.BWrapper>
-          {!connectedClaims && <p>{language.claimsEmpty}</p>}
-          {connectedClaims &&
-            connectedClaims?.map((c) => (
+  function getClaims() {
+    if (connectedClaims) {
+      return (
+        <>
+          {connectedClaims.map((c: any) => {
+            return (
               <div key={c.txID}>
                 <p style={{ marginTop: 10 }}>From: {c.from}</p>
                 <p style={{ marginTop: 10 }}>
-                  Quantity: {(c.qty / 1e6).toFixed(2)} RebAR{' '}
+                  Quantity: {(c.qty / 1e6).toFixed(2)} RebAR{" "}
                   <span
                     key={c.txID}
                     onClick={() =>
@@ -123,13 +112,67 @@ export default function Claim() {
                         );
                       })
                     }
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: "pointer" }}
                   >
                     <u>Claim</u>
                   </span>
                 </p>
               </div>
-            ))}
+            );
+          })}
+        </>
+      );
+    }
+    else {
+      return <p>Connect a wallet to continue</p>
+    }
+  }
+
+  return (
+    <>
+      <S.Wrapper className={"tab-wrapper"}>
+        <S.TWrapper>
+          <S.DWrapper>
+            <h2>{language.claim}</h2>
+            <p>{parse(language.claimDescription)}</p>
+          </S.DWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.rebarBalance}: `}</span>
+              {`${connectedRebarBalance || "-"}`}
+            </p>
+          </S.BWrapper>
+          <S.CWrapper>
+            {!connectedClaims && <p>{language.claimsEmpty}</p>}
+            {connectedClaims &&
+              connectedClaims?.map((c) => (
+                <div key={c.txID}>
+                  <p style={{ marginTop: 10 }}>From: {c.from}</p>
+                  <p style={{ marginTop: 10 }}>
+                    Quantity: {(c.qty / 1e6).toFixed(2)} RebAR{" "}
+                    <span
+                      key={c.txID}
+                      onClick={() =>
+                        claim({
+                          qty: c.qty,
+                          contractId: import.meta.env.VITE_CONTRACT_SEQ,
+                          tx: c.txID,
+                        }).then(() => {
+                          setConnectedClaims(
+                            connectedClaims.filter(
+                              (claim) => claim.txID !== c.txID
+                            )
+                          );
+                        })
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      <u>Claim</u>
+                    </span>
+                  </p>
+                </div>
+              ))}
+          </S.CWrapper>
           <S.AWrapper>{getAction()}</S.AWrapper>
         </S.TWrapper>
       </S.Wrapper>
