@@ -137,7 +137,7 @@ export default function Transfer() {
           <S.FWrapper>
             <FormField
               type={'number'}
-              label={language.from}
+              label={language.amount}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setRebarAmount(parseFloat(e.target.value))

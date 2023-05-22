@@ -12,8 +12,6 @@ import { ResponseType } from "helpers/types";
 
 const { getState, getRebarBalance, claim } = env;
 
-// TODO: connectedClaims undefined
-// TODO: wallet not connected
 export default function Claim() {
   const arProvider = useArweaveProvider();
 
@@ -21,11 +19,11 @@ export default function Claim() {
   const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
     number | undefined
   >();
+  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
+    React.useState<string | undefined>();
   const [connectedClaims, setConnectedClaims] = React.useState<
     Claimable[] | undefined
   >();
-  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
-    React.useState<string | undefined>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [activeClaims, setActiveClaims] = React.useState<Claimable[]>([]);
   const [claimNotification, setClaimNotification] =
@@ -54,7 +52,7 @@ export default function Claim() {
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || "Error"));
     }
-  }, [state]);
+  }, [state, connectedClaims]);
 
   function getAction() {
     let action: () => void;
@@ -166,7 +164,15 @@ export default function Claim() {
         </>
       );
     } else {
-      return <p>{language.claimsEmpty}</p>;
+      return (
+        <S.Message>
+          <p>
+            {arProvider.walletAddress
+              ? language.claimsEmpty
+              : language.connectWallet}
+          </p>
+        </S.Message>
+      );
     }
   }
 

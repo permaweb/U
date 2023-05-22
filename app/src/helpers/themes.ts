@@ -21,13 +21,14 @@ const DEFAULT = {
   primary2: '#278490',
   primary3: '#30A1B0',
   primary4: '#3FBACA',
+  primary5: '#F3FDFF',
   alt1: '#9969A0',
   alt2: '#9969A0',
   overlay1: 'rgba(255, 255, 255, 0.75)',
   negative: '#D24646',
   negativeHover: '#F26969',
   negativeShadow: '#F27979',
-  positive: '#63D159',
+  positive: '#48D67C',
   positiveHover: '#37FB72',
   neutral: '#FFB600',
   transparent: 'rgba(255, 255, 255, 0)',
@@ -142,7 +143,7 @@ export const defaultTheme: DefaultTheme = {
         background: DEFAULT.neutral5,
       },
       alt7: {
-        background: DEFAULT.neutral2,
+        background: DEFAULT.primary5,
       },
     },
     font: {
@@ -252,13 +253,13 @@ export const defaultTheme: DefaultTheme = {
         background: DEFAULT.neutral2,
       },
       ownerLine: {
-        background: DEFAULT.neutral4,
+        background: DEFAULT.neutral9,
       },
       pending: {
-        background: DEFAULT.neutral8,
+        background: DEFAULT.neutral2,
       },
       subheader: {
-        background: DEFAULT.neutral10,
+        background: DEFAULT.neutral1,
       },
     },
     shadow: {

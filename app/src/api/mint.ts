@@ -20,6 +20,9 @@ const warpMint = async (tx: string) => {
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
+      unsafeClient: 'skip',
+      useKVStorage: true,
+      useConstructor: true,
       allowBigInt: true,
     });
   return contract.writeInteraction({

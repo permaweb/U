@@ -1,4 +1,5 @@
 export const language = {
+  amount: `Amount`,
   arTokens: `AR`,
   arBalance: `AR Balance`,
   burn: `Burn`,
@@ -20,6 +21,9 @@ export const language = {
   fetching: `Fetching`,
   from: `From`,
   loading: `Loading`,
+  mint: `Mint`,
+  mintDescription: `To finalize a mint request, the mint function must be run on the Sequencer contract. Any wallet can do this at anytime.`,
+  mintExecuted: `Mint Executed`,
   pageNotFound: `Page Not Found`,
   qty: `Qty`,
   rebar: `RebAR`,

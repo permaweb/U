@@ -27,6 +27,7 @@ export const TWrapper = styled.div``;
 
 export const DWrapper = styled.div`
   p {
+    line-height: 1.5;
     margin: 10px 0 0 0;
     color: ${(props) => props.theme.colors.font.primary.alt7};
     font-weight: ${(props) => props.theme.typography.weight.medium};
@@ -39,6 +40,7 @@ export const DWrapper = styled.div`
 
 export const BWrapper = styled.div`
     p, span {
+        line-height: 1.5;
         font-weight: ${(props) => props.theme.typography.weight.bold};
         font-family: ${(props) => props.theme.typography.family.alt1};
         font-size: 24px;
@@ -68,8 +70,13 @@ export const AWrapper = styled.div`
   margin: 20px 0 0 0;
 `;
 
+export const MintActionWrapper = styled.div`
+  margin: 20px 0
+`;
+
 export const DetailWrapper = styled.div`
-  margin: 40px 0 0 0;
+  border: 1px solid ${(props) => props.theme.colors.border.primary};
+  border-radius: ${STYLING.dimensions.borderRadius};
   > * {
     &:last-child {
       border-bottom-left-radius: ${STYLING.dimensions.borderRadius};
@@ -83,9 +90,6 @@ export const DHeader = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 15.5px 20px;
-  border-top: 1px solid ${(props) => props.theme.colors.border.alt3};
-  border-left: 1px solid ${(props) => props.theme.colors.border.alt3};
-  border-right: 1px solid ${(props) => props.theme.colors.border.alt3};
   background: ${(props) => props.theme.colors.orderLine.header.background};
   border-top-left-radius: ${STYLING.dimensions.borderRadius};
   border-top-right-radius: ${STYLING.dimensions.borderRadius};
@@ -104,6 +108,7 @@ export const DetailLine = styled.div<{
 }>`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 6.5px 20px;
   background: ${(props) =>
     props.ownerLine
@@ -111,7 +116,7 @@ export const DetailLine = styled.div<{
       : getDetailLineBackground(props.type, props.theme)};
   p {
     font-size: ${(props) => props.theme.typography.size.xSmall};
-    font-weight: ${(props) => props.theme.typography.weight.medium};
+    font-weight: ${(props) => props.theme.typography.weight.bold};
     color: ${(props) => props.theme.colors.font.primary.base};
   }
 `;
@@ -120,22 +125,23 @@ export const DetailSubheader = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 6.5px 20px;
-  border-top: 1px solid ${(props) => props.theme.colors.border.alt3};
-  border-bottom: 1px solid ${(props) => props.theme.colors.border.alt3};
+  border-top: 1px solid ${(props) => props.theme.colors.border.primary};
+  border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
   background: ${(props) => props.theme.colors.orderLine.subheader.background};
   p {
+    line-height: 1.5;
     font-size: ${(props) => props.theme.typography.size.xSmall};
     font-weight: ${(props) => props.theme.typography.weight.medium};
     color: ${(props) => props.theme.colors.font.primary.alt1};
   }
 `;
 
-export const DetailValue = styled.div<{ widthPercentage: number }>`
-  width: ${(props) => `${props.widthPercentage.toString()}`}%;
+export const DetailValue = styled.div`
   p {
+    line-height: 1.5;
     font-size: ${(props) => props.theme.typography.size.xSmall};
-    font-weight: ${(props) => props.theme.typography.weight.medium};
-    color: ${(props) => props.theme.colors.font.primary.base};
+    font-weight: ${(props) => props.theme.typography.weight.bold};
+    color: ${(props) => props.theme.colors.font.primary.alt1};
   }
 `;
 

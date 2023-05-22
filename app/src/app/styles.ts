@@ -171,6 +171,9 @@ export const GlobalStyle = createGlobalStyle`
     border-left: 1px solid ${(props) => props.theme.colors.border.primary};
     border-right: 1px solid ${(props) => props.theme.colors.border.primary};
     border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+    @media(max-width: ${STYLING.cutoffs.secondary}) {
+      padding: 20px;
+    }
   }
 
   .border-wrapper {

@@ -5,6 +5,7 @@ import { ButtonType } from 'helpers/types';
 export interface IProps {
   type: ButtonType;
   label: string | number | React.ReactNode;
+  tooltip?: string;
   handlePress: (e: React.MouseEvent) => void;
   disabled?: boolean;
   active?: boolean;
