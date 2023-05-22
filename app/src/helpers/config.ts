@@ -10,8 +10,9 @@ import { IURLView } from './types';
 import { language } from './language';
 import * as urls from './urls';
 
-import { Swap } from 'views/Exchange/Swap';
+import { Burn } from 'views/Exchange/Burn';
 import { Transfer } from 'views/Exchange/Transfer';
+import { Claim } from 'views/Exchange/Claim';
 
 export const ASSETS = {
   arrowDown: arrowDownSVG,
@@ -34,16 +35,22 @@ export const DOM = {
 export const URLS: IURLView = {
   exchange: [
     {
-      label: language.swap,
+      label: language.burn,
       disabled: false,
-      url: urls.swap,
-      view: Swap,
+      url: urls.burn,
+      view: Burn,
     },
     {
       label: language.transfer,
       disabled: false,
       url: urls.transfer,
       view: Transfer,
+    },
+    {
+      label: language.claim,
+      disabled: false,
+      url: urls.claim,
+      view: Claim,
     },
   ],
 };
