@@ -300,6 +300,7 @@ export const defaultTheme: DefaultTheme = {
     size: {
       h1: '48px',
       h2: '24px',
+      lg: '18px',
       base: '16px',
       small: '15px',
       xSmall: '14px',

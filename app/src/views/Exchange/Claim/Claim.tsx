@@ -3,14 +3,17 @@ import parse from "html-react-parser";
 import { useArweaveProvider } from "providers/ArweaveProvider";
 
 import { Button } from "components/atoms/Button";
+import { Notification } from "components/atoms/Notification";
+import { formatAddress } from "helpers/utils";
 import { language } from "helpers/language";
 import * as S from "./styles";
-import { Claimable, env } from "api";
-import { StateSEQ } from "api";
+import { Claimable, env, StateSEQ } from "api";
+import { ResponseType } from "helpers/types";
 
 const { getState, getRebarBalance, claim } = env;
 
 // TODO: connectedClaims undefined
+// TODO: wallet not connected
 export default function Claim() {
   const arProvider = useArweaveProvider();
 
@@ -24,7 +27,9 @@ export default function Claim() {
   const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
     React.useState<string | undefined>();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [reBarAmount, setRebarAmount] = React.useState<number>(0);
+  const [activeClaims, setActiveClaims] = React.useState<Claimable[]>([]);
+  const [claimNotification, setClaimNotification] =
+    React.useState<ResponseType | null>(null);
 
   useEffect(() => {
     if (arProvider.walletAddress) {
@@ -59,7 +64,7 @@ export default function Claim() {
     if (!arProvider.walletAddress) {
       disabled = false;
     } else {
-      disabled = true;
+      disabled = activeClaims.length <= 0;
     }
 
     if (!arProvider.walletAddress) {
@@ -83,53 +88,97 @@ export default function Claim() {
     );
   }
 
+  function handleActiveClaims(claim: Claimable) {
+    const index = activeClaims.findIndex((c) => c.txID === claim.txID);
+
+    if (index === -1) {
+      setActiveClaims([...activeClaims, claim]);
+    } else {
+      const updatedClaims = [...activeClaims];
+      updatedClaims.splice(index, 1);
+      setActiveClaims(updatedClaims);
+    }
+  }
+
   const claimReBar = async () => {
-    console.log("Claim rebar");
+    if (connectedClaims && activeClaims.length > 0) {
+      for (let i = 0; i < activeClaims.length; i++) {
+        await processClaim(activeClaims[i]);
+      }
+    }
+  };
+
+  const processClaim = async (c: Claimable) => {
+    await claim({
+      qty: c.qty,
+      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      tx: c.txID,
+    })
+      .then(() => {
+        setConnectedClaims((prevClaims) =>
+          prevClaims!.filter((claim) => claim.txID !== c.txID)
+        );
+        setClaimNotification({
+          status: true,
+          message: language.rebarClaimed,
+        });
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setClaimNotification({
+          status: false,
+          message: language.rebarClaimError,
+        });
+      });
   };
 
   function getClaims() {
-    if (connectedClaims) {
+    if (connectedClaims && connectedClaims.length > 0) {
       return (
         <>
-          {connectedClaims.map((c: any) => {
+          {connectedClaims.map((claim: Claimable) => {
+            const active: boolean =
+              activeClaims.findIndex((c) => c.txID === claim.txID) !== -1;
+
             return (
-              <div key={c.txID}>
-                <p style={{ marginTop: 10 }}>From: {c.from}</p>
-                <p style={{ marginTop: 10 }}>
-                  Quantity: {(c.qty / 1e6).toFixed(2)} RebAR{" "}
-                  <span
-                    key={c.txID}
-                    onClick={() =>
-                      claim({
-                        qty: c.qty,
-                        contractId: import.meta.env.VITE_CONTRACT_SEQ,
-                        tx: c.txID,
-                      }).then(() => {
-                        setConnectedClaims(
-                          connectedClaims.filter(
-                            (claim) => claim.txID !== c.txID
-                          )
-                        );
-                      })
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
-                    <u>Claim</u>
-                  </span>
-                </p>
-              </div>
+              <S.CDetailLine
+                key={claim.txID}
+                onClick={() => handleActiveClaims(claim)}
+                active={active}
+              >
+                <S.CDetailLineInfo active={active}>
+                  <S.CFlex>
+                    <S.CDetailLineHeader>{`${language.qty}:`}</S.CDetailLineHeader>
+                    &nbsp;
+                    <S.CDetailLineHeaderValue>{`${(claim.qty / 1e6).toFixed(
+                      2
+                    )} ${language.rebar}`}</S.CDetailLineHeaderValue>
+                  </S.CFlex>
+                  <S.CFrom>
+                    <span>{`${language.from}:`}</span>
+                    &nbsp;
+                    <p>{formatAddress(claim.from, true)}</p>
+                  </S.CFrom>
+                </S.CDetailLineInfo>
+              </S.CDetailLine>
             );
           })}
         </>
       );
-    }
-    else {
-      return <p>Connect a wallet to continue</p>
+    } else {
+      return <p>{language.claimsEmpty}</p>;
     }
   }
 
   return (
     <>
+      {claimNotification && (
+        <Notification
+          type={claimNotification.status === true ? "success" : "warning"}
+          message={claimNotification.message!}
+          callback={() => setClaimNotification(null)}
+        />
+      )}
       <S.Wrapper className={"tab-wrapper"}>
         <S.TWrapper>
           <S.DWrapper>
@@ -142,37 +191,7 @@ export default function Claim() {
               {`${connectedRebarBalance || "-"}`}
             </p>
           </S.BWrapper>
-          <S.CWrapper>
-            {!connectedClaims && <p>{language.claimsEmpty}</p>}
-            {connectedClaims &&
-              connectedClaims?.map((c) => (
-                <div key={c.txID}>
-                  <p style={{ marginTop: 10 }}>From: {c.from}</p>
-                  <p style={{ marginTop: 10 }}>
-                    Quantity: {(c.qty / 1e6).toFixed(2)} RebAR{" "}
-                    <span
-                      key={c.txID}
-                      onClick={() =>
-                        claim({
-                          qty: c.qty,
-                          contractId: import.meta.env.VITE_CONTRACT_SEQ,
-                          tx: c.txID,
-                        }).then(() => {
-                          setConnectedClaims(
-                            connectedClaims.filter(
-                              (claim) => claim.txID !== c.txID
-                            )
-                          );
-                        })
-                      }
-                      style={{ cursor: "pointer" }}
-                    >
-                      <u>Claim</u>
-                    </span>
-                  </p>
-                </div>
-              ))}
-          </S.CWrapper>
+          <S.CWrapper>{getClaims()}</S.CWrapper>
           <S.AWrapper>{getAction()}</S.AWrapper>
         </S.TWrapper>
       </S.Wrapper>
