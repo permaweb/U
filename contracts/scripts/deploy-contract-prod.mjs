@@ -43,6 +43,7 @@ async function deploy(folder) {
     ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
+      balances,
     },
   };
 
@@ -76,20 +77,6 @@ async function deploy(folder) {
   });
   console.log(`L1 contractTxId ${deployL1.contractTxId}`);
   console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
-
-  const connected = warp
-    .contract(deploySEQ.contractTxId)
-    .setEvaluationOptions({
-      internalWrites: true,
-      unsafeClient: 'skip',
-    })
-    .connect(jwk);
-  const interaction = await connected.writeInteraction({
-    function: 'initialize',
-    initialBalances: { ...balances },
-  });
-
-  console.log(`Balances migrated: ${interaction.originalTxId}`);
 }
 deploy(process.argv[2]).catch(console.log);
 

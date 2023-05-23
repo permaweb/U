@@ -127,6 +127,10 @@ async function deploy(folder) {
       wallet: wallet1.jwk,
       initState: JSON.stringify({
         ...initialStateSEQ,
+        balances: {
+          uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 10000000000,
+          '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 10000000000,
+        },
         mint_contract: deployL1.contractTxId,
       }),
       evaluationManifest: {
@@ -140,24 +144,6 @@ async function deploy(folder) {
     });
     console.log(`L1 contractTxId ${deployL1.contractTxId}`);
     console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
-
-    const connected = warp
-      .contract(deploySEQ.contractTxId)
-      .setEvaluationOptions({
-        internalWrites: true,
-        unsafeClient: 'skip',
-      })
-      .connect(wallet1.jwk);
-
-    const interaction = await connected.writeInteraction({
-      function: 'initialize',
-      initialBalances: {
-        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 1000000000000000,
-        uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 1000000000000000,
-      },
-    });
-
-    console.log(`Balances migrated: ${interaction.originalTxId}`);
 
     execSync(
       `(cd ../app && npm i && VITE_CONTRACT_L1=${deployL1.contractTxId} VITE_CONTRACT_SEQ=${deploySEQ.contractTxId} VITE_LOCAL=true npm run dev)`,
