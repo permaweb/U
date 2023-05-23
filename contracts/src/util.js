@@ -75,7 +75,7 @@ export const getTargetBalance = async (target, balance, kv) => ({
 });
 
 /**
- * @description Adds the balance based on a
+ * @description Adds the qty to the 'to' balance
  *
  * @author @jshaw-ar
  * @param {*} state
@@ -83,18 +83,18 @@ export const getTargetBalance = async (target, balance, kv) => ({
  * @param {*} kv
  * @return {*}
  */
-export const addClaimBalanceTo = async (state, action, kv) => {
+export const addClaimBalanceTo = ({ state, action }) => {
   const indexToRemove = state.claimable.findIndex(
     (claim) => claim.txID === action.input.txID
   );
   const claim = state.claimable[indexToRemove];
-  const balance = (await kv.get(claim.to)) || 0;
-  await kv.put(claim.to, balance + claim.qty);
+  const balance = state.balances[claim.to] || 0;
+  state.balances[claim.to] = balance + claim.qty;
   return indexToRemove;
 };
 
 /**
- * @description Adds the balance based on a
+ * @description Adds the qty to the 'from' balance
  *
  * @author @jshaw-ar
  * @param {*} state
@@ -102,24 +102,12 @@ export const addClaimBalanceTo = async (state, action, kv) => {
  * @param {*} kv
  * @return {*}
  */
-export const addClaimBalanceFrom = async (state, action, kv) => {
+export const addClaimBalanceFrom = ({ state, action }) => {
   const indexToRemove = state.claimable.findIndex(
     (claim) => claim.txID === action.input.tx
   );
   const claim = state.claimable[indexToRemove];
-  const balance = (await kv.get(claim.from)) || 0;
-  await kv.put(claim.from, balance + claim.qty);
+  const balance = state.balances[claim.from] || 0;
+  state.balances[claim.from] = balance + claim.qty;
   return indexToRemove;
-};
-
-/**
- * @description Gets the balance from the key value store
- *
- * @author @jshaw-ar
- * @param {string} caller
- * @param {*} kv (SmartWeave object)
- * @return {number} balance
- */
-export const getBalance = async (caller, kv) => {
-  return kv.get(caller);
 };

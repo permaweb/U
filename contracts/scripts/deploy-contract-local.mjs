@@ -134,7 +134,6 @@ async function deploy(folder) {
           sourceType: SourceType.WARP_SEQUENCER,
           internalWrites: true,
           unsafeClient: 'skip',
-          useKVStorage: true,
         },
       },
       src: contractSrcSEQ,
@@ -147,7 +146,6 @@ async function deploy(folder) {
       .setEvaluationOptions({
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
       })
       .connect(wallet1.jwk);
 

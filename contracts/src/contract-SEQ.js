@@ -22,13 +22,13 @@ export async function handle(state, action) {
     case 'balance':
       return balance(state, action);
     case 'mint':
-      return mint(env)(state, action).toPromise();
+      return mint(env)(state).toPromise();
     case 'transfer':
-      return transfer(env)(state, action);
+      return transfer(state, action);
     case 'allow':
       return allow(env)(state, action);
     case 'claim':
-      return claim(env)(state, action);
+      return claim(state, action);
     case 'reject':
       return rejectClaimable(state, action);
     case 'initialize':

@@ -1,6 +1,5 @@
-import Async from 'hyper-async';
-const { of, fromPromise } = Async;
-import { isInteger, roundDown, ceAsync, getBalance } from '../util.js';
+import { fromNullable, of } from '../hyper-either.js';
+import { ce, isInteger, roundDown } from '../util.js';
 
 /**
  * @description Transfers RebAR tokens to another address.
@@ -11,90 +10,44 @@ import { isInteger, roundDown, ceAsync, getBalance } from '../util.js';
  * @param {*} action
  * @return {*} state
  */
-export function transfer({ kv }) {
-  return async (state, action) => {
-    return of(action.caller)
-      .chain(ceAsync(!action.input?.target, 'Please specify a target.'))
-      .chain(
-        ceAsync(
-          action.input?.target === action.caller,
-          'Target cannot be caller.'
-        )
+export function transfer(state, action) {
+  return of({ state, action })
+    .chain(fromNullable)
+    .chain(ce(!action.input?.target, 'Please specify a target.'))
+    .chain(
+      ce(action.input?.target === action.caller, 'Target cannot be caller.')
+    )
+    .chain(ce(!isInteger(action.input?.qty), 'qty must be an integer.'))
+    .chain(
+      ce(
+        roundDown(action.input?.qty) < 1,
+        'Invalid token transfer. qty must be an integer greater than 0.'
       )
-      .chain(ceAsync(!isInteger(action.input?.qty), 'qty must be an integer.'))
-      .chain(
-        ceAsync(
-          roundDown(action.input?.qty) < 1,
-          'Invalid token transfer. qty must be an integer greater than 0.'
-        )
+    )
+    .chain(
+      ce(
+        (state.balances[action.caller] || 0) < roundDown(action.input?.qty),
+        'Not enough tokens for transfer.'
       )
-      .chain((caller) => fromPromise(getBalance)(caller, kv))
-      .chain((balance) =>
-        ceAsync(
-          (balance || 0) < roundDown(action.input?.qty),
-          'Not enough tokens for transfer.'
-        )(balance)
-      )
-      .chain((balance) =>
-        fromPromise(getTargetBalance)(action.input.target, balance, kv)
-      )
-      .chain(({ balance, targetBalance }) =>
-        fromPromise(updateBalances)(
-          action.caller,
-          action.input.target,
-          balance,
-          targetBalance,
-          roundDown(action.input.qty),
-          kv
-        )
-      )
-      .fork(
-        (error) => {
-          throw new ContractError(error || 'An error occurred.');
-        },
-        () => {
-          return { state };
-        }
-      );
-  };
+    )
+    .map(updateBalances)
+    .fold(
+      (error) => {
+        throw new ContractError(error || 'An error occurred.');
+      },
+      () => ({ state })
+    );
 }
 
 /**
- *
- *
- * @author @jshaw-ar
- * @param {*} target
- * @param {*} balance
- * @param {*} kv
- */
-const getTargetBalance = async (target, balance, kv) => ({
-  balance,
-  targetBalance: (await kv.get(target)) || 0,
-});
-
-/**
- *
+ * Updates target and caller balances
  *
  * @author @jshaw-ar
- * @param {*} caller
- * @param {*} target
- * @param {*} balance
- * @param {*} targetBalance
- * @param {*} qty
- * @param {*} kv
+ * @param {*} { state, action }
  */
-const updateBalances = async (
-  caller,
-  target,
-  balance,
-  targetBalance,
-  qty,
-  kv
-) => {
-  await kv.put(caller, balance - qty);
-  await kv.put(target, targetBalance + qty);
-  return {
-    balance1: await kv.get(caller),
-    balance2: await kv.get(target),
-  };
+const updateBalances = ({ state, action }) => {
+  const safeQty = roundDown(action.input.qty);
+  state.balances[action.caller] -= safeQty;
+  const targetBalance = state.balances[action.input.target] || 0;
+  state.balances[action.input.target] = targetBalance + safeQty;
 };

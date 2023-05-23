@@ -43,7 +43,6 @@ export const readState = async (tx: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
 
       allowBigInt: true,
     })
@@ -88,7 +87,6 @@ export const getKV = async (tx: string, address: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
 
       allowBigInt: true,
     })

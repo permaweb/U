@@ -69,7 +69,6 @@ async function go() {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
       },
     },
   });
@@ -81,7 +80,6 @@ async function go() {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
     })
     .connect(wallets[0].jwk);
   for (let i = 0; i < 300; i++) {

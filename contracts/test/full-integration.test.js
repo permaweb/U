@@ -90,8 +90,6 @@ test.before(async () => {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
-        useConstructor: true,
       },
     },
   });
@@ -106,8 +104,6 @@ test.before(async () => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
-      useConstructor: true,
     })
     .connect(wallet1.jwk);
 
@@ -121,8 +117,6 @@ test.before(async () => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
-      useConstructor: true,
     })
     .connect(wallet2.jwk);
 
@@ -150,10 +144,7 @@ test('should mint 10 RebAR', async () => {
     function: 'mint',
   });
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
-  const balance = (
-    await connectedWallet1SEQ.getStorageValues([wallet1.address])
-  ).cachedValue.get(wallet1.address);
-  assert.is(balance, 10000000);
+  assert.is(state.balances[wallet1.address], 10000000);
   const pile = toPairs(state.pile);
   assert.is(pile.length, 1);
 });
@@ -164,11 +155,8 @@ test('transfer 5 to wallet 2', async () => {
     target: wallet2.address,
     qty: 5000000,
   });
-  await connectedWallet1SEQ.readState();
-  const result = (
-    await connectedWallet1SEQ.getStorageValues([wallet2.address])
-  ).cachedValue.get(wallet2.address);
-  assert.is(result, 5000000);
+  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
+  assert.is(state.balances[wallet2.address], 5000000);
 });
 
 test('allow 2 with wallet 2 (to wallet 1) - allow 1 with wallet 2', async () => {
@@ -197,18 +185,10 @@ test('claim 2 with wallet 1', async () => {
     txID: allowTxForClaim1,
     qty: 2000000,
   });
-  (await connectedWallet1SEQ.readState()).cachedValue.state;
+  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
 
-  const result = (
-    await connectedWallet1SEQ.getStorageValues([
-      wallet2.address,
-      wallet1.address,
-    ])
-  ).cachedValue;
-  const balance1 = await result.get(wallet1.address);
-  const balance2 = await result.get(wallet2.address);
-  assert.is(balance1, 7000000);
-  assert.is(balance2, 2000000);
+  assert.is(state.balances[wallet1.address], 7000000);
+  assert.is(state.balances[wallet2.address], 2000000);
 });
 
 test('should claim with different txID', async () => {
@@ -217,17 +197,9 @@ test('should claim with different txID', async () => {
     txID: allowTxForClaim2,
     qty: 1000000,
   });
-  (await connectedWallet1SEQ.readState()).cachedValue.state;
-  const result = (
-    await connectedWallet1SEQ.getStorageValues([
-      wallet2.address,
-      wallet1.address,
-    ])
-  ).cachedValue;
-  const balance1 = await result.get(wallet1.address);
-  const balance2 = await result.get(wallet2.address);
-  assert.is(balance1, 8000000);
-  assert.is(balance2, 2000000);
+  const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
+  assert.is(state.balances[wallet1.address], 8000000);
+  assert.is(state.balances[wallet2.address], 2000000);
 });
 
 test('check balance with target', async () => {

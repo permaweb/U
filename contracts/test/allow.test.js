@@ -4,11 +4,12 @@ import { allow } from '../src/write/allow.js';
 import { setupSmartWeaveEnv } from './setup.js';
 const test = suite('allow');
 
-test.before(async () => {});
+test.before(() => {});
 
 test('should throw (Please specify a target.)', () => {
-  const env = setupSmartWeaveEnv();
   const caller = '<justin>';
+  const env = setupSmartWeaveEnv();
+
   assert.throws(
     () =>
       allow(env)(
@@ -20,7 +21,7 @@ test('should throw (Please specify a target.)', () => {
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
           ],
-
+          balances: {},
           claimable: [],
           divisibility: 1e6,
         },
@@ -39,12 +40,11 @@ test('should throw (Target cannot be caller.)', () => {
         {
           name: 'RebAR',
           ticker: 'RebAR',
-          balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
           ],
-
+          balances: {},
           claimable: [],
           divisibility: 1e6,
         },
@@ -63,12 +63,11 @@ test('should throw (qty must be an integer.)', async () => {
         {
           name: 'RebAR',
           ticker: 'RebAR',
-          balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
           ],
-
+          balances: {},
           claimable: [],
           divisibility: 1e6,
         },
@@ -107,25 +106,27 @@ test('should throw (qty must be an integer.)', () => {
 test('should throw (Not enough tokens for allow.)', () => {
   const env = setupSmartWeaveEnv();
   const caller = '<justin>';
-  allow(env)(
-    {
-      name: 'RebAR',
-      ticker: 'RebAR',
-      balances: {
-        [caller]: 10,
-      },
-      settings: [
-        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-        ['isTradeable', true],
-      ],
+  assert.throws(
+    () =>
+      allow(env)(
+        {
+          name: 'RebAR',
+          ticker: 'RebAR',
+          balances: {
+            [caller]: 10,
+          },
+          settings: [
+            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+            ['isTradeable', true],
+          ],
 
-      claimable: [],
-      divisibility: 1e6,
-    },
-    { caller, input: { target: '<tom>', qty: 11 } }
-  ).catch((e) => {
-    assert.equal(e.message, 'Error: Not enough tokens for allow.');
-  });
+          claimable: [],
+          divisibility: 1e6,
+        },
+        { caller, input: { target: '<tom>', qty: 11 } }
+      ),
+    /Not enough tokens for transfer./
+  );
 });
 
 test('should not allow null amount of tokens', () => {
@@ -399,25 +400,27 @@ test('should not transfer to the same account', () => {
     undefined
   );
 
-  allow(env)(
-    {
-      name: 'RebAR',
-      ticker: 'RebAR',
-      balances: {
-        [caller]: 10,
-      },
-      settings: [
-        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-        ['isTradeable', true],
-      ],
+  assert.throws(
+    () =>
+      allow(env)(
+        {
+          name: 'RebAR',
+          ticker: 'RebAR',
+          balances: {
+            [caller]: 10,
+          },
+          settings: [
+            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+            ['isTradeable', true],
+          ],
 
-      claimable: [],
-      divisibility: 1e6,
-    },
-    { caller: '<non-existing>', input: { qty: 5, target: '<tom>' } }
-  ).catch((e) => {
-    assert.equal(e.message, 'Error: Not enough tokens for allow.');
-  });
+          claimable: [],
+          divisibility: 1e6,
+        },
+        { caller: '<non-existing>', input: { qty: 5, target: '<tom>' } }
+      ),
+    /Not enough tokens for transfer./
+  );
 });
 
 test('should not transfer more than owned', () => {
@@ -432,21 +435,24 @@ test('should not transfer more than owned', () => {
     undefined,
     { [caller]: 10 }
   );
-  allow(env)(
-    {
-      name: 'RebAR',
-      ticker: 'RebAR',
-      settings: [
-        ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
-        ['isTradeable', true],
-      ],
-      claimable: [],
-      divisibility: 1e6,
-    },
-    { caller, input: { qty: 11, target: '<tom>' } }
-  ).catch((e) => {
-    assert.equal(e.message, 'Error: Not enough tokens for allow.');
-  });
+  assert.throws(
+    () =>
+      allow(env)(
+        {
+          name: 'RebAR',
+          ticker: 'RebAR',
+          settings: [
+            ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+            ['isTradeable', true],
+          ],
+          balances: {},
+          claimable: [],
+          divisibility: 1e6,
+        },
+        { caller, input: { qty: 11, target: '<tom>' } }
+      ),
+    /Not enough tokens for transfer./
+  );
 });
 
 test('should transfer to empty account', async () => {
@@ -456,15 +462,16 @@ test('should transfer to empty account', async () => {
     '<tx>',
     undefined,
     undefined,
-    undefined,
-    { '<justin>': 10 }
+    undefined
   );
   const caller = '<justin>';
   const output = await allow(env)(
     {
       name: 'RebAR',
       ticker: 'RebAR',
-
+      balances: {
+        [caller]: 10,
+      },
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -476,7 +483,7 @@ test('should transfer to empty account', async () => {
   );
 
   const { state } = output;
-  assert.equal(await env.kv.get('<justin>'), 0);
+  assert.equal(state.balances['<justin>'], 0);
   assert.equal(state.claimable[0]?.txID, '<tx>');
   assert.equal(state.claimable[0]?.to, '<tom>');
   assert.equal(state.claimable[0]?.qty, 10);
@@ -490,8 +497,7 @@ test('should allow to existing account', async () => {
     '<tx>',
     undefined,
     undefined,
-    undefined,
-    { '<tom>': 10, [caller]: 10 }
+    undefined
   );
   const output = await allow(env)(
     {
@@ -501,6 +507,10 @@ test('should allow to existing account', async () => {
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
       ],
+      balances: {
+        [caller]: 10,
+        '<tom>': 10,
+      },
       claimable: [],
       divisibility: 1e6,
     },
@@ -508,10 +518,11 @@ test('should allow to existing account', async () => {
   );
 
   const { state } = output;
-  assert.equal(await env.kv.get(caller), 0);
+  console.log('STATE', state);
+  assert.equal(state.balances[caller], 0);
   assert.equal(state.claimable[0]?.to, '<tom>');
   assert.equal(state.claimable[0]?.qty, 10);
-  assert.equal(state.claimable[0]?.qty + (await env.kv.get('<tom>')), 20);
+  assert.equal(state.claimable[0]?.qty + state.balances['<tom>'], 20);
 });
 
 test.after(async () => {});

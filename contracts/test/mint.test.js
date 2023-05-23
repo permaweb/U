@@ -6,25 +6,6 @@ const test = suite('mint');
 
 test.before(async () => {});
 
-test('Should create a kv store', async () => {
-  // set reward to 10
-  const env = setupSmartWeaveEnv(
-    999999,
-    1,
-    '<tx>',
-    undefined,
-    'ERROR',
-    undefined,
-    { jshaw: 1, tom: 1, dmac: 1 }
-  );
-
-  assert.is(await env.kv.get('jshaw'), 1);
-  env.kv.put('jshaw', 2);
-  assert.is(await env.kv.get('jshaw'), 2);
-  env.kv.del('jshaw');
-  assert.is(await env.kv.get('jshaw'), undefined);
-});
-
 test('should only mint new requests', async () => {
   const env = setupSmartWeaveEnv(
     999999,
@@ -86,8 +67,8 @@ test('should only mint new requests', async () => {
   ).toPromise();
   const state = output.state;
 
-  assert.is(await env.kv.get('<jshaw>'), 50);
-  assert.is(await env.kv.get('<tom>'), 25);
+  assert.is(state.balances['<jshaw>'], 50);
+  assert.is(state.balances['<tom>'], 25);
   assert.is(Object.keys(state.pile).length, 4);
 });
 
@@ -138,7 +119,7 @@ test('should work with no requests TODO: udpate this test name', async () => {
     { caller }
   ).toPromise();
   const state = output.state;
-  assert.is(await env.kv.get('<jshaw>'), 14);
+  assert.is(state.balances['<jshaw>'], 14);
   assert.is(state.pile['processed'], 1);
 });
 

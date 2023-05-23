@@ -72,7 +72,6 @@ async function deploy(folder) {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
       },
     },
   });
@@ -84,7 +83,6 @@ async function deploy(folder) {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
     })
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;
