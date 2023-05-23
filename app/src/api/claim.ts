@@ -26,7 +26,6 @@ const warpClaim = async (input: ClaimInput) => {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
       allowBigInt: true,
     });
 

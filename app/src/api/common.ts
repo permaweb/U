@@ -44,7 +44,6 @@ export const readState = async (tx: string) => {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
       allowBigInt: true,
     })
     .readState();
@@ -89,7 +88,6 @@ export const getKV = async (tx: string, address: string) => {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
       allowBigInt: true,
     })
     .connect('use_wallet');
