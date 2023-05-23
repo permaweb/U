@@ -7,6 +7,8 @@
     "dev": "vite",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
     "build": "node ./scripts/build.mjs",
+    "deploy-action": "",
+    "deploy": "rm -rf dist-*; npm run build && node ./scripts/deploy.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
