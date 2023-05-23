@@ -143,7 +143,6 @@ test('should transfer 1000 * 1e6', async () => {
       .integerValue(BigNumber.ROUND_DOWN)
       .toNumber(),
   });
-  console.log('Iteraction', interaction);
   const state = (await connectedWallet1SEQ.readState()).cachedValue.state;
   assert.is(state.balances[wallet2.address], 1000000000);
 });

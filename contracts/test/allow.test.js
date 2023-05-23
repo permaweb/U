@@ -518,7 +518,6 @@ test('should allow to existing account', async () => {
   );
 
   const { state } = output;
-  console.log('STATE', state);
   assert.equal(state.balances[caller], 0);
   assert.equal(state.claimable[0]?.to, '<tom>');
   assert.equal(state.claimable[0]?.qty, 10);
