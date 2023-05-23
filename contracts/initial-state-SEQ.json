@@ -8,5 +8,7 @@
   "claimable": [],
   "mint_contract": "",
   "pile": {},
-  "divisibility": 1e6
+  "balances": {},
+  "divisibility": 1e6,
+  "initialized": false
 }

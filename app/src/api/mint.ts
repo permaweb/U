@@ -21,7 +21,7 @@ const warpMint = async (tx: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
+
       allowBigInt: true,
     });
 

@@ -1,6 +1,5 @@
-import Async from 'hyper-async';
-const { of, fromPromise } = Async;
-import { ceAsync, getBalance, isInteger, roundDown } from '../util.js';
+import { fromNullable, of } from '../hyper-either.js';
+import { ce, isInteger, roundDown } from '../util.js';
 
 /**
  * @description Creates a transfer that can be claimed.
@@ -11,66 +10,43 @@ import { ceAsync, getBalance, isInteger, roundDown } from '../util.js';
  * @param {*} action
  * @return {*} {state}
  */
-export function allow({ kv, transaction }) {
+export function allow({ transaction }) {
   return (state, action) => {
     return of(action.caller)
-      .chain(ceAsync(!action.input?.target, 'Please specify a target.'))
+      .chain(fromNullable)
+      .chain(ce(!action.input?.target, 'Please specify a target.'))
       .chain(
-        ceAsync(
-          action.input?.target === action.caller,
-          'Target cannot be caller.'
-        )
+        ce(action.input?.target === action.caller, 'Target cannot be caller.')
       )
-      .chain(ceAsync(!isInteger(action.input?.qty), 'qty must be an integer.'))
+
+      .chain(ce(!isInteger(action.input?.qty), 'qty must be an integer.'))
       .chain(
-        ceAsync(
+        ce(
           roundDown(action.input?.qty) < 1,
           'Invalid token transfer. qty must be an integer greater than 0.'
         )
       )
-      .chain((caller) => fromPromise(getBalance)(caller, kv))
-      .chain((balance) =>
-        ceAsync(
-          (balance || 0) < roundDown(action.input?.qty),
-          'Not enough tokens for allow.'
-        )(balance)
-      )
-      .chain((balance) =>
-        fromPromise(subtractBalance)(
-          action.caller,
-          balance,
-          roundDown(action.input.qty),
-          kv
+      .chain(
+        ce(
+          (state.balances[action.caller] || 0) < roundDown(action.input?.qty),
+          'Not enough tokens for transfer.'
         )
       )
-      .map((qty) => {
+      .map((caller) => {
+        const safeQty = roundDown(action.input.qty);
+        state.balances[caller] -= safeQty;
         state.claimable.push({
-          from: action.caller,
+          from: caller,
           to: action.input.target,
-          qty,
+          qty: safeQty,
           txID: transaction.id,
         });
       })
-      .fork(
+      .fold(
         (msg) => {
           throw new ContractError(msg || 'An error occurred.');
         },
-        () => {
-          return { state };
-        }
+        () => ({ state })
       );
   };
 }
-
-/**
- *
- *
- * @author @jshaw-ar
- * @param {*} caller
- * @param {*} balance
- * @param {*} qty
- */
-const subtractBalance = async (caller, balance, qty, kv) => {
-  await kv.put(caller, balance - qty);
-  return qty;
-};

@@ -8,8 +8,8 @@ import { removeExpired } from '../util.js';
  * @author @jshaw-ar
  * @export
  */
-export function mint({ viewContractState, block, kv }) {
-  return (state, action) => {
+export function mint({ viewContractState, block }) {
+  return (state) => {
     // remove expired requests in the pile to prevent state bloat.
     state.pile = Object.fromEntries(
       Object.entries(state.pile).filter((e) => e[1] >= block.height)
@@ -22,8 +22,8 @@ export function mint({ viewContractState, block, kv }) {
       .map((queue) => removeExpired(queue, block.height))
       .map((queue) => notInPile(state, queue))
       .map(combineQuantitiesByTarget)
-      .chain(({ requests, combinedTargets }) =>
-        fromPromise(updateBalances)(combinedTargets, requests, kv)
+      .map(({ requests, combinedTargets }) =>
+        updateBalances(combinedTargets, requests, state)
       )
       .map((queue) => {
         for (let i = 0; i < queue.length; i++) {
@@ -91,13 +91,13 @@ function combineQuantitiesByTarget(requests) {
  * @param {*} kv
  * @return {*}
  */
-const updateBalances = async (combinedTargets, requests, kv) => {
+const updateBalances = (combinedTargets, requests, state) => {
   for (let i = 0; i < combinedTargets.length; i++) {
     const req = combinedTargets[i];
     const target = req.target;
     const qty = req.qty;
-    const balance = (await kv.get(target)) || 0;
-    await kv.put(target, balance + qty);
+    const balance = state.balances[target] || 0;
+    state.balances[target] = balance + qty;
   }
   return requests;
 };

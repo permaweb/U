@@ -51,8 +51,6 @@ test.before(async () => {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
-        useConstructor: true,
       },
     },
   });
@@ -63,8 +61,6 @@ test.before(async () => {
     .setEvaluationOptions({
       internalWrites: true,
       // unsafeClient: 'skip',
-      useKVStorage: true,
-      useConstructor: true,
     })
     .connect(wallet1.jwk);
 });

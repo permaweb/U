@@ -25,8 +25,7 @@ const warpClaim = async (input: ClaimInput) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
-      useConstructor: true,
+
       allowBigInt: true,
     });
 

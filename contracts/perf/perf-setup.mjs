@@ -53,8 +53,6 @@ async function go(folder) {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
-        useKVStorage: true,
-        useConstructor: true,
       },
     },
   });

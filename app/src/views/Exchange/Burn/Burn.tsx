@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import parse from "html-react-parser";
-import { ReactSVG } from "react-svg";
+import React, { useEffect } from 'react';
+import parse from 'html-react-parser';
+import { ReactSVG } from 'react-svg';
 
-import { Button } from "components/atoms/Button";
-import { FormField } from "components/atoms/FormField";
-import { Notification } from "components/atoms/Notification";
+import { Button } from 'components/atoms/Button';
+import { FormField } from 'components/atoms/FormField';
+import { Notification } from 'components/atoms/Notification';
 
-import { ASSETS } from "helpers/config";
-import { formatAddress } from "helpers/utils";
-import { useArweaveProvider } from "providers/ArweaveProvider";
+import { ASSETS } from 'helpers/config';
+import { formatAddress } from 'helpers/utils';
+import { useArweaveProvider } from 'providers/ArweaveProvider';
 
-import { language } from "helpers/language";
-import { ResponseType } from "helpers/types";
-import * as S from "./styles";
-import { MintRequest, StateL1, StateSEQ, env } from "api";
+import { language } from 'helpers/language';
+import { ResponseType } from 'helpers/types';
+import * as S from './styles';
+import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
 const { getQueue, getState, createMint, mint } = env;
 
@@ -71,7 +71,7 @@ export default function Burn() {
 
     return (
       <Button
-        type={"alt1"}
+        type={'alt1'}
         label={label}
         handlePress={action}
         height={52.5}
@@ -85,7 +85,7 @@ export default function Burn() {
   function burnAR() {
     setLoading(true);
     createMint({
-      contractId: import.meta.env.VITE_CONTRACT_L1 || "",
+      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
       qty: arAmount,
     }).then((r: any) => {
       setLoading(false);
@@ -100,15 +100,15 @@ export default function Burn() {
     mint(import.meta.env.VITE_CONTRACT_SEQ);
     setMintResult({
       status: true,
-      message: language.mintExecuted
-    })
+      message: language.mintExecuted,
+    });
   }
 
   return (
     <>
       {burnResult && (
         <Notification
-          type={burnResult.status === true ? "success" : "warning"}
+          type={burnResult.status === true ? 'success' : 'warning'}
           message={burnResult.message!}
           callback={() => setBurnResult(null)}
         />
@@ -116,13 +116,13 @@ export default function Burn() {
 
       {mintResult && (
         <Notification
-          type={mintResult.status === true ? "success" : "warning"}
+          type={mintResult.status === true ? 'success' : 'warning'}
           message={mintResult.message!}
           callback={() => setMintResult(null)}
         />
       )}
 
-      <S.Wrapper className={"tab-wrapper"}>
+      <S.Wrapper className={'tab-wrapper'}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.burn}</h2>
@@ -140,7 +140,7 @@ export default function Burn() {
           </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.from}
               value={arAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -156,7 +156,7 @@ export default function Burn() {
             </S.Divider>
 
             <FormField
-              type={"number"}
+              type={'number'}
               label={language.to}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -173,7 +173,7 @@ export default function Burn() {
 
       <S.MintActionWrapper>
         <Button
-          type={"alt1"}
+          type={'alt1'}
           label={language.mint}
           tooltip={language.mintDescription}
           handlePress={() => mintRequests()}
@@ -202,7 +202,7 @@ export default function Burn() {
                 </S.DetailSubheader>
                 <S.DetailLine
                   key={index}
-                  type={"pending"}
+                  type={'pending'}
                   ownerLine={
                     arProvider.walletAddress
                       ? arProvider.walletAddress === request.target

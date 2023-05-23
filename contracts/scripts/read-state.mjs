@@ -13,8 +13,6 @@ async function read(contractId, address) {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      useKVStorage: true,
-      useConstructor: true,
     })
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;

@@ -4,6 +4,7 @@
   "description": "The utility token of the permaweb",
   "main": "index.js",
   "scripts": {
+    "install": "(cd app && npm i) && (cd contracts && npm i)",
     "fmt": "npx prettier --single-quote contracts/src --write && npx prettier --single-quote contracts/test --write && npx prettier --single-quote app/src --write",
     "test": "(cd contracts && npm test)",
     "launch": "(cd contracts && npm run deploy:local)",
