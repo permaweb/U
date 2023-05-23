@@ -20,11 +20,12 @@ export function getWarpFactory() {
  * @param {string} contractId
  * @return {Warp}
  */
-export async function syncState(warp: Warp, contractId: string) {
-  const CACHE = 'https://cache.permapages.app';
+export async function syncState(warp: Warp, contractId: string, dre?: string) {
   await warp
     .contract(contractId)
-    .syncState(CACHE + '/contract', { validity: true });
+    .syncState(`https://${dre || 'dre-1'}.warp.cc/contract`, {
+      validity: true,
+    });
 }
 
 /**
