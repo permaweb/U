@@ -22,10 +22,11 @@ const warpMint = async (tx: string) => {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
       allowBigInt: true,
     });
-  return contract.writeInteraction({
+
+  const interaction = await contract.writeInteraction({
     function: 'mint',
   });
+  return interaction;
 };
