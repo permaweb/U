@@ -28,7 +28,7 @@ const warpTransfer = async (input: TransferInput) => {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
+      // useConstructor: true,
       allowBigInt: true,
     });
   const newQty = new BigNumber(qty * 1e6)
