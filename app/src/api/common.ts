@@ -66,6 +66,7 @@ export const viewState = async (tx: string, input: any) => {
     .setEvaluationOptions({
       internalWrites: true,
       allowBigInt: true,
+      unsafeClient: 'skip',
     })
     .viewState(input);
   if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
