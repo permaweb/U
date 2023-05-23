@@ -54,7 +54,6 @@ async function go(folder) {
         internalWrites: true,
         unsafeClient: 'skip',
         useKVStorage: true,
-        useConstructor: true,
       },
     },
   });

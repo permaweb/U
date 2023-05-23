@@ -73,7 +73,6 @@ async function deploy(folder) {
         internalWrites: true,
         unsafeClient: 'skip',
         useKVStorage: true,
-        useConstructor: true,
       },
     },
   });
@@ -86,7 +85,6 @@ async function deploy(folder) {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
     })
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;

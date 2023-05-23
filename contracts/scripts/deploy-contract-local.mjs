@@ -35,13 +35,13 @@ async function deploy(folder) {
             tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
             target: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
             qty: 2000000,
-            expires: 120,
+            expires: -1,
           },
           {
             tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
             qty: 3000000,
-            expires: 220,
+            expires: -1,
           },
           {
             tx: 'oSrL1XAq5VKXxbQR0Lj43U-soLSl7NdupqGLM6bjDkI',
@@ -69,12 +69,7 @@ async function deploy(folder) {
       ...stateFromFileSEQ,
       ...{
         owner: process.env.WALLET_ADDRESS,
-        balances: {
-          // put your wallet here if you want to preload your wallet with bAR locally
-          // ...balances,
-          '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 1000000000000000,
-          uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 1000000000000000,
-        },
+
         claimable: [
           {
             to: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
@@ -140,13 +135,32 @@ async function deploy(folder) {
           internalWrites: true,
           unsafeClient: 'skip',
           useKVStorage: true,
-          useConstructor: true,
         },
       },
       src: contractSrcSEQ,
     });
     console.log(`L1 contractTxId ${deployL1.contractTxId}`);
     console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
+
+    const connected = warp
+      .contract(deploySEQ.contractTxId)
+      .setEvaluationOptions({
+        internalWrites: true,
+        unsafeClient: 'skip',
+        useKVStorage: true,
+      })
+      .connect(wallet1.jwk);
+
+    const interaction = await connected.writeInteraction({
+      function: 'initialize',
+      initialBalances: {
+        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 1000000000000000,
+        uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 1000000000000000,
+      },
+    });
+
+    console.log(`Balances migrated: ${interaction.originalTxId}`);
+
     execSync(
       `(cd ../app && npm i && VITE_CONTRACT_L1=${deployL1.contractTxId} VITE_CONTRACT_SEQ=${deploySEQ.contractTxId} VITE_LOCAL=true npm run dev)`,
       {

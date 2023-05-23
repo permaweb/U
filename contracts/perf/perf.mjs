@@ -70,7 +70,6 @@ async function go() {
         internalWrites: true,
         unsafeClient: 'skip',
         useKVStorage: true,
-        useConstructor: true,
       },
     },
   });
@@ -83,7 +82,6 @@ async function go() {
       internalWrites: true,
       unsafeClient: 'skip',
       useKVStorage: true,
-      useConstructor: true,
     })
     .connect(wallets[0].jwk);
   for (let i = 0; i < 2; i++) {
