@@ -4,7 +4,7 @@ export async function balance(state, action) {
     result: {
       target: addr,
       ticker: state.ticker,
-      balance: (await SmartWeave.kv.get(addr)) || 0,
+      balance: state.balances[addr] || 0,
     },
   };
 }
