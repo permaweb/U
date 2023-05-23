@@ -37,24 +37,24 @@ async function deploy(folder) {
             qty: 2000000,
             expires: -1,
           },
-          {
-            tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
-            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-            qty: 3000000,
-            expires: -1,
-          },
-          {
-            tx: 'oSrL1XAq5VKXxbQR0Lj43U-soLSl7NdupqGLM6bjDkI',
-            target: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-            qty: 4000000,
-            expires: 320,
-          },
-          {
-            tx: '-oQ959JAVBjDMGCUkYA6yxlYHi9R3kjpb3WrB1kgnAs',
-            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-            qty: 5000000,
-            expires: 420,
-          },
+          // {
+          //   tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
+          //   target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+          //   qty: 3000000,
+          //   expires: -1,
+          // },
+          // {
+          //   tx: 'oSrL1XAq5VKXxbQR0Lj43U-soLSl7NdupqGLM6bjDkI',
+          //   target: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+          //   qty: 4000000,
+          //   expires: 320,
+          // },
+          // {
+          //   tx: '-oQ959JAVBjDMGCUkYA6yxlYHi9R3kjpb3WrB1kgnAs',
+          //   target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
+          //   qty: 5000000,
+          //   expires: 420,
+          // },
           {
             tx: 'tT0FtnWOqLa8i0O5KvTISPPVkuQ85nCKZyViWurfIsk',
             target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
