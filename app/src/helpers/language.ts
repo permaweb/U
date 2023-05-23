@@ -39,5 +39,4 @@ export const language = {
   transferRecipientPlaceholder: `Address`,
   transferFailure: `Transfer failed`,
   transferSuccess: `Transfer Successfully Sent`,
-  
 };
