@@ -43,7 +43,6 @@ async function deploy(folder) {
     ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
-      balances,
     },
   };
 
@@ -85,14 +84,12 @@ async function deploy(folder) {
       unsafeClient: 'skip',
     })
     .connect(jwk);
-  const state = (await connected.readState()).cachedValue.state;
-  const balance = (
-    await connected.getStorageValues([
-      '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-    ])
-  ).cachedValue.get('9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4');
+  const interaction = await connected.writeInteraction({
+    function: 'initialize',
+    initialBalances: { ...balances },
+  });
 
-  console.log('State / Balances', JSON.stringify({ state, balance }));
+  console.log(`Balances migrated: ${interaction.originalTxId}`);
 }
 deploy(process.argv[2]).catch(console.log);
 

@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { getKV } from './common';
+import { viewState } from './common';
 const { of, fromPromise } = Async;
 
 /**
@@ -10,14 +10,15 @@ const { of, fromPromise } = Async;
  * @param {string} tx
  * @return {*}
  */
-export function getRebarBalance(tx: string, address: string) {
+export function getRebarBalance(tx: string, target: string) {
   return of(tx)
-    .chain((tx: string) => fromPromise(getKV)(tx, address))
+    .chain((tx: string) =>
+      fromPromise(viewState)(tx, { function: 'balance', target })
+    )
     .fork(
       (e: any) => {
-        console.log(e);
         throw new Error(e.message);
       },
-      (balance: number) => (balance / 1e6).toFixed(2)
+      (result: any) => result.balance / 1e6
     );
 }
