@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { viewState } from './common';
+import { viewStateNoInternal } from './common';
 import { MintRequest } from './interface';
 import { sort } from 'ramda';
 const { of, fromPromise } = Async;
@@ -15,11 +15,10 @@ const { of, fromPromise } = Async;
 export function getQueue(tx: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewState)(tx, { function: 'get-queue' })
+      fromPromise(viewStateNoInternal)(tx, { function: 'get-queue' })
     )
     .fork(
       (e: any) => {
-        console.log(e);
         throw new Error(e.message);
       },
       (requests: MintRequest[]) => sort(highest, requests)

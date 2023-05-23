@@ -44,7 +44,20 @@ export const readState = async (tx: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
+      allowBigInt: true,
+    })
+    .readState();
+  return contract.cachedValue.state;
+};
 
+export const readStateWithoutInternalWrites = async (tx: string) => {
+  const warp = getWarpFactory();
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
+  const contract = await warp
+    .contract(tx)
+    .connect('use_wallet')
+    .setEvaluationOptions({
+      unsafeClient: 'skip',
       allowBigInt: true,
     })
     .readState();
@@ -65,7 +78,21 @@ export const viewState = async (tx: string, input: any) => {
   const state = await warp
     .contract(tx)
     .setEvaluationOptions({
+      allowBigInt: true,
+      unsafeClient: 'skip',
       internalWrites: true,
+    })
+    .viewState(input);
+  if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
+  return state.result;
+};
+
+export const viewStateNoInternal = async (tx: string, input: any) => {
+  const warp = getWarpFactory();
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
+  const state = await warp
+    .contract(tx)
+    .setEvaluationOptions({
       allowBigInt: true,
       unsafeClient: 'skip',
     })

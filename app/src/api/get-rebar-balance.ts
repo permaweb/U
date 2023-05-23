@@ -19,6 +19,8 @@ export function getRebarBalance(tx: string, target: string) {
       (e: any) => {
         throw new Error(e.message);
       },
-      (result: any) => result.balance / 1e6
+      (result: any) => {
+        return result.balance / 1e6;
+      }
     );
 }

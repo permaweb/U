@@ -31,8 +31,8 @@ const createMintL1 = async (input: { contractId: string; qty: number }) => {
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
-      internalWrites: true,
       allowBigInt: true,
+      unsafeClient: 'skip',
     });
   return contract.writeInteraction(
     {

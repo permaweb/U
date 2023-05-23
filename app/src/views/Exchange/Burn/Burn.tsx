@@ -15,7 +15,13 @@ import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
-const { getQueue, getState, createMint, mint } = env;
+const {
+  getQueue,
+  getStateNoInternalWrites,
+  getStateInternalWrites,
+  createMint,
+  mint,
+} = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
@@ -31,15 +37,19 @@ export default function Burn() {
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
-        setQueue(requests);
-      });
-    });
-    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
-      setStateL1(s);
-    });
+    getStateInternalWrites(import.meta.env.VITE_CONTRACT_SEQ).then(
+      (s: StateSEQ) => {
+        setStateSEQ(s);
+        getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
+          setQueue(requests);
+        });
+      }
+    );
+    getStateNoInternalWrites(import.meta.env.VITE_CONTRACT_L1).then(
+      (s: StateL1) => {
+        setStateL1(s);
+      }
+    );
   }, [mintResult]);
 
   useEffect(() => {
