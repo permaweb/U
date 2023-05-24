@@ -1,6 +1,8 @@
 import arconnectWalletPNG from 'assets/arconnect-wallet-logo.png';
 import arrowDownSVG from 'assets/arrow-down.svg';
+import checkmarkSVG from 'assets/checkmark.svg';
 import closeSVG from 'assets/close.svg';
+import infoSVG from 'assets/info.svg';
 import logoSVG from 'assets/logo.svg';
 import menuSVG from 'assets/menu.svg';
 import arweaveLogoSVG from 'assets/arweave-logo.svg';
@@ -17,7 +19,9 @@ import { Claim } from 'views/Exchange/Claim';
 export const ASSETS = {
   arrowDown: arrowDownSVG,
   arweaveLogo: arweaveLogoSVG,
+  checkmark: checkmarkSVG,
   close: closeSVG,
+  info: infoSVG,
   logo: logoSVG,
   menu: menuSVG,
   rebarLogo: rebarLogoSVG,
