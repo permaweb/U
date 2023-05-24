@@ -1,4 +1,4 @@
-import { getStateInternalWrites, getStateNoInternalWrites } from './get-state';
+import { getState } from './get-state';
 import { getQueue } from './get-queue';
 import { createMint } from './create-mint';
 import { mint } from './mint';
@@ -8,8 +8,7 @@ import { getRebarBalance } from './get-rebar-balance';
 export * from './interface';
 
 export const env = {
-  getStateInternalWrites,
-  getStateNoInternalWrites,
+  getState,
   createMint,
   mint,
   transfer,

@@ -10,7 +10,7 @@ import * as S from './styles';
 import { Claimable, env, StateSEQ } from 'api';
 import { ResponseType } from 'helpers/types';
 
-const { getStateInternalWrites, getRebarBalance, claim } = env;
+const { getState, getRebarBalance, claim } = env;
 
 export default function Claim() {
   const arProvider = useArweaveProvider();
@@ -31,7 +31,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress) {
-      getStateInternalWrites(import.meta.env.VITE_CONTRACT_SEQ)
+      getState(import.meta.env.VITE_CONTRACT_SEQ)
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(

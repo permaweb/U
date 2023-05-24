@@ -15,7 +15,7 @@ import * as S from './styles';
 import { env } from 'api';
 import { StateSEQ } from 'api';
 
-const { transfer, getStateInternalWrites, getRebarBalance } = env;
+const { transfer, getState, getRebarBalance } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
@@ -34,7 +34,7 @@ export default function Transfer() {
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
-    getStateInternalWrites(import.meta.env.VITE_CONTRACT_SEQ)
+    getState(import.meta.env.VITE_CONTRACT_SEQ)
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);

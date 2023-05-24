@@ -15,13 +15,7 @@ import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { MintRequest, StateL1, StateSEQ, env } from 'api';
 
-const {
-  getQueue,
-  getStateNoInternalWrites,
-  getStateInternalWrites,
-  createMint,
-  mint,
-} = env;
+const { getQueue, getState, createMint, mint } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
@@ -37,19 +31,15 @@ export default function Burn() {
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getStateInternalWrites(import.meta.env.VITE_CONTRACT_SEQ).then(
-      (s: StateSEQ) => {
-        setStateSEQ(s);
-        getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
-          setQueue(requests);
-        });
-      }
-    );
-    getStateNoInternalWrites(import.meta.env.VITE_CONTRACT_L1).then(
-      (s: StateL1) => {
-        setStateL1(s);
-      }
-    );
+    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
+      setStateSEQ(s);
+      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
+        setQueue(requests);
+      });
+    });
+    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
+      setStateL1(s);
+    });
   }, [mintResult]);
 
   useEffect(() => {
@@ -223,7 +213,9 @@ export default function Burn() {
                     <p>{`${formatAddress(request.target, true)}`}</p>
                   </S.DetailValue>
                   <S.DetailValue>
-                    <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
+                    <S.Qty>{`${language.qty}: ${(request.qty / 1e6).toFixed(
+                      3
+                    )}`}</S.Qty>
                   </S.DetailValue>
                   <S.DetailValue>
                     <p>{`${language.expires}: ${request.expires}`}</p>
