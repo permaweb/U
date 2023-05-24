@@ -13,13 +13,11 @@ async function read(contractId, address) {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
+      allowBigInt: true,
     })
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;
-  const balance = (await connected.getStorageValues([address])).cachedValue.get(
-    address
-  );
 
-  console.log('State / Balances', JSON.stringify({ state, balance }));
+  console.log('State', JSON.stringify({ state }));
 }
 read(process.argv[2], process.argv[3]).catch(console.log);

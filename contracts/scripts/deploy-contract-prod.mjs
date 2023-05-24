@@ -47,18 +47,22 @@ async function deploy(folder) {
     },
   };
 
-  const deployL1 = await warp.deploy({
-    wallet: new ArweaveSigner(jwk),
-    initState: JSON.stringify(initialStateL1),
-    src: contractSrcL1,
-    evaluationManifest: {
-      evaluationOptions: {
-        sourceType: SourceType.ARWEAVE,
-        unsafeClient: 'skip',
-        internalWrites: false,
+  const deployL1 = await warp.deploy(
+    {
+      wallet: jwk,
+      initState: JSON.stringify(initialStateL1),
+      src: contractSrcL1,
+      evaluationManifest: {
+        evaluationOptions: {
+          sourceType: SourceType.ARWEAVE,
+          unsafeClient: 'skip',
+          allowBigInt: true,
+          internalWrites: true,
+        },
       },
     },
-  });
+    true
+  );
 
   const deploySEQ = await warp.deploy({
     wallet: new ArweaveSigner(jwk),
@@ -72,6 +76,7 @@ async function deploy(folder) {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
+        allowBigInt: true,
       },
     },
   });

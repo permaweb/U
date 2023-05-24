@@ -35,8 +35,9 @@ async function go(folder) {
     evaluationManifest: {
       evaluationOptions: {
         sourceType: SourceType.ARWEAVE,
+        internalWrites: true,
         unsafeClient: 'skip',
-        internalWrites: false,
+        allowBigInt: true,
       },
     },
   });
@@ -53,6 +54,7 @@ async function go(folder) {
         sourceType: SourceType.WARP_SEQUENCER,
         internalWrites: true,
         unsafeClient: 'skip',
+        allowBigInt: true,
       },
     },
   });
