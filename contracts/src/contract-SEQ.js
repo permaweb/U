@@ -32,7 +32,7 @@ export async function handle(state, action) {
       return rejectClaimable(state, action);
     default:
       throw new ContractError(
-        `No function supplied or function not recognized`
+        `L2 Contract: No function supplied or function not recognized`
       );
   }
 }
