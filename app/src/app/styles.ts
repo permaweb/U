@@ -157,8 +157,11 @@ export const GlobalStyle = createGlobalStyle`
   .exchange-wrapper {
     width: 500px !important;
     max-width: 90vw !important;
-    margin: 50px auto 0 auto !important;
+    margin: -32.5px auto 0 auto !important;
     padding: 0 0 50px !important;
+    @media(max-width: ${STYLING.cutoffs.tablet}) {
+      margin: 20px auto 0 auto !important;
+    }
   }
 
   .tab-wrapper {

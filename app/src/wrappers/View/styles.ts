@@ -9,3 +9,10 @@ export const Wrapper = styled.main`
   position: relative;
   border: 1px solid transparent;
 `;
+
+export const FAQWrapper = styled.div`
+  width: 100%;
+  max-width: ${(STYLING.cutoffs.max)};
+  margin: 40px auto 0 auto;
+  padding: 0 25px;
+`;
