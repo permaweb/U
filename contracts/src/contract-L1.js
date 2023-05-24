@@ -4,9 +4,6 @@ import { removeExpired } from './util.js';
 
 export async function handle(state, action) {
   const env = {
-    readContractState: SmartWeave.contracts.readContractState.bind(SmartWeave),
-    viewContractState: SmartWeave.contracts.viewContractState.bind(SmartWeave),
-    write: SmartWeave.contracts.write.bind(SmartWeave),
     block: SmartWeave.block,
     transaction: SmartWeave.transaction,
   };
@@ -18,9 +15,11 @@ export async function handle(state, action) {
       return createMint(env)(state, action);
     case 'get-queue':
       return getQueue(state, action);
+    case 'mint':
+      return getQueue(state, action);
     default:
       throw new ContractError(
-        `No function supplied or function not recognized`
+        `L1 Contract: No function supplied or function not recognized ${action?.input?.function}`
       );
   }
 }
