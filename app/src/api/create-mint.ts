@@ -1,6 +1,6 @@
 import Async from 'hyper-async';
 const { of, fromPromise } = Async;
-import { getWarpFactory, syncState } from './common';
+import { getWarpFactory } from './common';
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 
@@ -26,15 +26,15 @@ export function createMint(input: { contractId: string; qty: number }) {
 const createMintL1 = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
       allowBigInt: true,
       unsafeClient: 'skip',
+      internalWrites: true,
     });
-  return contract.writeInteraction(
+  const interaction = await contract.writeInteraction(
     {
       function: 'create-mint',
     },
@@ -42,6 +42,8 @@ const createMintL1 = async (input: { contractId: string; qty: number }) => {
       reward: new BigNumber(qty * 1e12)
         .integerValue(BigNumber.ROUND_DOWN)
         .toString(),
+      disableBundling: true,
     }
   );
+  return interaction;
 };

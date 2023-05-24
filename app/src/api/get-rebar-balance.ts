@@ -13,7 +13,11 @@ const { of, fromPromise } = Async;
 export function getRebarBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewState)(tx, { function: 'balance', target })
+      fromPromise(viewState)(
+        tx,
+        { function: 'balance', target },
+        'https://dre-1.warp.cc'
+      )
     )
     .fork(
       (e: any) => {

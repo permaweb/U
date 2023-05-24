@@ -20,7 +20,8 @@ const warpTransfer = async (input: TransferInput) => {
   const { contractId, qty, target, from } = input;
   const warp = getWarpFactory();
 
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
+  if (!import.meta.env.VITE_LOCAL)
+    await syncState(warp, contractId, 'https://dre-1.warp.cc');
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')

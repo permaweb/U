@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { viewStateNoInternal } from './common';
+import { viewState } from './common';
 import { MintRequest } from './interface';
 import { sort } from 'ramda';
 const { of, fromPromise } = Async;
@@ -15,11 +15,15 @@ const { of, fromPromise } = Async;
 export function getQueue(tx: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewStateNoInternal)(tx, { function: 'get-queue' })
+      fromPromise(viewState)(
+        tx,
+        { function: 'get-queue' },
+        'https://cache.permapages.app'
+      )
     )
     .fork(
       (e: any) => {
-        throw new Error(e.message);
+        throw new Error(e?.message || 'An error occurred.');
       },
       (requests: MintRequest[]) => sort(highest, requests)
     );

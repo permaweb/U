@@ -23,7 +23,7 @@ export function getWarpFactory() {
 export async function syncState(warp: Warp, contractId: string, dre?: string) {
   await warp
     .contract(contractId)
-    .syncState(`https://${dre || 'dre-1'}.warp.cc/contract`, {
+    .syncState(`${dre || 'https://cache.permapages.app'}/contract`, {
       validity: true,
     });
 }
@@ -37,26 +37,13 @@ export async function syncState(warp: Warp, contractId: string, dre?: string) {
  */
 export const readState = async (tx: string) => {
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
+  if (!import.meta.env.VITE_LOCAL)
+    await syncState(warp, tx, 'https://dre-1.warp.cc');
   const contract = await warp
     .contract(tx)
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
-      unsafeClient: 'skip',
-      allowBigInt: true,
-    })
-    .readState();
-  return contract.cachedValue.state;
-};
-
-export const readStateWithoutInternalWrites = async (tx: string) => {
-  const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
-  const contract = await warp
-    .contract(tx)
-    .connect('use_wallet')
-    .setEvaluationOptions({
       unsafeClient: 'skip',
       allowBigInt: true,
     })
@@ -72,9 +59,9 @@ export const readStateWithoutInternalWrites = async (tx: string) => {
  * @param {any} input
  * @return {*}
  */
-export const viewState = async (tx: string, input: any) => {
+export const viewState = async (tx: string, input: any, dre: string) => {
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
+  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx, dre);
   const state = await warp
     .contract(tx)
     .setEvaluationOptions({
@@ -85,44 +72,4 @@ export const viewState = async (tx: string, input: any) => {
     .viewState(input);
   if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
   return state.result;
-};
-
-export const viewStateNoInternal = async (tx: string, input: any) => {
-  const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
-  const state = await warp
-    .contract(tx)
-    .setEvaluationOptions({
-      allowBigInt: true,
-      unsafeClient: 'skip',
-    })
-    .viewState(input);
-  if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
-  return state.result;
-};
-
-/**
- *
- * @author @jshaw-ar
- * @export
- * @param {string} tx
- * @param {any} input
- * @return {*}
- */
-export const getKV = async (tx: string, address: string) => {
-  const warp = getWarpFactory();
-  const connected = warp
-    .contract(tx)
-    .setEvaluationOptions({
-      internalWrites: true,
-      unsafeClient: 'skip',
-
-      allowBigInt: true,
-    })
-    .connect('use_wallet');
-  (await connected.readState()).cachedValue.state;
-
-  return (
-    (await connected.getStorageValues([address])).cachedValue.get(address) || 0
-  );
 };

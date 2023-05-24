@@ -18,14 +18,14 @@ const warpClaim = async (input: ClaimInput) => {
   const { contractId, qty, tx } = input;
   const warp = getWarpFactory();
 
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
+  if (!import.meta.env.VITE_LOCAL)
+    await syncState(warp, contractId, 'https://dre-1.warp.cc');
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-
       allowBigInt: true,
     });
 
