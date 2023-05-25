@@ -1,19 +1,27 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ReactSVG } from "react-svg";
 
-import { IconButton } from 'components/atoms/IconButton';
-import { ASSETS } from 'helpers/config';
-import * as urls from 'helpers/urls';
+import { IconButton } from "components/atoms/IconButton";
+import { ASSETS } from "helpers/config";
+import * as urls from "helpers/urls";
 import {
   checkDesktop,
   checkWindowResize,
   hideDocumentBody,
   showDocumentBody,
-} from 'helpers/window';
-import { WalletConnect } from 'wallet/WalletConnect';
+} from "helpers/window";
+import { WalletConnect } from "wallet/WalletConnect";
+import { language } from "helpers/language";
 
-import * as S from './styles';
+import * as S from "./styles";
+
+const NAV_PATHS = [
+  {
+    name: language.docs,
+    href: "https://github.com/permaweb/RebAR#readme",
+  },
+];
 
 export default function Header() {
   const [open, setOpen] = React.useState(checkDesktop());
@@ -48,6 +56,15 @@ export default function Header() {
   function navList() {
     return (
       <S.NC>
+        <S.NavPaths>
+          {NAV_PATHS.map((path, index) => (
+            <S.Link key={index}>
+              <Link target={"_blank"} to={path.href} onClick={() => setOpen(false)}>
+                {path.name}
+              </Link>
+            </S.Link>
+          ))}
+        </S.NavPaths>
         <S.SC>
           <S.Connect show={getWalletDisplay()}>
             <WalletConnect callback={() => setOpen(!open)} />
@@ -67,7 +84,7 @@ export default function Header() {
             <S.MenuContainer>
               <S.Menu>
                 <IconButton
-                  type={'primary'}
+                  type={"primary"}
                   warning={open}
                   src={open ? ASSETS.close : ASSETS.menu}
                   handlePress={handleNavStatus}
@@ -96,3 +113,5 @@ export default function Header() {
     </S.Wrapper>
   );
 }
+
+// https://github.com/permaweb/RebAR#readme

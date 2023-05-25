@@ -72,7 +72,40 @@ export const AWrapper = styled.div`
 `;
 
 export const MintActionWrapper = styled.div`
+  width: 100%;
   margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    min-width: calc(100% - 65px);
+  }
+`;
+
+export const InfoAction = styled.div`
+  min-width: 65px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    svg {
+      fill: ${(props) => props.theme.colors.button.alt1.background};
+    }
+    &:hover {
+      svg {
+        fill: ${(props) => props.theme.colors.button.alt1.hover};
+      }
+    }
+  }
+`;
+
+export const InfoWrapper = styled.div`
+  p {
+    line-height: 1.5;
+    font-size: ${(props) => props.theme.typography.size.base};
+    font-weight: ${(props) => props.theme.typography.weight.medium};
+    color: ${(props) => props.theme.colors.font.primary.alt1};
+  }
 `;
 
 export const DetailWrapper = styled.div`

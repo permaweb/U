@@ -1,10 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import { Modal } from 'components/molecules/Modal';
-import { AR_WALLETS, WALLET_PERMISSIONS } from 'helpers/config';
-import { getBalanceEndpoint } from 'helpers/endpoints';
-import { language } from 'helpers/language';
+import Account from "arweave-account";
+
+import { Modal } from "components/molecules/Modal";
+import { AR_WALLETS, WALLET_PERMISSIONS } from "helpers/config";
+import { getBalanceEndpoint } from "helpers/endpoints";
+import { language } from "helpers/language";
+import { STYLING } from "helpers/styling";
 
 export const WalletListContainer = styled.div`
   height: 100%;
@@ -20,6 +23,7 @@ export const WalletListItem = styled.button`
   padding: 0 20px;
   display: flex;
   align-items: center;
+  border-radius: ${STYLING.dimensions.borderRadiusWrapper};
   &:hover {
     background: ${(props) => props.theme.colors.container.primary.hover};
   }
@@ -41,6 +45,7 @@ interface ArweaveContextState {
   handleDisconnect: () => void;
   walletModalVisible: boolean;
   setWalletModalVisible: (open: boolean) => void;
+  arProfile: any;
 }
 
 interface ArweaveProviderProps {
@@ -63,6 +68,7 @@ const DEFAULT_CONTEXT = {
       `Make sure to render ArweaveProvider as an ancestor of the component that uses ARContext.Provider`
     );
   },
+  arProfile: null,
 };
 
 const ARContext = React.createContext<ArweaveContextState>(DEFAULT_CONTEXT);
@@ -76,7 +82,7 @@ function WalletList(props: { handleConnect: () => void }) {
     <WalletListContainer>
       {AR_WALLETS.map((wallet, index) => (
         <WalletListItem key={index} onClick={() => props.handleConnect()}>
-          <img src={`${wallet.logo}`} alt={''} />
+          <img src={`${wallet.logo}`} alt={""} />
           <span>
             {wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
           </span>
@@ -95,6 +101,8 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
   const [availableBalance, setAvailableBalance] = React.useState<number | null>(
     null
   );
+  const [arProfile, setArProfile] = React.useState<any | null>(null);
+
   // const [arProfile, setArProfile] = React.useState<ProfileType | null>(null);
 
   async function handleConnect() {
@@ -116,7 +124,6 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
   const getUserBalance = async (wallet: string) => {
     const rawBalance = await fetch(getBalanceEndpoint(wallet));
     const jsonBalance = await rawBalance.json();
-    // return Number((jsonBalance / 1e12).toFixed(4));
     return jsonBalance / 1e12;
   };
 
@@ -134,12 +141,23 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
     handleWallet();
 
-    window.addEventListener('arweaveWalletLoaded', handleWallet);
+    window.addEventListener("arweaveWalletLoaded", handleWallet);
 
     return () => {
-      window.removeEventListener('arweaveWalletLoaded', handleWallet);
+      window.removeEventListener("arweaveWalletLoaded", handleWallet);
     };
   });
+
+  React.useEffect(() => {
+    (async function () {
+      if (walletAddress) {
+        const account = await (new Account().get(walletAddress));
+        if (account) {
+          setArProfile(account);
+        }
+      }
+    })();
+  }, [walletAddress]);
 
   return (
     <>
@@ -160,6 +178,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
           wallets,
           walletModalVisible,
           setWalletModalVisible,
+          arProfile,
         }}
       >
         {props.children}

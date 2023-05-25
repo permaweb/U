@@ -4,6 +4,19 @@ import { fadeIn1, open } from 'helpers/animations';
 import { STYLING } from 'helpers/styling';
 import { NotificationType } from 'helpers/types';
 
+function getColor(m: NotificationType, theme: DefaultTheme) {
+	switch (m) {
+		case 'success':
+			return theme.colors.notification.success;
+		case 'warning':
+			return theme.colors.notification.warning;
+		case 'neutral':
+			return theme.colors.notification.neutral;
+		default:
+			return theme.colors.notification.neutral;
+	}
+}
+
 export const Wrapper = styled.div`
   height: 55px;
   width: 300px;
@@ -25,20 +38,44 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Message = styled.span<{ type: NotificationType }>`
+export const Message = styled.span`
   color: ${(props) => props.theme.colors.font.primary.active.base};
   font-weight: ${(props) => props.theme.typography.weight.regular};
   margin-left: 20px;
   padding-left: 7.5px;
 `;
 
+export const Icon = styled.div<{ type: NotificationType }>`
+  height: 25px;
+  width: 25px;
+  background: ${(props) => getColor(props.type, props.theme)};
+  border-radius: 50%;
+  margin: 0 0 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    padding: 2.5px 0 0 0;
+    height: 15px;
+    width: 15px;
+  }
+`;
+
 export const Close = styled.div`
   height: 100%;
   width: 50px;
   position: absolute;
-  right: 0;
+  top: 5px;
+  right: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
   padding: 1.5px 0 0 0;
+  button {
+    height: 10px !important;
+    width: 10px !important;
+    svg {
+      height: 10px !important;
+      width: 10-px !important;
+    }
+  }
 `;

@@ -7,7 +7,6 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { CloseHandler } from 'wrappers/CloseHandler';
 
 import * as S from './styles';
-import { getAnsName } from 'api/ans';
 
 export default function WalletConnect(props: { callback?: () => void }) {
   const arProvider = useArweaveProvider();
@@ -15,14 +14,6 @@ export default function WalletConnect(props: { callback?: () => void }) {
   const [showWallet, setShowWallet] = React.useState<boolean>(false);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [copied, setCopied] = React.useState<boolean>(false);
-  const [ans, setAns] = React.useState<string | undefined>();
-  const [ansError, setAnsError] = React.useState<string | undefined>();
-
-  // ANS effect
-  React.useEffect(() => {
-    if (arProvider.walletAddress && !ans && !ansError)
-      getAnsName(arProvider.walletAddress).then(setAns).catch(setAnsError);
-  }, [arProvider.walletAddress]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -54,16 +45,20 @@ export default function WalletConnect(props: { callback?: () => void }) {
   }
 
   function getWalletLabel() {
-    if (!showWallet) {
-      return `${language.fetching} ...`;
-    } else {
-      if (arProvider.walletAddress) {
-        return formatAddress(arProvider.walletAddress, false);
-      } else {
-        return language.connect;
-      }
-    }
-  }
+		if (!showWallet) {
+			return `${language.fetching} ...`;
+		} else {
+			if (arProvider.walletAddress) {
+				if (arProvider.arProfile) {
+					return arProvider.arProfile.profile.handleName || formatAddress(arProvider.arProfile.addr, false);
+				} else {
+					return formatAddress(arProvider.walletAddress, false);
+				}
+			} else {
+				return language.connectWallet;
+			}
+		}
+	}
 
   return (
     <CloseHandler
@@ -74,8 +69,9 @@ export default function WalletConnect(props: { callback?: () => void }) {
       <S.Wrapper>
         <Button
           type={'alt1'}
-          label={ans ? ans : getWalletLabel()}
+          label={getWalletLabel()}
           handlePress={handlePress}
+          width={160}
           useMaxWidth
         />
         {showDropdown && (
