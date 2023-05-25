@@ -9,6 +9,5 @@
   "mint_contract": "",
   "pile": {},
   "balances": {},
-  "divisibility": 1e6,
-  "initialized": false
+  "divisibility": 1e6
 }
