@@ -5,16 +5,16 @@ import { STYLING } from 'helpers/styling';
 import { NotificationType } from 'helpers/types';
 
 function getColor(m: NotificationType, theme: DefaultTheme) {
-	switch (m) {
-		case 'success':
-			return theme.colors.notification.success;
-		case 'warning':
-			return theme.colors.notification.warning;
-		case 'neutral':
-			return theme.colors.notification.neutral;
-		default:
-			return theme.colors.notification.neutral;
-	}
+  switch (m) {
+    case 'success':
+      return theme.colors.notification.success;
+    case 'warning':
+      return theme.colors.notification.warning;
+    case 'neutral':
+      return theme.colors.notification.neutral;
+    default:
+      return theme.colors.notification.neutral;
+  }
 }
 
 export const Wrapper = styled.div`
