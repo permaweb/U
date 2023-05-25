@@ -23,20 +23,20 @@ export const language = {
     header: `FAQ`,
     list: [
       {
-        q: `How long does it usually take to be able to claim rebAR?`,
-        a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.`,
+        q: `How long does it usually take to be able to mint RebAR?`,
+        a: `When you burn your AR tokens, you are posting a L1 transaction.  It will take ~15 minutes for the transaction to be confirmed. The transaction can be finalized anytime after that.`,
       },
       {
         q: `Why is there 2 steps in burning an asset?`,
-        a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.`,
+        a: `In order to prevent transfers from happening on L1 and L2, the contract was split in 2. Burning AR must be an L1 transaction, so mint requests get added to a request queue at the time of the burn.  When the transaction is confirmed, the user can finalize the mint on the L2 contract. This will read the request from the queue, and process the request.`,
       },
       {
         q: `What is Transfer for?`,
-        a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.`,
+        a: `Transfer allows the L2 contract to transfer tokens from wallet to wallet in seconds on the Permaweb.`,
       },
       {
         q: `What is Claim for?`,
-        a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.`,
+        a: `Claim is one part of the Foreign Call Protocol (FCP). It allows contracts to create transfers that can be claimed.  If a contract creates a transfer for a wallet, the tranfer can be claimed in the claim panel.`,
       },
     ],
   },
