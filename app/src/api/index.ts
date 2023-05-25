@@ -9,10 +9,10 @@ export * from './interface';
 
 export const env = {
   getState,
+  getRebarBalance,
+  getQueue,
   createMint,
   mint,
   transfer,
-  getQueue,
-  getRebarBalance,
   claim,
 };
