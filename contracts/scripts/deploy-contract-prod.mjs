@@ -1,7 +1,8 @@
 import { WarpFactory, SourceType } from 'warp-contracts';
 import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
 import BigNumber from 'bignumber.js';
-import { compose, prop, fromPairs, toPairs, map } from 'ramda';
+import { compose, prop, fromPairs, toPairs, map, mergeWith, add } from 'ramda';
+import { getBalances as getBundlrBalances } from './get-balances.mjs';
 
 import fs from 'fs';
 
@@ -9,10 +10,16 @@ const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
 const DRE = 'https://cache-2.permaweb.tools';
 
 async function deploy(folder) {
+  // const idsBalances = getBalances();
   const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
     .then((r) => r.json())
     .then(prop('state'));
   const balances = getBalances(BAR_STATE);
+  const bundlrBalances = await getBundlrBalances();
+
+  const mergeBalances = mergeWith(add);
+
+  const newBalances = mergeBalances(balances, bundlrBalances);
 
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
@@ -43,7 +50,12 @@ async function deploy(folder) {
     ...stateFromFileSEQ,
     ...{
       owner: process.env.WALLET_ADDRESS,
-      balances,
+      balances: {
+        ...newBalances,
+        'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw': 0,
+        'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 0,
+        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 0,
+      },
     },
   };
 
