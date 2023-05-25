@@ -62,19 +62,6 @@ export const removeExpired = (queue, height) =>
   queue.filter((request) => request?.expires > height);
 
 /**
- *
- *
- * @author @jshaw-ar
- * @param {*} target
- * @param {*} balance
- * @param {*} kv
- */
-export const getTargetBalance = async (target, balance, kv) => ({
-  balance,
-  targetBalance: (await kv.get(target)) || 0,
-});
-
-/**
  * @description Adds the qty to the 'to' balance
  *
  * @author @jshaw-ar
