@@ -8,7 +8,7 @@
     "prod": "VITE_CONTRACT_L1=Y2xdtmt6J5GVpRFLDQFyPtlxd4z0EGVvOJwZLj_DoaI VITE_CONTRACT_SEQ=NO68uqFZRFlJ2vcYapMIVSAjC2lTEv3KS4M30kdsBXQ vite --mode production",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
     "build": "node ./scripts/build.mjs",
-    "deploy-action": "",
+    "deploy-action": "rm -rf dist-*; npm run build && node ./scripts/deploy-action.mjs",
     "deploy": "rm -rf dist-*; npm run build && node ./scripts/deploy.mjs",
     "preview": "vite preview"
   },
