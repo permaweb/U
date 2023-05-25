@@ -8,6 +8,7 @@
     "test": "npm run build && uvu test",
     "build": "rm -r dist; node ./scripts/build.js && cp initial-state-SEQ.json dist/initial-state-SEQ.json && cp initial-state-L1.json dist/initial-state-L1.json",
     "deploy": "npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-prod.mjs ./dist",
+    "register": "node ./scripts/register-contract.mjs",
     "deploy:local": "npm i && npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-local.mjs ./dist",
     "read-state": "node ./scripts/read-state.mjs",
     "read-state:local": "node ./perf/read-state-local.mjs",
@@ -20,13 +21,14 @@
   "author": "Forward Research",
   "license": "ISC",
   "devDependencies": {
+    "@bundlr-network/client": "0.11.2",
     "arlocal": "1.1.60",
     "esbuild": "0.17.15",
+    "ramda": "0.29.0",
     "replace-in-file": "6.3.5",
     "uvu": "0.5.6",
     "warp-contracts": "1.4.6",
-    "warp-contracts-plugin-deploy": "1.0.8",
-    "ramda": "0.29.0"
+    "warp-contracts-plugin-deploy": "1.0.8"
   },
   "dependencies": {
     "bignumber.js": "9.1.1",
