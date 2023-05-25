@@ -12,7 +12,7 @@ export const Wrapper = styled.main`
 
 export const FAQWrapper = styled.div`
   width: 100%;
-  max-width: ${(STYLING.cutoffs.max)};
+  max-width: ${STYLING.cutoffs.max};
   margin: 40px auto 0 auto;
   padding: 0 25px;
 `;

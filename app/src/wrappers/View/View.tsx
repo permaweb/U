@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { FAQ } from "components/atoms/FAQ";
+import { FAQ } from 'components/atoms/FAQ';
 
-import * as S from "./styles";
+import * as S from './styles';
 
 export default function View(props: { children: React.ReactNode }) {
   return (
