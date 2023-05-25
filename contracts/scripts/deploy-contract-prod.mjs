@@ -1,16 +1,21 @@
 import { WarpFactory, SourceType } from 'warp-contracts';
 import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
 import BigNumber from 'bignumber.js';
+import Arweave from 'arweave';
 import { compose, prop, fromPairs, toPairs, map, mergeWith, add } from 'ramda';
 import { getBalances as getBundlrBalances } from './get-balances.mjs';
-
 import fs from 'fs';
+
+const arweave = Arweave.init({
+  host: 'arweave.net',
+  port: 443,
+  protocol: 'https',
+});
 
 const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
 const DRE = 'https://cache-2.permaweb.tools';
 
 async function deploy(folder) {
-  // const idsBalances = getBalances();
   const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
     .then((r) => r.json())
     .then(prop('state'));
@@ -56,6 +61,8 @@ async function deploy(folder) {
         'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 0,
         '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 0,
         uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 0,
+        'ZE0N-8P9gXkhtK-07PQu9d8me5tGDxa_i4Mee5RzVYg': 0,
+        'OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs': 0,
       },
     },
   };
@@ -77,24 +84,55 @@ async function deploy(folder) {
     true
   );
 
-  const deploySEQ = await warp.deploy({
-    wallet: new ArweaveSigner(jwk),
-    initState: JSON.stringify({
-      ...initialStateSEQ,
-      mint_contract: deployL1.contractTxId,
-    }),
-    src: contractSrcSEQ,
-    evaluationManifest: {
-      evaluationOptions: {
-        sourceType: SourceType.WARP_SEQUENCER,
-        internalWrites: true,
-        unsafeClient: 'skip',
-        allowBigInt: true,
-      },
+  const l2SrcTx = await arweave.createTransaction(
+    {
+      data: JSON.stringify(contractSrcSEQ),
     },
-  });
+    jwk
+  );
+  l2SrcTx.addTag('App-Name', 'SmartWeaveContractSource');
+  l2SrcTx.addTag('App-Version', '0.3.0');
+  l2SrcTx.addTag('Content-Type', 'application/javascript');
+
+  await arweave.transactions.sign(l2SrcTx, jwk);
+  await arweave.transactions.post(l2SrcTx);
+  const l2InitTx = await arweave.createTransaction(
+    {
+      data: JSON.stringify(initialStateSEQ),
+    },
+    jwk
+  );
+  l2InitTx.addTag('App-Name', 'SmartWeaveContract');
+  l2InitTx.addTag('App-Version', '0.3.0');
+  l2InitTx.addTag('Contract-Src', l2SrcTx.id);
+  l2InitTx.addTag('SDK', 'Warp');
+  l2InitTx.addTag('Content-Type', 'application/json');
+  l2InitTx.addTag(
+    'Contract-Manifest',
+    '{"evaluationOptions":{"sourceType":"redstone-sequencer","internalWrites":true,"unsafeClient":"skip","allowBigInt":true}}'
+  );
+
+  await arweave.transactions.sign(l2InitTx, jwk);
+  await arweave.transactions.post(l2InitTx);
+
+  // const deploySEQ = await warp.deploy({
+  //   wallet: new ArweaveSigner(jwk),
+  //   initState: JSON.stringify({
+  //     ...initialStateSEQ,
+  //     mint_contract: deployL1.contractTxId,
+  //   }),
+  //   src: contractSrcSEQ,
+  //   evaluationManifest: {
+  //     evaluationOptions: {
+  //       sourceType: SourceType.WARP_SEQUENCER,
+  //       internalWrites: true,
+  //       unsafeClient: 'skip',
+  //       allowBigInt: true,
+  //     },
+  //   },
+  // });
   console.log(`L1 contractTxId ${deployL1.contractTxId}`);
-  console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
+  console.log(`SEQ contractTxId ${l2InitTx.id}`);
 }
 deploy(process.argv[2]).catch(console.log);
 
