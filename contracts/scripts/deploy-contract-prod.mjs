@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import Arweave from 'arweave';
 import { compose, prop, fromPairs, toPairs, map, mergeWith, add } from 'ramda';
 import { getBalances as getBundlrBalances } from './get-balances.mjs';
+import Bundlr from '@bundlr-network/client';
 import fs from 'fs';
 
 const arweave = Arweave.init({
@@ -29,6 +30,8 @@ async function deploy(folder) {
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
+  const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
+
   const warp = WarpFactory.forMainnet().use(new DeployPlugin());
   const contractSrcL1 = fs.readFileSync(`${folder}/contract-L1.js`, 'utf8');
   const stateFromFileL1 = JSON.parse(
@@ -134,6 +137,7 @@ async function deploy(folder) {
   console.log(`L1 contractTxId ${deployL1.contractTxId}`);
   console.log(`SEQ contractTxId ${l2InitTx.id}`);
 }
+
 deploy(process.argv[2]).catch(console.log);
 
 function getBalances(state) {
