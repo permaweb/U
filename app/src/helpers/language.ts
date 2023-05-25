@@ -19,6 +19,15 @@ export const language = {
   disconnect: `Disconnect`,
   docs: `Docs`,
   expires: `Expires`,
+  faq: {
+    header: `FAQ`,
+    list: [
+      { q: `How long does it usually take to be able to claim rebAR?`, a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.` },
+      { q: `Why is there 2 steps in burning an asset?`, a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.` },
+      { q: `What is Transfer for?`, a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.` },
+      { q: `What is Claim for?`, a: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus felis non tellus porttitor, vel mattis lectus ultrices. Donec iaculis augue a ultricies mollis. Nulla viverra nibh sit amet magna tempor, id consequat massa aliquet. Vivamus tristique cursus magna, non fringilla ex fermentum vitae.` },
+    ]
+  },
   fetching: `Fetching`,
   finalizeBurn: `Finalize Burn`,
   from: `From`,
