@@ -18,7 +18,7 @@ export function getQueue(tx: string) {
       fromPromise(viewState)(
         tx,
         { function: 'get-queue' },
-        'https://cache.permapages.app'
+        'https://dre-1.warp.cc'
       )
     )
     .fork(
