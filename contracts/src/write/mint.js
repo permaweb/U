@@ -8,20 +8,18 @@ import { removeExpired } from '../util.js';
  * @author @jshaw-ar
  * @export
  */
-export function mint({}) {
+export function mint({ viewContractState, block }) {
   return (state) => {
     // remove expired requests in the pile to prevent state bloat.
     state.pile = Object.fromEntries(
-      Object.entries(state.pile).filter((e) => e[1] >= SmartWeave.block.height)
+      Object.entries(state.pile).filter((e) => e[1] >= block.height)
     );
     return of(state.mint_contract)
       .chain((id) =>
-        fromPromise(SmartWeave.contracts.viewContractState)(id, {
-          function: 'get-queue',
-        })
+        fromPromise(viewContractState)(id, { function: 'get-queue' })
       )
       .map(({ result }) => result)
-      .map((queue) => removeExpired(queue, SmartWeave.block.height))
+      .map((queue) => removeExpired(queue, block.height))
       .map((queue) => notInPile(state, queue))
       .map(combineQuantitiesByTarget)
       .map(({ requests, combinedTargets }) =>
