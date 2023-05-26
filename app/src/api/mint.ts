@@ -13,12 +13,12 @@ export function mint(contractId: string) {
 
 const warpMint = async (tx: string) => {
   const warp = getWarpFactory();
-  if (!import.meta.env.VITE_LOCAL)
-    await syncState(warp, tx, 'https://dre-1.warp.cc');
+  //if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
   const contract = warp
     .contract(tx)
     .connect('use_wallet')
     .setEvaluationOptions({
+      remoteStateSyncEnabled: true,
       internalWrites: true,
       unsafeClient: 'skip',
       allowBigInt: true,
