@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prod": "VITE_CONTRACT_L1=Y2xdtmt6J5GVpRFLDQFyPtlxd4z0EGVvOJwZLj_DoaI VITE_CONTRACT_SEQ=NO68uqFZRFlJ2vcYapMIVSAjC2lTEv3KS4M30kdsBXQ vite --mode production",
+    "prod": "VITE_CONTRACT_L1=FDAsEtj5oQNlkrNRyIhc0l2pWTqICDP5l6Jl_sKRFI0 VITE_CONTRACT_SEQ=RqaQnAO4KLVmjw01FBVf35B3W4GDRqVfKNLzYq0k2u8 vite --mode production",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
     "build": "node ./scripts/build.mjs",
     "deploy-action": "rm -rf dist-*; npm run build && node ./scripts/deploy-action.mjs",
@@ -24,7 +24,7 @@
     "react-router-dom": "^6.4.2",
     "react-svg": "^16.1.7",
     "styled-components": "^5.3.6",
-    "warp-contracts": "1.4.6",
+    "warp-contracts": "1.4.8",
     "warp-contracts-plugin-deploy": "1.0.8"
   },
   "devDependencies": {
