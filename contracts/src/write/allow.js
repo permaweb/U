@@ -39,7 +39,7 @@ export function allow({ transaction }) {
           from: caller,
           to: action.input.target,
           qty: safeQty,
-          txID: transaction.id,
+          txID: SmartWeave.transaction.id,
         });
       })
       .fold(
