@@ -37,7 +37,7 @@ test('should create 1 mint request', async () => {
   assert.is(tx.expires, 721);
 });
 
-test('should throw You must mint at least 1 feron.', () => {
+test('should throw You must mint at least 100 ferons.', () => {
   const env = setupSmartWeaveEnv(
     999999, // reward
     0, // height
@@ -61,7 +61,7 @@ test('should throw You must mint at least 1 feron.', () => {
         },
         { caller: '<justin>' }
       ),
-    /You must mint at least 1 feron./
+    /You must mint at least 100 ferons./
   );
 });
 test.after(async () => {});
