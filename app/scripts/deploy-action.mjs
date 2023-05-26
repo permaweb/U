@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import Bundlr from '@bundlr-network/client';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 
@@ -27,5 +26,6 @@ await contract.writeInteraction({
 });
 
 console.log(
-  'Deployed Cookbook, please wait 20 - 30 minutes for ArNS to update!'
+  'Deployed RebAR, please wait 20 - 30 minutes for ArNS to update!',
+  result.id
 );
