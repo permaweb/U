@@ -7,16 +7,10 @@ import { mint } from './write/mint.js';
 
 export async function handle(state, action) {
   const env = {
-    // viewContractState: async (contractTx, input) => {
-    //   const result = await SmartWeave.contracts.viewContractState(
-    //     contractTx,
-    //     input
-    //   );
-    //   console.log(`VIEW STATE: ${result}`);
-    //   return result;
-    // },
-    // block: SmartWeave.block,
-    // transaction: SmartWeave.transaction,
+    viewContractState: async (tx, input) =>
+      SmartWeave.contracts.viewContractState(tx, input),
+    block: SmartWeave.block,
+    transaction: SmartWeave.transaction,
   };
 
   const input = action.input;
