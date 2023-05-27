@@ -22,42 +22,42 @@ export const NavContainer = styled.div`
 `;
 
 export const NavPaths = styled.div`
-	height: 100%;
-	display: flex;
-	align-items: center;
-	@media (max-width: ${STYLING.cutoffs.initial}) {
-		height: auto;
-		display: block;
-	}
+  height: 100%;
+  display: flex;
+  align-items: center;
+  @media (max-width: ${STYLING.cutoffs.initial}) {
+    height: auto;
+    display: block;
+  }
 `;
 
 export const Link = styled.div`
-	a {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 0 20px;
-		font-weight: ${(props) => props.theme.typography.weight.medium};
-		&:hover {
-			text-decoration: none;
-			color: ${(props) => props.theme.colors.font.primary.active.hover};
-		}
-		&:focus {
-			text-decoration: none;
-			color: ${(props) => props.theme.colors.font.primary.active.hover};
-		}
-		@media (max-width: ${STYLING.cutoffs.initial}) {
-			height: 60px;
-			width: 100vw;
-			justify-content: left;
-			padding: 0 20px;
-			&:hover {
-				text-decoration: none;
-				background: ${(props) => props.theme.colors.container.primary.hover};
-			}
-		}
-	}
+  a {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    font-weight: ${(props) => props.theme.typography.weight.medium};
+    &:hover {
+      text-decoration: none;
+      color: ${(props) => props.theme.colors.font.primary.active.hover};
+    }
+    &:focus {
+      text-decoration: none;
+      color: ${(props) => props.theme.colors.font.primary.active.hover};
+    }
+    @media (max-width: ${STYLING.cutoffs.initial}) {
+      height: 60px;
+      width: 100vw;
+      justify-content: left;
+      padding: 0 20px;
+      &:hover {
+        text-decoration: none;
+        background: ${(props) => props.theme.colors.container.primary.hover};
+      }
+    }
+  }
 `;
 
 export const LogoContainer = styled.div`

@@ -45,20 +45,23 @@ export default function WalletConnect(props: { callback?: () => void }) {
   }
 
   function getWalletLabel() {
-		if (!showWallet) {
-			return `${language.fetching} ...`;
-		} else {
-			if (arProvider.walletAddress) {
-				if (arProvider.arProfile) {
-					return arProvider.arProfile.profile.handleName || formatAddress(arProvider.arProfile.addr, false);
-				} else {
-					return formatAddress(arProvider.walletAddress, false);
-				}
-			} else {
-				return language.connectWallet;
-			}
-		}
-	}
+    if (!showWallet) {
+      return `${language.fetching} ...`;
+    } else {
+      if (arProvider.walletAddress) {
+        if (arProvider.arProfile) {
+          return (
+            arProvider.arProfile.profile.handleName ||
+            formatAddress(arProvider.arProfile.addr, false)
+          );
+        } else {
+          return formatAddress(arProvider.walletAddress, false);
+        }
+      } else {
+        return language.connectWallet;
+      }
+    }
+  }
 
   return (
     <CloseHandler

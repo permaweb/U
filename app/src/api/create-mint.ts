@@ -28,23 +28,27 @@ const createMintL1 = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
   //const warp = getWarpFactory();
   //if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
-  const warp = WarpFactory.forMainnet(defaultCacheOptions, true)
-  return warp.contract(contractId)
+  const warp = WarpFactory.forMainnet(defaultCacheOptions, true);
+  return warp
+    .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
       remoteStateSyncEnabled: true,
       unsafeClient: 'skip',
       allowBigInt: true,
-      internalWrites: true
+      internalWrites: true,
     })
-    .writeInteraction({
-      function: 'create-mint'
-    }, {
-      disableBundling: true,
-      reward: new BigNumber(qty * 1e12)
-        .integerValue(BigNumber.ROUND_DOWN)
-        .toString()
-    })
+    .writeInteraction(
+      {
+        function: 'create-mint',
+      },
+      {
+        disableBundling: true,
+        reward: new BigNumber(qty * 1e12)
+          .integerValue(BigNumber.ROUND_DOWN)
+          .toString(),
+      }
+    );
 
   // const contract = warp
   //   .contract(contractId)
