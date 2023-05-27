@@ -1,11 +1,9 @@
-import { WarpFactory, SourceType } from 'warp-contracts';
-import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
 import BigNumber from 'bignumber.js';
 import Arweave from 'arweave';
 import { compose, prop, fromPairs, toPairs, map, mergeWith, add } from 'ramda';
 import { getBalances as getBundlrBalances } from './get-balances.mjs';
-// import Bundlr from '@bundlr-network/client';
 import fs from 'fs';
+import { writeFile } from 'fs/promises';
 
 const arweave = Arweave.init({
   host: 'arweave.net',
@@ -16,11 +14,11 @@ const arweave = Arweave.init({
 const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
 const DRE = 'https://cache-2.permaweb.tools';
 
-async function deploy(folder) {
-  // const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
-  //   .then((r) => r.json())
-  //   .then(prop('state'));
-  // const balances = getBalances(BAR_STATE);
+export async function setup(folder) {
+  const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
+    .then((r) => r.json())
+    .then(prop('state'));
+  const balances = getBalances(BAR_STATE);
   // const bundlrBalances = await getBundlrBalances();
 
   // const mergeBalances = mergeWith(add);
@@ -32,7 +30,6 @@ async function deploy(folder) {
   );
   // const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
 
-  const warp = WarpFactory.forMainnet().use(new DeployPlugin());
   const contractSrcL1 = fs.readFileSync(`${folder}/contract-L1.js`, 'utf8');
   const stateFromFileL1 = JSON.parse(
     fs.readFileSync(`${folder}/initial-state-L1.json`, 'utf8')
@@ -51,14 +48,7 @@ async function deploy(folder) {
     ...stateFromFileL1,
     ...{
       owner: process.env.WALLET_ADDRESS,
-      requests: [
-        {
-          expires: 1186976,
-          qty: 10000,
-          target: '9EIo8Qm0gPXIqMpzx8nrZ0YYDGaAnMWXhrPdvXIO0Fg',
-          tx: 'kP8MfkO0psNn_4nP6z6XfpsiTNq2Mxsb0Dg30FQ4ymk',
-        },
-      ],
+      requests: [],
     },
   };
 
@@ -67,142 +57,26 @@ async function deploy(folder) {
     ...{
       owner: process.env.WALLET_ADDRESS,
       balances: {
-        // ...balances,
-        // 'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw': 0,
-        // 'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 0,
-        // '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 0,
-        // uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 0,
+        ...balances,
+        'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw': 0,
+        'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI': 0,
+        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 0,
+        uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 0,
+        // 'ZE0N-8P9gXkhtK-07PQu9d8me5tGDxa_i4Mee5RzVYg': 0,
+        // 'OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs': 0,
       },
     },
   };
 
-  // const deployL1 = await warp.deploy(
-  //   {
-  //     wallet: new ArweaveSigner(jwk),
-  //     // wallet: jwk,
-  //     initState: JSON.stringify(initialStateL1),
-  //     src: contractSrcL1,
-  //     evaluationManifest: {
-  //       evaluationOptions: {
-  //         sourceType: SourceType.ARWEAVE,
-  //         unsafeClient: 'skip',
-  //         allowBigInt: true,
-  //         internalWrites: true,
-  //       },
-  //     },
-  //   }
-  //   // true
-  // );
-
-  // const deploySEQ = await warp.deploy({
-  //   wallet: new ArweaveSigner(jwk),
-  //   // wallet: jwk,
-  //   initState: JSON.stringify({
-  //     ...initialStateSEQ,
-  //     mint_contract: deployL1.contractTxId,
-  //   }),
-  //   src: contractSrcSEQ,
-  //   evaluationManifest: {
-  //     evaluationOptions: {
-  //       sourceType: SourceType.WARP_SEQUENCER,
-  //       internalWrites: true,
-  //       unsafeClient: 'skip',
-  //       allowBigInt: true,
-  //     },
-  //   },
-  // });
-  // console.log(`L1 contractTxId ${deployL1.contractTxId}`);
-  // console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
-
-  // STEP 1: upload L1 source
-
-  const l1SrcTx = await arweave.createTransaction(
-    {
-      data: contractSrcL1,
-    },
-    jwk
-  );
-  l1SrcTx.addTag('App-Name', 'SmartWeaveContractSource');
-  l1SrcTx.addTag('App-Version', '0.3.0');
-  l1SrcTx.addTag('Content-Type', 'application/javascript');
-  await arweave.transactions.sign(l1SrcTx, jwk);
-  await arweave.transactions.post(l1SrcTx);
-
-  await waitForConfirmation(l1SrcTx.id, 'l1src');
-
-  console.log(`l1 source deployed: ${l1SrcTx.id}`);
-
-  // STEP 2: initialize contract with l1 source id
-  const l1InitTx = await arweave.createTransaction(
-    {
-      data: JSON.stringify({
-        ...initialStateL1,
-      }),
-    },
-    jwk
-  );
-  l1InitTx.addTag('App-Name', 'SmartWeaveContract');
-  l1InitTx.addTag('App-Version', '0.3.0');
-  l1InitTx.addTag('Contract-Src', l1SrcTx.id);
-  l1InitTx.addTag('Content-Type', 'application/javascript');
-  l1InitTx.addTag(
-    'Contract-Manifest',
-    '{"evaluationOptions":{"sourceType":"arweave","internalWrites":true,"unsafeClient":"skip","allowBigInt":true}}'
-  );
-
-  await arweave.transactions.sign(l1InitTx, jwk);
-  await arweave.transactions.post(l1InitTx);
-
-  await waitForConfirmation(l1InitTx.id, 'l1InitTx');
-
-  console.log(`l1 contract initialized: ${l1InitTx.id}`);
-
-  // STEP 3: Deploy l2 src
-  const l2SrcTx = await arweave.createTransaction(
-    {
-      data: contractSrcSEQ,
-    },
-    jwk
-  );
-  l2SrcTx.addTag('App-Name', 'SmartWeaveContractSource');
-  l2SrcTx.addTag('App-Version', '0.3.0');
-  l2SrcTx.addTag('Content-Type', 'application/javascript');
-
-  await arweave.transactions.sign(l2SrcTx, jwk);
-  await arweave.transactions.post(l2SrcTx);
-
-  await waitForConfirmation(l2SrcTx.id, 'l2SrcTx');
-
-  console.log(`l2 source deployed: ${l2SrcTx.id}`);
-
-  const l2InitTx = await arweave.createTransaction(
-    {
-      data: JSON.stringify({
-        ...initialStateSEQ,
-        mint_contract: l1InitTx.id,
-      }),
-    },
-    jwk
-  );
-  l2InitTx.addTag('App-Name', 'SmartWeaveContract');
-  l2InitTx.addTag('App-Version', '0.3.0');
-  l2InitTx.addTag('Contract-Src', l2SrcTx.id);
-  l2InitTx.addTag('SDK', 'Warp');
-  l2InitTx.addTag('Content-Type', 'application/javascript');
-  l2InitTx.addTag(
-    'Contract-Manifest',
-    '{"evaluationOptions":{"sourceType":"redstone-sequencer","internalWrites":true,"unsafeClient":"skip","allowBigInt":true}}'
-  );
-
-  await arweave.transactions.sign(l2InitTx, jwk);
-  await arweave.transactions.post(l2InitTx);
-
-  await waitForConfirmation(l2InitTx.id, 'l2InitTx');
-
-  console.log(`L1: ${l1InitTx.id} L2: ${l2InitTx.id}`);
+  return {
+    jwk,
+    initialStateSEQ,
+    initialStateL1,
+    contractSrcSEQ,
+    contractSrcL1,
+    ids: {},
+  };
 }
-
-deploy(process.argv[2]).catch(console.log);
 
 function getBalances(state) {
   return compose(
@@ -216,19 +90,142 @@ function getBalances(state) {
   )(state);
 }
 
-async function waitForConfirmation(transactionId, label) {
-  let status = await arweave.transactions.getStatus(transactionId);
+export async function deployL1({
+  jwk,
+  initialStateSEQ,
+  initialStateL1,
+  contractSrcSEQ,
+  contractSrcL1,
+  ids,
+}) {
+  const encoder = new TextEncoder();
+  const encodedBytesSeqSrc = encoder.encode(JSON.stringify(contractSrcL1));
+  const srcTx = await arweave.createTransaction({
+    data: contractSrcL1,
+    reward: '390115313',
+  });
+  srcTx.addTag('Content-Type', 'application/javascript');
+  await arweave.transactions.sign(srcTx, jwk);
+  await arweave.transactions.post(srcTx);
+  console.log('srcId', srcTx.id);
+  ids['l1Src'] = srcTx.id;
 
-  while (!status.confirmed && !status.failed) {
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Delay for 1 second
-    status = await arweave.transactions.getStatus(transactionId);
-    console.log(`${label} status: ${status.status}`);
+  await waitForConfirmation(srcTx.id, 'l1Src', encodedBytesSeqSrc.byteLength);
+  // deploy contract
+  const contractTx = await arweave.createTransaction({
+    data: JSON.stringify(initialStateL1),
+    reward: '390115313',
+  });
+  contractTx.addTag('Content-Type', 'application/json');
+  contractTx.addTag('App-Name', 'SmartWeaveContract');
+  contractTx.addTag('App-Version', '0.3.0');
+  contractTx.addTag('Contract-Src', srcTx.id);
+  contractTx.addTag(
+    'Contract-Manifest',
+    JSON.stringify({
+      evaluationOptions: {
+        sourceType: 'arweave',
+        internalWrites: true,
+        allowBigInt: true,
+        unsafeClient: 'skip',
+      },
+    })
+  );
+  await arweave.transactions.sign(contractTx, jwk);
+  await arweave.transactions.post(contractTx);
+  console.log('contractTx', contractTx.id);
+  ids['l1Init'] = contractTx.id;
+  const encodedBytesSeqInit = encoder.encode(JSON.stringify(initialStateL1));
+
+  await waitForConfirmation(
+    contractTx.id,
+    'l1Init',
+    encodedBytesSeqInit.byteLength
+  );
+
+  return {
+    jwk,
+    initialStateSEQ,
+    contractSrcSEQ,
+    ids,
+  };
+}
+
+export async function deploySEQ({ jwk, initialStateSEQ, contractSrcSEQ, ids }) {
+  const encoder = new TextEncoder();
+  const encodedBytesSeqSrc = encoder.encode(JSON.stringify(contractSrcSEQ));
+  const srcTx = await arweave.createTransaction({
+    data: contractSrcSEQ,
+    reward: '390115313',
+  });
+  srcTx.addTag('Content-Type', 'application/javascript');
+  await arweave.transactions.sign(srcTx, jwk);
+  await arweave.transactions.post(srcTx);
+  console.log('srcId', srcTx.id);
+  ids['seqSrc'] = srcTx.id;
+  await waitForConfirmation(srcTx.id, 'seqSrc', encodedBytesSeqSrc.byteLength);
+
+  const encodedBytesSeqInit = encoder.encode(
+    JSON.stringify({ ...initialStateSEQ, mint_contract: ids['l1Init'] })
+  );
+
+  // deploy contract
+  const contractTx = await arweave.createTransaction({
+    data: JSON.stringify({ ...initialStateSEQ, mint_contract: ids['l1Init'] }),
+    reward: Math.ceil(14521652465 + 0.1 * 14521652465).toString(),
+  });
+  contractTx.addTag('Content-Type', 'application/json');
+  contractTx.addTag('App-Name', 'SmartWeaveContract');
+  contractTx.addTag('App-Version', '0.3.0');
+  contractTx.addTag('Contract-Src', srcTx.id);
+  contractTx.addTag(
+    'Contract-Manifest',
+    JSON.stringify({
+      evaluationOptions: {
+        sourceType: 'redstone-sequencer',
+        internalWrites: true,
+        allowBigInt: true,
+        unsafeClient: 'skip',
+      },
+    })
+  );
+  await arweave.transactions.sign(contractTx, jwk);
+  await arweave.transactions.post(contractTx);
+  console.log('contractTx', contractTx.id);
+  ids['seqInit'] = contractTx.id;
+  await waitForConfirmation(
+    contractTx.id,
+    'seqInit',
+    encodedBytesSeqInit.byteLength
+  );
+
+  return ids;
+}
+
+export async function writeIds(ids) {
+  await writeFile('./deploy-output-confirmed.json', JSON.stringify(ids));
+}
+
+async function waitForConfirmation(transactionId, label, size) {
+  let res = null;
+
+  while (res === null || res?.status === 202) {
+    await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay for 1 second
+    res = await fetch(`https://arweave.net/tx/${transactionId}`);
+    console.log(JSON.stringify(res));
+    res.status;
+    console.log(`${label} status: ${res.status} -- ${size}`);
   }
 
-  if (status.confirmed) {
+  if (res?.status === 200) {
     console.log('Transaction confirmed!');
   } else {
-    console.log('Transaction failed :(');
+    console.log(
+      'Transaction failed :(',
+      res.status,
+      res.statusText,
+      await res.text()
+    );
     process.exit(1);
   }
 }
