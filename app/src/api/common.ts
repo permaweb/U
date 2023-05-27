@@ -1,4 +1,16 @@
 import { Warp, WarpFactory } from 'warp-contracts';
+import Arweave from 'arweave';
+
+/**
+ * @author @jshaw-ar
+ * @export
+ * @return {*}
+ */
+export function getArweave() {
+  return import.meta.env.VITE_LOCAL === 'true'
+    ? Arweave.init({ host: 'localhost', port: 1984, protocol: 'http' })
+    : Arweave.init({ host: 'arweave.net', port: 443, protocol: 'https' });
+}
 
 /**
  *
