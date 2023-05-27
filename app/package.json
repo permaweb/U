@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prod": "VITE_CONTRACT_L1=FDAsEtj5oQNlkrNRyIhc0l2pWTqICDP5l6Jl_sKRFI0 VITE_CONTRACT_SEQ=RqaQnAO4KLVmjw01FBVf35B3W4GDRqVfKNLzYq0k2u8 vite --mode production",
+    "prod": "VITE_CONTRACT_L1=4zvHyaSsFQUlTAue6ETdoZ4-YZUy7eWNCL-uyhEQThk VITE_CONTRACT_SEQ=raDl2PO4A3T4idUbRfaCXI3mTRD7ChoJ-A8PnDnTnsg vite --mode production",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
     "build": "node ./scripts/build.mjs",
     "deploy-action": "rm -rf dist-*; npm run build && node ./scripts/deploy-action.mjs",
