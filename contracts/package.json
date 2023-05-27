@@ -21,11 +21,11 @@
   "devDependencies": {
     "arlocal": "1.1.60",
     "esbuild": "0.17.15",
+    "ramda": "^0.29.0",
     "replace-in-file": "6.3.5",
     "uvu": "0.5.6",
     "warp-contracts": "1.4.6",
-    "warp-contracts-plugin-deploy": "1.0.8",
-    "ramda": "0.29.0"
+    "warp-contracts-plugin-deploy": "1.0.8"
   },
   "dependencies": {
     "bignumber.js": "9.1.1",

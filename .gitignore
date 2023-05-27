@@ -46,3 +46,4 @@ mint-contract/logs
 cache/
 
 contracts/perf/wallets.json
+wallet.json

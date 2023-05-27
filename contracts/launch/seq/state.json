@@ -1,0 +1,16 @@
+{
+  "ticker": "RebAR",
+  "name": "RebAR",
+  "settings": [
+    [
+      "isTradeable",
+      true
+    ]
+  ],
+  "claimable": [],
+  "mint_contract": "bJ9nu943cuUwamLBJAjJfzemwgWZc5B_xYUATGEgOZ8",
+  "pile": {},
+  "balances": {},
+  "divisibility": 1e6,
+  "initialized": false
+}
