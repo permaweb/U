@@ -6,6 +6,12 @@ import { mint } from './write/mint2.js';
 
 export async function handle(state, action) {
   // need to only accept L2 txs for transfer, allow, claim
+  if (['transfer', 'allow', 'claim'].includes(action?.input?.function)
+    && Number(SmartWeave.transaction.reward) <= 72600854) {
+    // skip mint this is a L2
+    return { state };
+  }
+
   switch (action?.input?.function) {
     case 'balance':
       return balance(state, action);

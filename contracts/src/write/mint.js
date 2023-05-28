@@ -16,7 +16,7 @@ export function mint({ viewContractState, block }) {
       Object.entries(state.pile).filter((e) => e[1] >= block.height)
     );
     return of(state.mint_contract)
-      .chain(id => viewState(id, { function: 'get-queue' }))
+      .chain((id) => viewState(id, { function: 'get-queue' }))
       .map(({ result }) => result)
       .map((queue) => removeExpired(queue, block.height))
       .map((queue) => notInPile(state, queue))
