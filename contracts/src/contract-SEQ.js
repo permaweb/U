@@ -8,12 +8,13 @@ import { mint } from './write/mint.js';
 export async function handle(state, action) {
   const env = {
     readContractState: async (id) => {
-      const _state = await SmartWeave.contracts.readContractState(id)
-      console.log({ _state })
-      return _state
+      const _state = await SmartWeave.contracts.readContractState(id);
+      console.log({ _state });
+      return _state;
     },
+    viewContractState: SmartWeave.contracts.viewContractState,
     block: SmartWeave.block,
-    transaction: SmartWeave.transaction
+    transaction: SmartWeave.transaction,
   };
 
   const input = action.input;

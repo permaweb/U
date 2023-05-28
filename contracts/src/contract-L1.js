@@ -18,7 +18,7 @@ export async function handle(state, action) {
       return createMint(env)(state, action);
     case 'get-queue':
       return getQueue(state, action);
-    case "mint":
+    case 'mint':
       return getQueue(state, action);
     default:
       throw new ContractError(
