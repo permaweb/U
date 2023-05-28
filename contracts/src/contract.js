@@ -3,11 +3,14 @@ import { transfer } from './write/transfer.js';
 import { claim } from './write/claim.js';
 import { allow } from './write/allow.js';
 import { mint } from './write/mint2.js';
+import { rejectClaimable } from './write/reject.js';
 
 export async function handle(state, action) {
   // need to only accept L2 txs for transfer, allow, claim
-  if (['transfer', 'allow', 'claim'].includes(action?.input?.function)
-    && Number(SmartWeave.transaction.reward) <= 72600854) {
+  if (
+    ['transfer', 'allow', 'claim', 'reject'].includes(action?.input?.function) &&
+    Number(SmartWeave.transaction.reward) <= 72600854
+  ) {
     // skip mint this is a L2
     return { state };
   }
@@ -15,6 +18,8 @@ export async function handle(state, action) {
   switch (action?.input?.function) {
     case 'balance':
       return balance(state, action);
+    case 'reject':
+      return rejectClaimable(state, action);
     case 'transfer':
       return transfer(state, action);
     case 'allow':
