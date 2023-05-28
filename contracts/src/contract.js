@@ -8,10 +8,12 @@ import { rejectClaimable } from './write/reject.js';
 export async function handle(state, action) {
   // need to only accept L2 txs for transfer, allow, claim
   if (
-    ['transfer', 'allow', 'claim', 'reject'].includes(action?.input?.function) &&
-    Number(SmartWeave.transaction.reward) <= 72600854
+    ['transfer', 'allow', 'claim', 'reject'].includes(
+      action?.input?.function
+    ) &&
+    Number(SmartWeave.transaction.reward) > 72600854
   ) {
-    // skip mint this is a L2
+    // skip these fns is a L1
     return { state };
   }
 
