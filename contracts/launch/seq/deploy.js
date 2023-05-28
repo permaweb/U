@@ -20,6 +20,9 @@ async function main() {
       '89tR0-C1m3_sCWCoVCChg4gFYKdiH5_ZDyZpdJ2DDRw'
     ]))
 
+  // const reward = await fetch(`https://arweave.net/price/1`).then(r => r.text())
+  // const x = Math.floor(Number(reward) * 1.2)
+
   const srcTx = await arweave.createTransaction({ data: src })
   srcTx.addTag('Content-Type', 'application/javascript')
   await arweave.transactions.sign(srcTx, jwk)

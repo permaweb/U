@@ -40,7 +40,7 @@ const createMintL1 = async (input: { contractId: string; qty: number }) => {
     })
     .writeInteraction(
       {
-        function: 'create-mint',
+        function: 'mint',
       },
       {
         disableBundling: true,
