@@ -3,7 +3,7 @@ const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
-import { setLocalStorage, waitForConfirmation } from './poll-mint';
+import { waitForConfirmation } from './poll-mint';
 
 /**
  * @author @jshaw-ar
@@ -28,7 +28,11 @@ export function burn(input: { contractId: string; qty: number }) {
  */
 const mint = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
-  const warp = WarpFactory.forMainnet(defaultCacheOptions, true);
+
+  const warp =
+    import.meta.env.VITE_LOCAL === 'true'
+      ? WarpFactory.forLocal()
+      : WarpFactory.forMainnet(defaultCacheOptions, true);
   const interaction = await warp
     .contract(contractId)
     .connect('use_wallet')
@@ -50,6 +54,10 @@ const mint = async (input: { contractId: string; qty: number }) => {
           .toString(),
       }
     );
-
   return interaction?.originalTxId;
 };
+
+export function setLocalStorage(tx: string) {
+  localStorage.setItem('polling_tx', tx);
+  return tx;
+}
