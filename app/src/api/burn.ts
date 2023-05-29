@@ -33,7 +33,8 @@ const mint = async (input: { contractId: string; qty: number }) => {
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
-      remoteStateSyncEnabled: true,
+      remoteStateSyncEnabled:
+        import.meta.env.VITE_LOCAL === 'true' ? false : true,
       unsafeClient: 'skip',
       allowBigInt: true,
       internalWrites: true,

@@ -19,7 +19,8 @@ const warpMint = async (tx: string) => {
     .contract(tx)
     .connect('use_wallet')
     .setEvaluationOptions({
-      remoteStateSyncEnabled: true,
+      remoteStateSyncEnabled:
+        import.meta.env.VITE_LOCAL === 'true' ? false : true,
       internalWrites: true,
       unsafeClient: 'skip',
       allowBigInt: true,
