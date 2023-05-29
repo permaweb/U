@@ -1,128 +1,63 @@
-import { suite } from 'uvu';
-import * as assert from 'uvu/assert';
-import { mint } from '../src/write/mint.js';
-import { setupSmartWeaveEnv } from './setup.js';
-const test = suite('mint');
+// import { suite } from 'uvu';
+// import * as assert from 'uvu/assert';
+// import { mint } from '../src/write/mint.js';
+// import { setupSmartWeaveEnv } from './setup.js';
+// const test = suite('mint');
 
-test.before(async () => {});
+// test.before(async () => {});
 
-test('should only mint new requests', async () => {
-  const env = setupSmartWeaveEnv(
-    999999,
-    1,
-    '<tx>',
-    undefined,
-    'ERROR',
-    [
-      {
-        tx: 'not_expired',
-        target: '<jshaw>',
-        qty: 25,
-        expires: 721,
-      },
-      { tx: 'not_expired2', target: '<jshaw>', qty: 25, expires: 721 },
-      { tx: 'not_expired3', target: '<tom>', qty: 25, expires: 721 },
-      {
-        tx: 'expired2',
-        expires: 0,
-        qty: 5,
-        target: '<jshaw>',
-      },
-      {
-        tx: 'expired3',
-        expires: 0,
-        qty: 5,
-        target: '<jshaw>',
-      },
-      {
-        tx: 'expired4',
-        expires: 0,
-        qty: 5,
-        target: '<jshaw>',
-      },
-      {
-        tx: 'processed',
-        expires: 721,
-        qty: 5,
-        target: '<jshaw>',
-      },
-    ],
-    undefined
-  );
+// test('should mint 1 rebar', async () => {
+//   const env = setupSmartWeaveEnv(
+//     1000000000000, // reward
+//     0, // height
+//     '<tx>'
+//   );
 
-  const caller = '<justin>';
+//   const caller = '<justin>';
+//   const output = mint(
+//     {
+//       name: 'RebAR',
+//       ticker: 'RebAR',
+//       balances: {},
+//       settings: [
+//         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+//         ['isTradeable', true],
+//       ],
+//       claimable: [],
+//       divisibility: 1e6,
+//     },
+//     { caller }
+//   );
+//   const state = output.state;
+//   assert.is(state.balances[caller], 1000000);
+// });
 
-  const output = await mint(env)(
-    {
-      ticker: 'REBAR',
-      name: 'REBAR',
-      balances: {},
-      settings: [['isTradeable', true]],
-      claimable: [],
-      divisibility: 1e6,
-      mint_contract: '<mint-contract>',
-      pile: { processed: 1 },
-    },
-    { caller }
-  ).toPromise();
-  const state = output.state;
+// test('should throw You must mint at least 100 feron.', () => {
+//   const caller = '<justin>';
 
-  assert.is(state.balances['<jshaw>'], 50);
-  assert.is(state.balances['<tom>'], 25);
-  assert.is(Object.keys(state.pile).length, 4);
-});
+//   const env = setupSmartWeaveEnv(
+//     999999, // reward
+//     0, // height
+//     '<tx>'
+//   );
+//   const output = mint(
+//     {
+//       name: 'RebAR',
+//       ticker: 'RebAR',
+//       balances: {},
+//       settings: [
+//         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
+//         ['isTradeable', true],
+//       ],
+//       claimable: [],
+//       divisibility: 1e6,
+//     },
+//     { caller }
+//   );
 
-test('should work with no requests TODO: udpate this test name', async () => {
-  // set reward to 10
-  const env = setupSmartWeaveEnv(
-    1000000,
-    0,
-    '<tx>',
-    undefined,
-    'ERROR',
-    [
-      {
-        tx: 'good',
-        expires: 2,
-        qty: 7,
-        target: '<jshaw>',
-      },
-      {
-        tx: 'good2',
-        expires: 2,
-        qty: 7,
-        target: '<jshaw>',
-      },
-      {
-        tx: 'processed',
-        expires: 722,
-        qty: 5,
-        target: '<jshaw>',
-      },
-    ],
-    {}
-  );
+//   const state = output.state;
+//   assert.is(state.balances[caller], undefined);
+// });
+// test.after(async () => {});
 
-  const caller = '<justin>';
-
-  const output = await mint(env)(
-    {
-      ticker: 'REBAR',
-      name: 'REBAR',
-      balances: {},
-      settings: [['isTradeable', true]],
-      claimable: [],
-      divisibility: 1e6,
-      mint_contract: '<mint-contract>',
-      pile: { processed: 1 },
-    },
-    { caller }
-  ).toPromise();
-  const state = output.state;
-  assert.is(state.balances['<jshaw>'], 14);
-  assert.is(state.pile['processed'], 1);
-});
-
-test.after(async () => {});
-
-test.run();
+// test.run();

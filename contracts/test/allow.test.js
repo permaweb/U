@@ -12,7 +12,7 @@ test('should throw (Please specify a target.)', () => {
 
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -36,7 +36,7 @@ test('should throw (Target cannot be caller.)', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -59,7 +59,7 @@ test('should throw (qty must be an integer.)', async () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -82,7 +82,7 @@ test('should throw (qty must be an integer.)', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -108,7 +108,7 @@ test('should throw (Not enough tokens for allow.)', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -134,7 +134,7 @@ test('should not allow null amount of tokens', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -160,7 +160,7 @@ test('should not allow without providing quantity', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -186,7 +186,7 @@ test('should not transfer corrupted amount of tokens', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -212,7 +212,7 @@ test('should not allow fractional value', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -237,7 +237,7 @@ test('should not allow without a target', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -263,7 +263,7 @@ test('should not allow with null target', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -289,7 +289,7 @@ test('should not allow with undefined target', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -315,7 +315,7 @@ test('should not transfer negative amount of tokens', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -341,7 +341,7 @@ test('should not transfer 0 tokens', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -367,7 +367,7 @@ test('should not transfer to the same account', () => {
   const caller = '<justin>';
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -402,7 +402,7 @@ test('should not transfer to the same account', () => {
 
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -437,7 +437,7 @@ test('should not transfer more than owned', () => {
   );
   assert.throws(
     () =>
-      allow(env)(
+      allow(
         {
           name: 'RebAR',
           ticker: 'RebAR',
@@ -465,7 +465,7 @@ test('should transfer to empty account', async () => {
     undefined
   );
   const caller = '<justin>';
-  const output = await allow(env)(
+  const output = await allow(
     {
       name: 'RebAR',
       ticker: 'RebAR',
@@ -499,7 +499,7 @@ test('should allow to existing account', async () => {
     undefined,
     undefined
   );
-  const output = await allow(env)(
+  const output = await allow(
     {
       name: 'RebAR',
       ticker: 'RebAR',
