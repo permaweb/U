@@ -1,6 +1,5 @@
 import { getState } from './get-state';
-import { getQueue } from './get-queue';
-import { createMint } from './create-mint';
+import { burn } from './burn';
 import { mint } from './mint';
 import { transfer } from './transfer';
 import { claim } from './claim';
@@ -10,10 +9,9 @@ export * from './interface';
 
 export const env = {
   getState,
-  createMint,
+  burn,
   mint,
   transfer,
-  getQueue,
   getRebarBalance,
   claim,
   pollMint,
