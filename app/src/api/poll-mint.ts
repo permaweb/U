@@ -1,22 +1,20 @@
 import Async from 'hyper-async';
 const { of, fromPromise } = Async;
-import { identity } from 'ramda';
 
 export function pollMint(tx: string) {
-  return of(tx)
-    .chain(fromPromise(waitForConfirmation))
-    .fork((e: any) => {
-      return { error: 'There was an error fetching the contract state' };
-    }, identity);
+  return of(tx).chain(fromPromise(waitForConfirmation));
 }
 
 /**
- * Sets the polling tx so the tx can be re-polled during
+ * Gets the polling tx if it exists
  *
  * @author @jshaw-ar
- * @param {string} tx
- * @return {*}
+ * @export
+ * @return {string}
  */
+export function getPollingTx(): string | null {
+  return localStorage.getItem('polling_tx');
+}
 
 /**
  * Polls the tx until it's not pending
@@ -29,7 +27,7 @@ export async function waitForConfirmation(tx: string) {
   let res = null;
 
   while (res === null || res?.status === 202) {
-    await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay for 1 second
+    await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay for 20 second
     res = await fetch(
       `${
         import.meta.env.VITE_LOCAL === 'true'
