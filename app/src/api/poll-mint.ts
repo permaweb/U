@@ -37,7 +37,6 @@ export async function waitForConfirmation(tx: string) {
     );
     console.log(res.status);
   }
-  console.log(res.status, res.statusText);
   localStorage.removeItem('polling_tx');
   return { tx, status: res.status };
 }

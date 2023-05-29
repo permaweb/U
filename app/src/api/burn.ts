@@ -15,7 +15,6 @@ export function burn(input: { contractId: string; qty: number }) {
   return of(input)
     .chain(fromPromise(mint))
     .map(setLocalStorage)
-    .chain(waitForConfirmation)
     .fork((e: any) => {
       return { error: 'There was an error fetching the contract state' };
     }, identity);

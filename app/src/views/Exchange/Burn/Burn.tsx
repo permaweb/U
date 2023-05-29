@@ -115,8 +115,8 @@ export default function Burn() {
     burn({
       contractId: import.meta.env.VITE_CONTRACT || '',
       qty: arAmount,
-    }).then((r: any) => {
-      // TODO: get txId, setPollingTx(txId)
+    }).then((tx: string) => {
+      setPollingTx(tx);
       setLoading(false);
       setBurnResult({
         status: true,
