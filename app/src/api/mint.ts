@@ -1,7 +1,7 @@
 import Async from 'hyper-async';
 import { getWarpFactory } from './common';
 import { identity } from 'ramda';
-import { setLocalStorage, waitForConfirmation } from './poll-mint';
+import { waitForConfirmation } from './poll-mint';
 const { of, fromPromise } = Async;
 
 export function mint(contractId: string) {
@@ -33,3 +33,7 @@ const warpMint = async (tx: string) => {
   });
   return interaction?.originalTxId;
 };
+export function setLocalStorage(tx: string) {
+  localStorage.setItem('polling_tx', tx);
+  return tx;
+}

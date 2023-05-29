@@ -4,7 +4,6 @@ import { identity } from 'ramda';
 
 export function pollMint(tx: string) {
   return of(tx)
-    .map(setLocalStorage)
     .chain(fromPromise(waitForConfirmation))
     .fork((e: any) => {
       return { error: 'There was an error fetching the contract state' };
@@ -18,10 +17,6 @@ export function pollMint(tx: string) {
  * @param {string} tx
  * @return {*}
  */
-export function setLocalStorage(tx: string) {
-  localStorage.setItem('polling_tx', tx);
-  return tx;
-}
 
 /**
  * Polls the tx until it's not pending
@@ -45,8 +40,6 @@ export async function waitForConfirmation(tx: string) {
     console.log(res.status);
   }
   console.log(res.status, res.statusText);
-  if (res.status === 200) {
-    localStorage.removeItem('polling_tx');
-  }
+  localStorage.removeItem('polling_tx');
   return { tx, status: res.status };
 }
