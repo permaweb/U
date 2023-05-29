@@ -5,71 +5,28 @@ import { compose, prop, fromPairs, toPairs, map } from 'ramda';
 import fs from 'fs';
 import { execSync } from 'child_process';
 
-const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
-const DRE = 'https://cache-2.permaweb.tools';
+// const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
+// const DRE = 'https://cache-2.permaweb.tools';
 
 async function deploy(folder) {
   try {
-    const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
-      .then((r) => r.json())
-      .then(prop('state'));
-    const balances = getBalances(BAR_STATE);
+    // const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
+    //   .then((r) => r.json())
+    //   .then(prop('state'));
+    // const balances = getBalances(BAR_STATE);
 
     const warp = WarpFactory.forLocal().use(new DeployPlugin());
     const wallet1 = await warp.generateWallet();
-    const contractSrcL1 = fs.readFileSync(`${folder}/contract-L1.js`, 'utf8');
-    const stateFromFileL1 = JSON.parse(
-      fs.readFileSync(`${folder}/initial-state-L1.json`, 'utf8')
-    );
-    const contractSrcSEQ = fs.readFileSync(`${folder}/contract-SEQ.js`, 'utf8');
-    const stateFromFileSEQ = JSON.parse(
-      fs.readFileSync(`${folder}/initial-state-SEQ.json`, 'utf8')
+
+    const contractSrc = fs.readFileSync(`${folder}/contract.js`, 'utf8');
+    const stateFromFile = JSON.parse(
+      fs.readFileSync(`${folder}/initial-state.json`, 'utf8')
     );
 
-    const initialStateL1 = {
-      ...stateFromFileL1,
+    const initialState = {
+      ...stateFromFile,
       ...{
         owner: process.env.WALLET_ADDRESS,
-        requests: [
-          {
-            tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
-            target: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-            qty: 2000000,
-            expires: -1,
-          },
-          // {
-          //   tx: 'r-ibjdYo03ZinmFB_1iWTMTwkz-1xgixg7BSC_t_EOM',
-          //   target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-          //   qty: 3000000,
-          //   expires: -1,
-          // },
-          // {
-          //   tx: 'oSrL1XAq5VKXxbQR0Lj43U-soLSl7NdupqGLM6bjDkI',
-          //   target: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-          //   qty: 4000000,
-          //   expires: 320,
-          // },
-          // {
-          //   tx: '-oQ959JAVBjDMGCUkYA6yxlYHi9R3kjpb3WrB1kgnAs',
-          //   target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-          //   qty: 5000000,
-          //   expires: 420,
-          // },
-          {
-            tx: 'tT0FtnWOqLa8i0O5KvTISPPVkuQ85nCKZyViWurfIsk',
-            target: 'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-            qty: 6000000,
-            expires: 520,
-          },
-        ],
-      },
-    };
-
-    const initialStateSEQ = {
-      ...stateFromFileSEQ,
-      ...{
-        owner: process.env.WALLET_ADDRESS,
-
         claimable: [
           {
             to: '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
@@ -117,50 +74,25 @@ async function deploy(folder) {
       },
     };
 
-    const deployL1 = await warp.deploy({
-      wallet: wallet1.jwk,
-      initState: JSON.stringify(initialStateL1),
-      src: contractSrcL1,
-    });
-
-    const deploySEQ = await warp.deploy({
+    const deployed = await warp.deploy({
       wallet: wallet1.jwk,
       initState: JSON.stringify({
-        ...initialStateSEQ,
-        mint_contract: deployL1.contractTxId,
+        ...initialState,
       }),
       evaluationManifest: {
         evaluationOptions: {
-          sourceType: SourceType.WARP_SEQUENCER,
+          sourceType: SourceType.BOTH,
           internalWrites: true,
+          allowBigInt: true,
           unsafeClient: 'skip',
         },
       },
-      src: contractSrcSEQ,
+      src: contractSrc,
     });
-    console.log(`L1 contractTxId ${deployL1.contractTxId}`);
-    console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
-
-    const connected = warp
-      .contract(deploySEQ.contractTxId)
-      .setEvaluationOptions({
-        internalWrites: true,
-        unsafeClient: 'skip',
-      })
-      .connect(wallet1.jwk);
-
-    const interaction = await connected.writeInteraction({
-      function: 'initialize',
-      initialBalances: {
-        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4': 1000000000000000,
-        uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk: 1000000000000000,
-      },
-    });
-
-    console.log(`Balances migrated: ${interaction.originalTxId}`);
+    console.log(`contractTxId ${deployed.contractTxId}`);
 
     execSync(
-      `(cd ../app && npm i && VITE_CONTRACT_L1=${deployL1.contractTxId} VITE_CONTRACT_SEQ=${deploySEQ.contractTxId} VITE_LOCAL=true npm run dev)`,
+      `(cd ../app && npm i && VITE_CONTRACT=${deployed.contractTxId} VITE_LOCAL=true npm run dev)`,
       {
         encoding: 'utf8',
         stdio: 'inherit',
