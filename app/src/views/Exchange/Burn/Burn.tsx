@@ -51,7 +51,7 @@ export default function Burn() {
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
-  }, [state]);
+  }, [state, arProvider.walletAddress]);
 
   useEffect(() => {
     setRebarAmount(arAmount);

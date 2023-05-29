@@ -13,14 +13,14 @@ import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { env } from 'api';
-import { StateSEQ } from 'api';
+import { State } from 'api';
 
 const { transfer, getState, getRebarBalance } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<StateSEQ | undefined>();
+  const [state, setState] = React.useState<State | undefined>();
   const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
     number | undefined
   >();
@@ -45,7 +45,7 @@ export default function Transfer() {
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
-  }, [state]);
+  }, [state, arProvider.walletAddress]);
 
   function getAction() {
     let action: () => void;

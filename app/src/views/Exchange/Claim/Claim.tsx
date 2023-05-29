@@ -7,7 +7,7 @@ import { Notification } from 'components/atoms/Notification';
 import { formatAddress } from 'helpers/utils';
 import { language } from 'helpers/language';
 import * as S from './styles';
-import { Claimable, env, StateSEQ } from 'api';
+import { Claimable, env, State } from 'api';
 import { ResponseType } from 'helpers/types';
 
 const { getState, getRebarBalance, claim } = env;
@@ -15,7 +15,7 @@ const { getState, getRebarBalance, claim } = env;
 export default function Claim() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<StateSEQ | undefined>();
+  const [state, setState] = React.useState<State | undefined>();
   const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
     number | undefined
   >();
@@ -49,7 +49,7 @@ export default function Claim() {
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
-  }, [state, connectedClaims]);
+  }, [state, connectedClaims, arProvider.walletAddress]);
 
   function getAction() {
     let action: () => void;
