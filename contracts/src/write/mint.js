@@ -1,6 +1,6 @@
 import { roundDown } from '../util.js';
 
-export async function mint(state, action) {
+export function mint(state, action) {
   if (Number(SmartWeave.transaction.reward) <= 72600854) {
     // skip mint this is a L2
     return { state };
