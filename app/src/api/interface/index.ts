@@ -3,13 +3,13 @@
  * @export
  * @interface StateSEQ
  */
-export interface StateSEQ {
+export interface State {
   ticker: string;
   name: string;
   settings: any[];
   claimable: Claimable[];
   divisibility: 1e6;
-  pile: {
+  balances: {
     [tx: string]: number;
   };
 }
@@ -23,29 +23,4 @@ export interface Claimable {
   from: string;
   txID: string;
   qty: number;
-}
-
-/**
- * @author @jshaw-ar
- * @export
- * @interface StateL1
- */
-export interface StateL1 {
-  ticker: string;
-  name: string;
-  settings: any[];
-  requests: {
-    [tx: string]: MintRequest;
-  };
-}
-
-/**
- * @author @jshaw-ar
- * @interface MintRequest
- */
-export interface MintRequest {
-  target: string;
-  qty: number;
-  expires: number;
-  tx: string;
 }
