@@ -31,7 +31,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress) {
-      getState(import.meta.env.VITE_CONTRACT_SEQ)
+      getState(import.meta.env.VITE_CONTRACT)
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(
@@ -45,10 +45,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(
-        import.meta.env.VITE_CONTRACT_SEQ,
-        arProvider.walletAddress
-      )
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
@@ -109,7 +106,7 @@ export default function Claim() {
   const processClaim = async (c: Claimable) => {
     await claim({
       qty: c.qty,
-      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      contractId: import.meta.env.VITE_CONTRACT,
       tx: c.txID,
     })
       .then(() => {

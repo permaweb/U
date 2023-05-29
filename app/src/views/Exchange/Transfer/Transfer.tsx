@@ -34,17 +34,14 @@ export default function Transfer() {
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ)
+    getState(import.meta.env.VITE_CONTRACT)
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(
-        import.meta.env.VITE_CONTRACT_SEQ,
-        arProvider.walletAddress
-      )
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
@@ -85,7 +82,7 @@ export default function Transfer() {
   const transferReBar = async () => {
     setLoading(true);
     transfer({
-      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      contractId: import.meta.env.VITE_CONTRACT,
       from: arProvider.walletAddress as string,
       qty: reBarAmount,
       target: recipient,

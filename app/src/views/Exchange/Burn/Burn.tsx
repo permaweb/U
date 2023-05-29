@@ -14,16 +14,14 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { MintRequest, StateL1, StateSEQ, env } from 'api';
+import { State, env } from 'api';
 
-const { getQueue, getState, createMint, mint } = env;
+const { getState, burn } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
 
-  const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
-  const [stateL1, setStateL1] = React.useState<StateL1>();
-  const [queue, setQueue] = React.useState<any>();
+  const [state, setState] = React.useState<State>();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
@@ -33,15 +31,7 @@ export default function Burn() {
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
-        setQueue(requests);
-      });
-    });
-    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
-      setStateL1(s);
-    });
+    getState(import.meta.env.VITE_CONTRACT).then(setState);
   }, [mintResult]);
 
   useEffect(() => {
@@ -86,7 +76,7 @@ export default function Burn() {
 
   function burnAR() {
     setLoading(true);
-    createMint({
+    burn({
       contractId: import.meta.env.VITE_CONTRACT_L1 || '',
       qty: arAmount,
     }).then((r: any) => {
@@ -95,14 +85,6 @@ export default function Burn() {
         status: true,
         message: language.burnSuccess,
       });
-    });
-  }
-
-  function mintRequests() {
-    mint(import.meta.env.VITE_CONTRACT_SEQ);
-    setMintResult({
-      status: true,
-      message: language.mintExecuted,
     });
   }
 
@@ -183,65 +165,6 @@ export default function Burn() {
         </S.TWrapper>
         <S.AWrapper>{getAction()}</S.AWrapper>
       </S.Wrapper>
-
-      <S.MintActionWrapper>
-        <Button
-          type={'alt1'}
-          label={language.finalizeBurn}
-          tooltip={language.mintDescription}
-          handlePress={() => mintRequests()}
-          height={52.5}
-          disabled={false}
-          loading={loading}
-          fullWidth
-        />
-        <S.InfoAction>
-          <button onClick={() => setShowFinalizeInfo(true)}>
-            <ReactSVG src={ASSETS.info} />
-          </button>
-        </S.InfoAction>
-      </S.MintActionWrapper>
-
-      {queue && (
-        <S.DetailWrapper>
-          <S.DHeader>
-            <p>
-              {language.requestQueue} ({queue?.length || 0})
-            </p>
-          </S.DHeader>
-          {queue.map((request: MintRequest, index: number) => {
-            return (
-              <React.Fragment key={index}>
-                <S.DetailSubheader>
-                  <p>{`${language.requestTransaction}: ${formatAddress(
-                    request.tx,
-                    true
-                  )}`}</p>
-                </S.DetailSubheader>
-                <S.DetailLine
-                  key={index}
-                  type={'pending'}
-                  ownerLine={
-                    arProvider.walletAddress
-                      ? arProvider.walletAddress === request.target
-                      : false
-                  }
-                >
-                  <S.DetailValue>
-                    <p>{`${formatAddress(request.target, true)}`}</p>
-                  </S.DetailValue>
-                  <S.DetailValue>
-                    <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
-                  </S.DetailValue>
-                  <S.DetailValue>
-                    <p>{`${language.expires}: ${request.expires}`}</p>
-                  </S.DetailValue>
-                </S.DetailLine>
-              </React.Fragment>
-            );
-          })}
-        </S.DetailWrapper>
-      )}
     </>
   );
 }
