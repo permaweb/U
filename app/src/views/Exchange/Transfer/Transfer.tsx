@@ -55,7 +55,7 @@ export default function Transfer() {
     if (!arProvider.walletAddress) {
       disabled = false;
     } else {
-      disabled = reBarAmount <= 0 || !recipient || loading; // TODO: Check on RebAR balance
+      disabled = reBarAmount <= 0 || !recipient || loading;
     }
 
     if (!arProvider.walletAddress) {
@@ -125,6 +125,16 @@ export default function Transfer() {
             <h2>{language.transfer}</h2>
             <p>{parse(language.transferDescription)}</p>
           </S.DWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.arBalance}: `}</span>
+              {`${
+                arProvider.walletAddress && arProvider.availableBalance !== null
+                  ? Number(arProvider.availableBalance.toFixed(4))
+                  : `-`
+              }`}
+            </p>
+          </S.BWrapper>
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>

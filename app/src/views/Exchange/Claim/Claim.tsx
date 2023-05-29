@@ -190,6 +190,16 @@ export default function Claim() {
           </S.DWrapper>
           <S.BWrapper>
             <p>
+              <span>{`${language.arBalance}: `}</span>
+              {`${
+                arProvider.walletAddress && arProvider.availableBalance !== null
+                  ? Number(arProvider.availableBalance.toFixed(4))
+                  : `-`
+              }`}
+            </p>
+          </S.BWrapper>
+          <S.BWrapper>
+            <p>
               <span>{`${language.rebarBalance}: `}</span>
               {`${connectedRebarBalance || '-'}`}
             </p>

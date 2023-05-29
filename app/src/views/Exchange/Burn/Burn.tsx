@@ -1,34 +1,56 @@
-import React, { useEffect } from 'react';
-import parse from 'html-react-parser';
-import { ReactSVG } from 'react-svg';
+import React, { useEffect } from "react";
+import parse from "html-react-parser";
+import { ReactSVG } from "react-svg";
 
-import { Button } from 'components/atoms/Button';
-import { FormField } from 'components/atoms/FormField';
-import { Notification } from 'components/atoms/Notification';
-import { Modal } from 'components/molecules/Modal';
+import { Button } from "components/atoms/Button";
+import { Loader } from 'components/atoms/Loader';
+import { FormField } from "components/atoms/FormField";
+import { Notification } from "components/atoms/Notification";
+import { Modal } from "components/molecules/Modal";
 
-import { ASSETS } from 'helpers/config';
-import { formatAddress } from 'helpers/utils';
-import { useArweaveProvider } from 'providers/ArweaveProvider';
+import { ASSETS } from "helpers/config";
+import { formatAddress } from "helpers/utils";
+import { useArweaveProvider } from "providers/ArweaveProvider";
 
-import { language } from 'helpers/language';
-import { ResponseType } from 'helpers/types';
-import * as S from './styles';
-import { env } from 'api';
+import { language } from "helpers/language";
+import { ResponseType } from "helpers/types";
+import * as S from "./styles";
+import { env, StateSEQ } from "api";
 
-const { burn, getPollingTx, pollMint } = env;
+const { burn, getPollingTx, pollMint, getState, getRebarBalance } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
 
+  const [state, setState] = React.useState<StateSEQ | undefined>();
+
+  const [polling, setPolling] = React.useState<boolean>(false);
   const [pollingTx, setPollingTx] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
   const [finalizeInfo, setShowFinalizeInfo] = React.useState<boolean>(false);
+  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+    number | undefined
+  >();
+  const [connectedRebarBalanceError, setConnectedRebarBalanceError] = React.useState<string | undefined>();
 
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
+
+  useEffect(() => {
+    getState(import.meta.env.VITE_CONTRACT)
+      .then(setState)
+      .catch((e: any) => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+        .then(setConnectedRebarBalance)
+        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    }
+  }, [state]);
 
   useEffect(() => {
     setRebarAmount(arAmount);
@@ -40,9 +62,11 @@ export default function Burn() {
 
   useEffect(() => {
     if (pollingTx) {
+      setPolling(true);
       pollMint(pollingTx)
         .toPromise()
         .then((r: any) => {
+          setPolling(false);
           console.log(r);
         });
     }
@@ -59,7 +83,7 @@ export default function Burn() {
       disabled =
         reBarAmount <= 0 ||
         reBarAmount > arProvider.availableBalance! ||
-        loading;
+        loading || polling;
     }
 
     if (!arProvider.walletAddress) {
@@ -73,7 +97,7 @@ export default function Burn() {
 
     return (
       <Button
-        type={'alt1'}
+        type={"alt1"}
         label={label}
         handlePress={action}
         height={52.5}
@@ -87,9 +111,10 @@ export default function Burn() {
   function burnAR() {
     setLoading(true);
     burn({
-      contractId: import.meta.env.VITE_CONTRACT || '',
+      contractId: import.meta.env.VITE_CONTRACT || "",
       qty: arAmount,
     }).then((r: any) => {
+      // TODO: get txId, setPollingTx(txId)
       setLoading(false);
       setBurnResult({
         status: true,
@@ -102,7 +127,7 @@ export default function Burn() {
     <>
       {burnResult && (
         <Notification
-          type={burnResult.status === true ? 'success' : 'warning'}
+          type={burnResult.status === true ? "success" : "warning"}
           message={burnResult.message!}
           callback={() => setBurnResult(null)}
         />
@@ -110,7 +135,7 @@ export default function Burn() {
 
       {mintResult && (
         <Notification
-          type={mintResult.status === true ? 'success' : 'warning'}
+          type={mintResult.status === true ? "success" : "warning"}
           message={mintResult.message!}
           callback={() => setMintResult(null)}
         />
@@ -127,7 +152,7 @@ export default function Burn() {
         </Modal>
       )}
 
-      <S.Wrapper className={'tab-wrapper'}>
+      <S.Wrapper className={"tab-wrapper"}>
         <S.TWrapper>
           <S.DWrapper>
             <h2>{language.burn}</h2>
@@ -143,9 +168,15 @@ export default function Burn() {
               }`}
             </p>
           </S.BWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.rebarBalance}: `}</span>
+              {`${connectedRebarBalance || '-'}`}
+            </p>
+          </S.BWrapper>
           <S.FWrapper>
             <FormField
-              type={'number'}
+              type={"number"}
               label={language.from}
               value={arAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -161,7 +192,7 @@ export default function Burn() {
             </S.Divider>
 
             <FormField
-              type={'number'}
+              type={"number"}
               label={language.to}
               value={reBarAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -175,6 +206,15 @@ export default function Burn() {
         </S.TWrapper>
         <S.AWrapper>{getAction()}</S.AWrapper>
       </S.Wrapper>
+      
+      {polling && 
+        <S.InfoWrapper className={"border-wrapper"}>
+          <p>{`${language.pollingTx}: ${formatAddress(pollingTx, true)}`}</p>
+          <S.PollingLoader>
+            <Loader sm />
+          </S.PollingLoader>
+        </S.InfoWrapper>
+      }
     </>
   );
 }
