@@ -1,11 +1,14 @@
 import Async from 'hyper-async';
-import { getWarpFactory, syncState } from './common';
+import { getWarpFactory } from './common';
 import { identity } from 'ramda';
+import { setLocalStorage, waitForConfirmation } from './poll-mint';
 const { of, fromPromise } = Async;
 
 export function mint(contractId: string) {
   return of(contractId)
     .chain(fromPromise(warpMint))
+    .map(setLocalStorage)
+    .chain(waitForConfirmation)
     .fork((e: any) => {
       console.log(e);
       return { error: 'There was an error fetching the contract state' };
@@ -14,7 +17,6 @@ export function mint(contractId: string) {
 
 const warpMint = async (tx: string) => {
   const warp = getWarpFactory();
-  //if (!import.meta.env.VITE_LOCAL) await syncState(warp, tx);
   const contract = warp
     .contract(tx)
     .connect('use_wallet')
@@ -29,5 +31,5 @@ const warpMint = async (tx: string) => {
   const interaction = await contract.writeInteraction({
     function: 'mint',
   });
-  return interaction;
+  return interaction?.originalTxId;
 };
