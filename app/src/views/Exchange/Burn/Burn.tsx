@@ -14,14 +14,14 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { State, env } from 'api';
+import { env } from 'api';
 
-const { getState, burn } = env;
+const { burn, getPollingTx, pollMint, getRebarBalance } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<State>();
+  const [pollingTx, setPollingTx] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
@@ -30,13 +30,23 @@ export default function Burn() {
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
-  useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT).then(setState);
-  }, [mintResult]);
+  // useEffect(() => {
+  //   setRebarAmount(arAmount);
+  // }, [arAmount]);
 
   useEffect(() => {
-    setRebarAmount(arAmount);
-  }, [arAmount]);
+    setPollingTx(getPollingTx());
+  }, []);
+
+  useEffect(() => {
+    if (pollingTx) {
+      pollMint(pollingTx)
+        .toPromise()
+        .then((r: any) => {
+          console.log(r);
+        });
+    }
+  }, [pollingTx]);
 
   function getAction() {
     let action: () => void;
@@ -77,7 +87,7 @@ export default function Burn() {
   function burnAR() {
     setLoading(true);
     burn({
-      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
+      contractId: import.meta.env.VITE_CONTRACT || '',
       qty: arAmount,
     }).then((r: any) => {
       setLoading(false);
