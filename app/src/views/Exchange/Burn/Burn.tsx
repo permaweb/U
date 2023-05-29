@@ -16,7 +16,7 @@ import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { env } from 'api';
 
-const { burn, getPollingTx, pollMint, getRebarBalance } = env;
+const { burn, getPollingTx, pollMint } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
@@ -30,9 +30,9 @@ export default function Burn() {
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
-  // useEffect(() => {
-  //   setRebarAmount(arAmount);
-  // }, [arAmount]);
+  useEffect(() => {
+    setRebarAmount(arAmount);
+  }, [arAmount]);
 
   useEffect(() => {
     setPollingTx(getPollingTx());
