@@ -4,6 +4,7 @@ import { createMint } from './create-mint';
 import { mint } from './mint';
 import { transfer } from './transfer';
 import { claim } from './claim';
+import { pollMint } from './poll-mint';
 import { getRebarBalance } from './get-rebar-balance';
 export * from './interface';
 
@@ -15,4 +16,5 @@ export const env = {
   getQueue,
   getRebarBalance,
   claim,
+  pollMint,
 };
