@@ -74,7 +74,8 @@ export const AWrapper = styled.div`
 export const InfoWrapper = styled.div`
   height: 50px;
   margin: 20px 0 0 0;
-  background: ${(props) => props.theme.colors.container.alt3.background} !important;
+  background: ${(props) =>
+    props.theme.colors.container.alt3.background} !important;
   border-radius: ${STYLING.dimensions.borderRadiusWrapper} !important;
   padding: 15px 25px;
   display: flex;
