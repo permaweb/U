@@ -1,0 +1,12 @@
+{
+  "ticker": "RebAR",
+  "name": "RebAR",
+  "settings": [
+    [
+      "isTradeable",
+      false
+    ]
+  ],
+  "requests": [],
+  "divisibility": 1e6
+}

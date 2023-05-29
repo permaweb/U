@@ -22,7 +22,9 @@ export default function Notification(props: IProps) {
       <S.Wrapper>
         <S.Message>{props.message}</S.Message>
         <S.Icon type={props.type}>
-          <ReactSVG src={props.type === "warning" ? ASSETS.close : ASSETS.checkmark}  />
+          <ReactSVG
+            src={props.type === 'warning' ? ASSETS.close : ASSETS.checkmark}
+          />
         </S.Icon>
         <S.Close>
           <IconButton

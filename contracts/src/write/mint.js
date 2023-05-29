@@ -10,14 +10,13 @@ import { removeExpired } from '../util.js';
  */
 export function mint({ viewContractState, block }) {
   return (state) => {
+    const viewState = fromPromise(viewContractState);
     // remove expired requests in the pile to prevent state bloat.
     state.pile = Object.fromEntries(
       Object.entries(state.pile).filter((e) => e[1] >= block.height)
     );
     return of(state.mint_contract)
-      .chain((id) =>
-        fromPromise(viewContractState)(id, { function: 'get-queue' })
-      )
+      .chain((id) => viewState(id, { function: 'get-queue' }))
       .map(({ result }) => result)
       .map((queue) => removeExpired(queue, block.height))
       .map((queue) => notInPile(state, queue))

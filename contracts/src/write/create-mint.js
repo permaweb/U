@@ -15,8 +15,8 @@ export function createMint({ block, transaction }) {
     return of({ state, action, block, transaction })
       .chain(
         ce(
-          roundDown(transaction.reward / state.divisibility) < 1,
-          'You must mint at least 1 feron.'
+          roundDown(transaction.reward / state.divisibility) < 100,
+          'You must mint at least 100 feron.'
         )
       )
       .map(({ state, action, block, transaction }) => {
