@@ -1,0 +1,11 @@
+{
+  "ticker": "RebAR",
+  "name": "RebAR",
+  "settings": [
+    ["isTradeable", true],
+    ["communityLogo", "U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY"]
+  ],
+  "claimable": [],
+  "balances": {},
+  "divisibility": 1e6
+}
