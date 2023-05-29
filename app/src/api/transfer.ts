@@ -1,5 +1,5 @@
 import Async from 'hyper-async';
-import { getWarpFactory, syncState } from './common';
+import { getWarpFactory } from './common';
 const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 
@@ -20,14 +20,13 @@ const warpTransfer = async (input: TransferInput) => {
   const { contractId, qty, target, from } = input;
   const warp = getWarpFactory();
 
-  if (!import.meta.env.VITE_LOCAL) await syncState(warp, contractId);
   const contract = warp
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-
+      remoteStateSyncEnabled: true,
       allowBigInt: true,
     });
   const newQty = new BigNumber(qty * 1e6)
