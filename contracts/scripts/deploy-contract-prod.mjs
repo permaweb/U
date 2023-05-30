@@ -1,30 +1,34 @@
-import { WarpFactory, SourceType } from 'warp-contracts';
+import { WarpFactory, SourceType, defaultCacheOptions } from 'warp-contracts';
 import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
-import BigNumber from 'bignumber.js';
-import { compose, prop, fromPairs, toPairs, map } from 'ramda';
+import { map, omit } from 'ramda';
 
 import fs from 'fs';
 
-const BAR = 'VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA';
-const DRE = 'https://cache-2.permaweb.tools';
-
 async function deploy(folder) {
-  const BAR_STATE = await fetch(`${DRE}/contract/?id=${BAR}`)
-    .then((r) => r.json())
-    .then(prop('state'));
-  const balances = getBalances(BAR_STATE);
+  const balances = await fetch(
+    'https://cache-2.permaweb.tools/contract/?id=VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA'
+  )
+    .then((res) => res.json())
+    .then((result) => result.state.balances)
+    .then(map((v) => Math.floor(v)))
+    .then(
+      omit([
+        'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI',
+        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
+        'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw',
+        '89tR0-C1m3_sCWCoVCChg4gFYKdiH5_ZDyZpdJ2DDRw',
+      ])
+    );
 
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
-  const warp = WarpFactory.forMainnet().use(new DeployPlugin());
-  const contractSrcL1 = fs.readFileSync(`${folder}/contract-L1.js`, 'utf8');
-  const stateFromFileL1 = JSON.parse(
-    fs.readFileSync(`${folder}/initial-state-L1.json`, 'utf8')
+  const warp = WarpFactory.forMainnet(defaultCacheOptions, true).use(
+    new DeployPlugin()
   );
-  const contractSrcSEQ = fs.readFileSync(`${folder}/contract-SEQ.js`, 'utf8');
-  const stateFromFileSEQ = JSON.parse(
-    fs.readFileSync(`${folder}/initial-state-SEQ.json`, 'utf8')
+  const contractSrc = fs.readFileSync(`${folder}/contract.js`, 'utf8');
+  const stateFromFile = JSON.parse(
+    fs.readFileSync(`${folder}/initial-state.json`, 'utf8')
   );
   if (!process.env.WALLET_ADDRESS) {
     console.error(
@@ -32,75 +36,30 @@ async function deploy(folder) {
     );
     process.exit(1);
   }
-  const initialStateL1 = {
-    ...stateFromFileL1,
+
+  const initialState = {
+    ...stateFromFile,
     ...{
       owner: process.env.WALLET_ADDRESS,
     },
   };
 
-  const initialStateSEQ = {
-    ...stateFromFileSEQ,
-    ...{
-      owner: process.env.WALLET_ADDRESS,
-    },
-  };
-
-  const deployL1 = await warp.deploy({
-    wallet: new ArweaveSigner(jwk),
-    initState: JSON.stringify(initialStateL1),
-    src: contractSrcL1,
-    evaluationManifest: {
-      evaluationOptions: {
-        sourceType: SourceType.ARWEAVE,
-        unsafeClient: 'skip',
-        internalWrites: false,
-      },
-    },
-  });
-
-  const deploySEQ = await warp.deploy({
-    wallet: new ArweaveSigner(jwk),
+  const deployed = await warp.deploy({
+    // wallet: new ArweaveSigner(jwk),
+    wallet: jwk,
     initState: JSON.stringify({
-      ...initialStateSEQ,
-      mint_contract: deployL1.contractTxId,
+      ...initialState,
     }),
-    src: contractSrcSEQ,
+    src: contractSrc,
     evaluationManifest: {
       evaluationOptions: {
-        sourceType: SourceType.WARP_SEQUENCER,
+        sourceType: SourceType.BOTH,
         internalWrites: true,
+        allowBigInt: true,
         unsafeClient: 'skip',
       },
     },
   });
-  console.log(`L1 contractTxId ${deployL1.contractTxId}`);
-  console.log(`SEQ contractTxId ${deploySEQ.contractTxId}`);
-
-  const connected = warp
-    .contract(deploySEQ.contractTxId)
-    .setEvaluationOptions({
-      internalWrites: true,
-      unsafeClient: 'skip',
-    })
-    .connect(jwk);
-  const interaction = await connected.writeInteraction({
-    function: 'initialize',
-    initialBalances: { ...balances },
-  });
-
-  console.log(`Balances migrated: ${interaction.originalTxId}`);
+  console.log(`SEQ contractTxId ${deployed.contractTxId}`);
 }
 deploy(process.argv[2]).catch(console.log);
-
-function getBalances(state) {
-  return compose(
-    fromPairs,
-    map(([k, v]) => [
-      k,
-      new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber(),
-    ]),
-    toPairs,
-    prop('balances')
-  )(state);
-}
