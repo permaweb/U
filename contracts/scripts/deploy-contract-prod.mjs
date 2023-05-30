@@ -44,22 +44,40 @@ async function deploy(folder) {
     },
   };
 
-  const deployed = await warp.deploy({
-    // wallet: new ArweaveSigner(jwk),
-    wallet: jwk,
-    initState: JSON.stringify({
-      ...initialState,
-    }),
-    src: contractSrc,
-    evaluationManifest: {
-      evaluationOptions: {
-        sourceType: SourceType.BOTH,
-        internalWrites: true,
-        allowBigInt: true,
-        unsafeClient: 'skip',
+  const deployed = await warp.deploy(
+    {
+      // wallet: new ArweaveSigner(jwk),
+      wallet: jwk,
+      initState: JSON.stringify({
+        ...initialState,
+        balances,
+      }),
+      src: contractSrc,
+      evaluationManifest: {
+        evaluationOptions: {
+          sourceType: SourceType.BOTH,
+          internalWrites: true,
+          allowBigInt: true,
+          unsafeClient: 'skip',
+        },
       },
     },
-  });
+    {
+      disabledBundling: true,
+    }
+  );
   console.log(`SEQ contractTxId ${deployed.contractTxId}`);
+  await waitForConfirmation(deployed.contractTxId);
 }
 deploy(process.argv[2]).catch(console.log);
+
+export async function waitForConfirmation(tx) {
+  let res = null;
+
+  while (res === null || res?.status === 202) {
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // Delay for 20 second
+    res = await fetch(`https://arweave.net/tx/${tx}`);
+    console.log('Status:', res?.status);
+  }
+  console.log('Finished with status:', res.status, res.statusText);
+}
