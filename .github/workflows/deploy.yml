@@ -1,4 +1,4 @@
-name: publish cookbook
+name: Publish Perma-dApp
 
 on:
   push:
