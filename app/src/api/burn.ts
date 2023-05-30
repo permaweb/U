@@ -3,7 +3,6 @@ const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
-import { waitForConfirmation } from './poll-mint';
 
 /**
  * @author @jshaw-ar
