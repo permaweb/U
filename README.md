@@ -33,7 +33,7 @@ RebAR is fuel for the Permaweb. Permaweb users can use RebAR to swap between oth
 
 ## Contact
 
-If you have questions, visit the [Permaweb Discord](https://discord.gg/fKsTkAuCjB)
+If you have questions, visit the [Facts Laboratory](https://discord.gg/TpFTzUnfXQ) or [Permaweb Discord](https://discord.gg/fKsTkAuCjB)
 
 ## Resources
 
