@@ -14,11 +14,8 @@ const jwk = JSON.parse(
   Buffer.from(process.env.WALLET, 'base64').toString('utf-8')
 );
 
-const bundlr = new Bundlr.default(
-  'https://node2.bundlr.network',
-  'arweave',
-  jwk
-);
+const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
+
 const warp = WarpFactory.custom(arweave, defaultCacheOptions, 'mainnet')
   .useArweaveGateway()
   .build();
