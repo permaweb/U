@@ -47,3 +47,6 @@ cache/
 
 contracts/perf/wallets.json
 wallet.json
+app/dist-id.txt
+app/dist-manifest.csv
+app/dist-manifest.json
