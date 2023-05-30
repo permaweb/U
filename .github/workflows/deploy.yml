@@ -1,0 +1,28 @@
+name: publish cookbook
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'deploy-script'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - run: cd app && npm i
+      - run: cd app && npm run deploy-action
+        env:
+          WALLET: ${{ secrets.WALLET }}
+      # - uses: Ilshidur/action-discord@master
+      #   name: Discord Notification
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      #   with:
+      #     args: "The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed."
