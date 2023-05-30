@@ -2,6 +2,10 @@ name: Publish Perma-dApp
 
 on:
   push:
+    paths:
+      - app/src/**
+      - app/package.json
+      - app/vite.config.ts
     branches:
       - 'main'
       - 'deploy-script'
