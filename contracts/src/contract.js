@@ -2,7 +2,7 @@ import { balance } from './read/balance.js';
 import { transfer } from './write/transfer.js';
 import { claim } from './write/claim.js';
 import { allow } from './write/allow.js';
-import { mint } from './write/mint2.js';
+import { mint } from './write/mint.js';
 import { rejectClaimable } from './write/reject.js';
 
 export async function handle(state, action) {
@@ -35,12 +35,4 @@ export async function handle(state, action) {
         `No function supplied or function not recognized`
       );
   }
-}
-
-function handleError(msg) {
-  throw new ContractError(msg);
-}
-
-function handleSuccess(v) {
-  return v;
 }

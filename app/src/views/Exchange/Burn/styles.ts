@@ -71,35 +71,17 @@ export const AWrapper = styled.div`
   margin: 20px 0 0 0;
 `;
 
-export const MintActionWrapper = styled.div`
-  width: 100%;
-  margin: 20px 0;
+export const InfoWrapper = styled.div`
+  height: 50px;
+  margin: 20px 0 0 0;
+  background: ${(props) =>
+    props.theme.colors.container.alt3.background} !important;
+  border-radius: ${STYLING.dimensions.borderRadiusWrapper} !important;
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  button {
-    min-width: calc(100% - 65px);
-  }
-`;
-
-export const InfoAction = styled.div`
-  min-width: 65px !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  button {
-    svg {
-      fill: ${(props) => props.theme.colors.button.alt1.background};
-    }
-    &:hover {
-      svg {
-        fill: ${(props) => props.theme.colors.button.alt1.hover};
-      }
-    }
-  }
-`;
-
-export const InfoWrapper = styled.div`
+  position: relative;
   p {
     line-height: 1.5;
     font-size: ${(props) => props.theme.typography.size.base};
@@ -108,77 +90,6 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-export const DetailWrapper = styled.div`
-  border: 1px solid ${(props) => props.theme.colors.border.primary};
-  border-radius: ${STYLING.dimensions.borderRadius};
-  > * {
-    &:last-child {
-      border-bottom-left-radius: ${STYLING.dimensions.borderRadius};
-      border-bottom-right-radius: ${STYLING.dimensions.borderRadius};
-    }
-  }
-`;
-
-export const DHeader = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 15.5px 20px;
-  background: ${(props) => props.theme.colors.orderLine.header.background};
-  border-top-left-radius: ${STYLING.dimensions.borderRadius};
-  border-top-right-radius: ${STYLING.dimensions.borderRadius};
-  p {
-    font-size: ${(props) => props.theme.typography.size.small};
-    font-weight: ${(props) => props.theme.typography.weight.medium};
-    color: ${(props) => props.theme.colors.font.primary.alt1};
-  }
-`;
-
-export const DetailGroup = styled.div``;
-
-export const DetailLine = styled.div<{
-  type: MintStatusType;
-  ownerLine: boolean;
-}>`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 6.5px 20px;
-  background: ${(props) =>
-    props.ownerLine
-      ? props.theme.colors.orderLine.ownerLine.background
-      : getDetailLineBackground(props.type, props.theme)};
-  p {
-    font-size: ${(props) => props.theme.typography.size.xSmall};
-    font-weight: ${(props) => props.theme.typography.weight.bold};
-    color: ${(props) => props.theme.colors.font.primary.base};
-  }
-`;
-
-export const DetailSubheader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 6.5px 20px;
-  border-top: 1px solid ${(props) => props.theme.colors.border.primary};
-  border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
-  background: ${(props) => props.theme.colors.orderLine.subheader.background};
-  p {
-    line-height: 1.5;
-    font-size: ${(props) => props.theme.typography.size.xSmall};
-    font-weight: ${(props) => props.theme.typography.weight.medium};
-    color: ${(props) => props.theme.colors.font.primary.alt1};
-  }
-`;
-
-export const DetailValue = styled.div`
-  p {
-    line-height: 1.5;
-    font-size: ${(props) => props.theme.typography.size.xSmall};
-    font-weight: ${(props) => props.theme.typography.weight.bold};
-    color: ${(props) => props.theme.colors.font.primary.alt1};
-  }
-`;
-
-export const Qty = styled.p`
-  color: ${(props) => props.theme.colors.font.primary.positive} !important;
+export const PollingLoader = styled.div`
+  position: relative;
 `;

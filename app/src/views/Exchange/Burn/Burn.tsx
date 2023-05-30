@@ -3,6 +3,7 @@ import parse from 'html-react-parser';
 import { ReactSVG } from 'react-svg';
 
 import { Button } from 'components/atoms/Button';
+import { Loader } from 'components/atoms/Loader';
 import { FormField } from 'components/atoms/FormField';
 import { Notification } from 'components/atoms/Notification';
 import { Modal } from 'components/molecules/Modal';
@@ -14,39 +15,63 @@ import { useArweaveProvider } from 'providers/ArweaveProvider';
 import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
-import { MintRequest, StateL1, StateSEQ, env } from 'api';
+import { env, State } from 'api';
 
-const { getQueue, getState, createMint, mint } = env;
+const { burn, getPollingTx, pollMint, getState, getRebarBalance } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
 
-  const [stateSEQ, setStateSEQ] = React.useState<StateSEQ>();
-  const [stateL1, setStateL1] = React.useState<StateL1>();
-  const [queue, setQueue] = React.useState<any>();
+  const [state, setState] = React.useState<State | undefined>();
+
+  const [polling, setPolling] = React.useState<boolean>(false);
+  const [pollingTx, setPollingTx] = React.useState<string | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
   const [finalizeInfo, setShowFinalizeInfo] = React.useState<boolean>(false);
+  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+    number | undefined
+  >();
+  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
+    React.useState<string | undefined>();
 
   const [arAmount, setArAmount] = React.useState<number>(0);
   const [reBarAmount, setRebarAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ).then((s: StateSEQ) => {
-      setStateSEQ(s);
-      getQueue(import.meta.env.VITE_CONTRACT_L1).then((requests: any[]) => {
-        setQueue(requests);
-      });
-    });
-    getState(import.meta.env.VITE_CONTRACT_L1).then((s: StateL1) => {
-      setStateL1(s);
-    });
-  }, [mintResult]);
+    getState(import.meta.env.VITE_CONTRACT)
+      .then(setState)
+      .catch((e: any) => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+        .then(setConnectedRebarBalance)
+        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    }
+  }, [state, arProvider.walletAddress]);
 
   useEffect(() => {
     setRebarAmount(arAmount);
   }, [arAmount]);
+
+  useEffect(() => {
+    setPollingTx(getPollingTx());
+  }, []);
+
+  useEffect(() => {
+    if (pollingTx) {
+      setPolling(true);
+      pollMint(pollingTx)
+        .toPromise()
+        .then((r: any) => {
+          setPolling(false);
+          console.log(r);
+        });
+    }
+  }, [pollingTx]);
 
   function getAction() {
     let action: () => void;
@@ -59,7 +84,8 @@ export default function Burn() {
       disabled =
         reBarAmount <= 0 ||
         reBarAmount > arProvider.availableBalance! ||
-        loading;
+        loading ||
+        polling;
     }
 
     if (!arProvider.walletAddress) {
@@ -86,23 +112,16 @@ export default function Burn() {
 
   function burnAR() {
     setLoading(true);
-    createMint({
-      contractId: import.meta.env.VITE_CONTRACT_L1 || '',
+    burn({
+      contractId: import.meta.env.VITE_CONTRACT || '',
       qty: arAmount,
-    }).then((r: any) => {
+    }).then((tx: string) => {
+      setPollingTx(tx);
       setLoading(false);
       setBurnResult({
         status: true,
         message: language.burnSuccess,
       });
-    });
-  }
-
-  function mintRequests() {
-    mint(import.meta.env.VITE_CONTRACT_SEQ);
-    setMintResult({
-      status: true,
-      message: language.mintExecuted,
     });
   }
 
@@ -151,6 +170,12 @@ export default function Burn() {
               }`}
             </p>
           </S.BWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.rebarBalance}: `}</span>
+              {`${connectedRebarBalance || '-'}`}
+            </p>
+          </S.BWrapper>
           <S.FWrapper>
             <FormField
               type={'number'}
@@ -184,63 +209,13 @@ export default function Burn() {
         <S.AWrapper>{getAction()}</S.AWrapper>
       </S.Wrapper>
 
-      <S.MintActionWrapper>
-        <Button
-          type={'alt1'}
-          label={language.finalizeBurn}
-          tooltip={language.mintDescription}
-          handlePress={() => mintRequests()}
-          height={52.5}
-          disabled={false}
-          loading={loading}
-          fullWidth
-        />
-        <S.InfoAction>
-          <button onClick={() => setShowFinalizeInfo(true)}>
-            <ReactSVG src={ASSETS.info} />
-          </button>
-        </S.InfoAction>
-      </S.MintActionWrapper>
-
-      {queue && (
-        <S.DetailWrapper>
-          <S.DHeader>
-            <p>
-              {language.requestQueue} ({queue?.length || 0})
-            </p>
-          </S.DHeader>
-          {queue.map((request: MintRequest, index: number) => {
-            return (
-              <React.Fragment key={index}>
-                <S.DetailSubheader>
-                  <p>{`${language.requestTransaction}: ${formatAddress(
-                    request.tx,
-                    true
-                  )}`}</p>
-                </S.DetailSubheader>
-                <S.DetailLine
-                  key={index}
-                  type={'pending'}
-                  ownerLine={
-                    arProvider.walletAddress
-                      ? arProvider.walletAddress === request.target
-                      : false
-                  }
-                >
-                  <S.DetailValue>
-                    <p>{`${formatAddress(request.target, true)}`}</p>
-                  </S.DetailValue>
-                  <S.DetailValue>
-                    <S.Qty>{`${language.qty}: ${request.qty}`}</S.Qty>
-                  </S.DetailValue>
-                  <S.DetailValue>
-                    <p>{`${language.expires}: ${request.expires}`}</p>
-                  </S.DetailValue>
-                </S.DetailLine>
-              </React.Fragment>
-            );
-          })}
-        </S.DetailWrapper>
+      {polling && (
+        <S.InfoWrapper className={'border-wrapper'}>
+          <p>{`${language.pollingTx}: ${formatAddress(pollingTx, true)}`}</p>
+          <S.PollingLoader>
+            <Loader sm />
+          </S.PollingLoader>
+        </S.InfoWrapper>
       )}
     </>
   );

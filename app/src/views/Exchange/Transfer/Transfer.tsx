@@ -13,14 +13,14 @@ import { language } from 'helpers/language';
 import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { env } from 'api';
-import { StateSEQ } from 'api';
+import { State } from 'api';
 
 const { transfer, getState, getRebarBalance } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<StateSEQ | undefined>();
+  const [state, setState] = React.useState<State | undefined>();
   const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
     number | undefined
   >();
@@ -34,21 +34,18 @@ export default function Transfer() {
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT_SEQ)
+    getState(import.meta.env.VITE_CONTRACT)
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(
-        import.meta.env.VITE_CONTRACT_SEQ,
-        arProvider.walletAddress
-      )
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
-  }, [state]);
+  }, [state, arProvider.walletAddress]);
 
   function getAction() {
     let action: () => void;
@@ -58,7 +55,7 @@ export default function Transfer() {
     if (!arProvider.walletAddress) {
       disabled = false;
     } else {
-      disabled = reBarAmount <= 0 || !recipient || loading; // TODO: Check on RebAR balance
+      disabled = reBarAmount <= 0 || !recipient || loading;
     }
 
     if (!arProvider.walletAddress) {
@@ -85,7 +82,7 @@ export default function Transfer() {
   const transferReBar = async () => {
     setLoading(true);
     transfer({
-      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      contractId: import.meta.env.VITE_CONTRACT,
       from: arProvider.walletAddress as string,
       qty: reBarAmount,
       target: recipient,
@@ -128,6 +125,16 @@ export default function Transfer() {
             <h2>{language.transfer}</h2>
             <p>{parse(language.transferDescription)}</p>
           </S.DWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.arBalance}: `}</span>
+              {`${
+                arProvider.walletAddress && arProvider.availableBalance !== null
+                  ? Number(arProvider.availableBalance.toFixed(4))
+                  : `-`
+              }`}
+            </p>
+          </S.BWrapper>
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>

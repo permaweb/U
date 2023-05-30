@@ -7,7 +7,7 @@ import { Notification } from 'components/atoms/Notification';
 import { formatAddress } from 'helpers/utils';
 import { language } from 'helpers/language';
 import * as S from './styles';
-import { Claimable, env, StateSEQ } from 'api';
+import { Claimable, env, State } from 'api';
 import { ResponseType } from 'helpers/types';
 
 const { getState, getRebarBalance, claim } = env;
@@ -15,7 +15,7 @@ const { getState, getRebarBalance, claim } = env;
 export default function Claim() {
   const arProvider = useArweaveProvider();
 
-  const [state, setState] = React.useState<StateSEQ | undefined>();
+  const [state, setState] = React.useState<State | undefined>();
   const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
     number | undefined
   >();
@@ -31,7 +31,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress) {
-      getState(import.meta.env.VITE_CONTRACT_SEQ)
+      getState(import.meta.env.VITE_CONTRACT)
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(
@@ -45,14 +45,11 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(
-        import.meta.env.VITE_CONTRACT_SEQ,
-        arProvider.walletAddress
-      )
+      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
         .then(setConnectedRebarBalance)
         .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
     }
-  }, [state, connectedClaims]);
+  }, [state, connectedClaims, arProvider.walletAddress]);
 
   function getAction() {
     let action: () => void;
@@ -109,7 +106,7 @@ export default function Claim() {
   const processClaim = async (c: Claimable) => {
     await claim({
       qty: c.qty,
-      contractId: import.meta.env.VITE_CONTRACT_SEQ,
+      contractId: import.meta.env.VITE_CONTRACT,
       tx: c.txID,
     })
       .then(() => {
@@ -191,6 +188,16 @@ export default function Claim() {
             <h2>{language.claim}</h2>
             <p>{parse(language.claimDescription)}</p>
           </S.DWrapper>
+          <S.BWrapper>
+            <p>
+              <span>{`${language.arBalance}: `}</span>
+              {`${
+                arProvider.walletAddress && arProvider.availableBalance !== null
+                  ? Number(arProvider.availableBalance.toFixed(4))
+                  : `-`
+              }`}
+            </p>
+          </S.BWrapper>
           <S.BWrapper>
             <p>
               <span>{`${language.rebarBalance}: `}</span>
