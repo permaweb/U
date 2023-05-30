@@ -1,16 +1,19 @@
 import { WarpFactory, SourceType, defaultCacheOptions } from 'warp-contracts';
 import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
 import { map, omit } from 'ramda';
+import BigNumber from 'bignumber.js';
 
 import fs from 'fs';
-
+export function roundDown(v) {
+  return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber();
+}
 async function deploy(folder) {
   const balances = await fetch(
     'https://cache-2.permaweb.tools/contract/?id=VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA'
   )
     .then((res) => res.json())
     .then((result) => result.state.balances)
-    .then(map((v) => Math.floor(v)))
+    .then(map((v) => roundDown(v)))
     .then(
       omit([
         'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI',
