@@ -15,6 +15,10 @@ A guide to using the RebAR.
     - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
+**REBAR_CONTRACT_ID**: `LL2_TB0RUgZnKP6QZ2M1kiUz0joKEHuGHXiXQYVhRsM`
+
+1 RebAR = 1,000,000 Ferons
+
 ## Summary
 
 The RebAR contract has 2 types of transactions: 
