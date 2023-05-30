@@ -5,44 +5,48 @@ A guide to using the RebAR.
 - [Developers](#developers)
   - [Summary](#summary)
   - [Architecture](#architecture)
+  - [Foreign Call Protocol (FCP)](#foreign-call-protocol-fcp)
   - [Prerequisites](#prerequisites)
   - [Contract Functions](#contract-functions)
-    - [Create Mint (L1)](#create-mint-l1)
-    - [Get Queue (L1)](#get-queue-l1)
-    - [Mint (SEQ)](#mint-seq)
+    - [Mint (L1)](#mint-l1)
     - [Transfer (SEQ)](#transfer-seq)
     - [Allow (SEQ)](#allow-seq)
     - [Claim (SEQ)](#claim-seq)
+    - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
 ## Summary
 
-The RebAR contract, is 2 contracts.
+The RebAR contract has 2 types of transactions: 
 
-1. L1 Contract: This contract will only accept base layer transactions. [Initial State](./initial-state-L1.json)
-2. Sequencer Contract: This contract will only accept WARP_SEQUENCER transactions. [Initial State](./initial-state-SEQ.json)
+1. Layer 1 transactions, which are the only type of trasaction allowed for `mint` (burn)
+2. Layer 2 (Sequencer) transactions, which are the only typle allowed for `transfer`, `allow`, `claim`, `reject`.
 
 > Why?
 
 Great question.
 
-There are 2 key points for why the contract was split:
+There are 2 key points:
 
 1. **GAS**: The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive RebAR tokens.
-2. **GASLESS**:All other functions (specifically `transfer` function) must go through the Sequencer.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens. The results are fast(sub-second), consistent state updates.
+2. **GASLESS**: All other functions (specifically `transfer` function) must go through the Sequencer.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens. The results are fast(sub-second), consistent state updates.
 
 ## Architecture
 
-As the mint process has been split in 2, below is the architecture of the new process. To find out more about restricting contract interactions and skipping any "unsafe" interaction, checkout these links:
+In order to verify that the `mint` (burn) function only happens on the Arweave base layer, the contract is looking for a **reward** (fee) greater than the **reward** that would be sent by the Warp Sequencer. This means the contract will throw an error if anyone tries call the `mint` function via Sequencer.
+
+This allows us to have 1 contract that can split functionality between L1 and L2. L1 is used to enter rebar, and once entered, everything else happens instantly on the Warp Sequencer (via Bundlr Network).
 
 - [Contract Manifest](https://docs.warp.cc/docs/sdk/advanced/manifest/).
 - [Contract Evaluation Options](https://docs.warp.cc/docs/sdk/advanced/evaluation-options#sourcetype-evaluation-option).
 
-See below for the Architecture documents of the new mint process, and the Foreign Call Protocol.
+## Foreign Call Protocol (FCP)
 
-- [Mint](./images/mint.png)
-- [FCP](./images/fcp.png)
+This contract implements and extends the Foreign Call Protocol.  See the below doc for more information.
 
+Additionally, there is a function called `reject` that can be used in this contract.  The `reject` function can be used by any wallet / contract id that has a claim assigned to it in the `claimable` array. The caller must pass `tx` as input to the function.  When called, the contract will check if the `caller` is the same as the `to` property in the `claimable` item.  If it is, the contract will reject the claim and send the tokens back to the `from` address specified in the `claimable`
+
+- [Spec](https://specs.arweave.dev/?tx=iXHbTuV7kUR6hQGwNjdnYFxxp5HBIG1b3YI2yy7ws_M)
 ## Prerequisites
 
 - Node v18
@@ -50,99 +54,7 @@ See below for the Architecture documents of the new mint process, and the Foreig
 
 ## Contract Functions
 
-> L1
-
-- `create-mint`
-- `get-queue`
-
-> Sequencer
-
-- `mint`
-- `transfer`
-- `allow`
-- `claim`
-
-### Create Mint (L1)
-
-The `create-mint` function is a Layer 1 only function and cannot be a bundled transaction.
-
-> Input
-
-- `function`: `create-mint`
-
-A working test can be found [here](./test/full-integration.test.js)
-
-> warp-contracts (npm i warp-contracts)
-
-```js
-const connectedWallet1L1 = warp
-  .contract(contractL1.contractTxId)
-  .connect('use_wallet');
-
-await connectedWallet1L1.writeInteraction(
-  { function: 'create-mint' },
-  { reward: '10000000000000' }
-);
-```
-
-> arweave (npm i arweave)
-
-```js
-import Arweave from 'arweave';
-
-const jwk = JSON.parse(fs.readFileSync('./wallet.json').toString());
-
-// initialize arweave
-const arweave = Arweave.init({
-  host: 'arweave.net',
-  port: 443,
-  protocol: 'https',
-});
-
-const tx = await arweave.createTransaction(
-  {
-    reward: '1000000000000', // 1 AR
-  },
-  jwk
-);
-
-tx.addTag('App-Name', 'SmartWeaveAction');
-tx.addTag('App-Version', '0.3.0');
-tx.addTag('Contract', REBAR_CONTRACT);
-
-const input = JSON.stringify({
-  function: 'create-mint',
-});
-
-tx.addTag('Input', input);
-
-arweave.transactions.sign(tx, jwk);
-
-arweave.transactions.post(tx).then(console.log).catch(console.log);
-```
-
-### Get Queue (L1)
-
-The `get-queue` function returns `state.requests`. The structure is `[{ qty: number, expires: number(block), target: "<addr>", tx: "<tx-id>"}]`.
-
-> Input
-
-- `function`: `get-queue`
-
-> warp-contracts (npm i warp-contracts)
-
-```js
-const state = await warp
-  .contract(tx)
-  .setEvaluationOptions({
-    internalWrites: true,
-    allowBigInt: true,
-  })
-  .viewState({ function: 'get-queue' });
-const requests = state.result;
-```
-
-### Mint (SEQ)
+### Mint (L1)
 
 The `mint` function views the state of the L1 contract to get `state.requests`. It then checks its own state (`state.pile`) to filter out any requsts that are already in the pile (or mints that have been processed, so they've been thrown in the `pile`). Finally, update balances for any un-processed requests.
 
@@ -153,11 +65,24 @@ The `mint` function views the state of the L1 contract to get `state.requests`. 
 > warp-contracts (npm i warp-contracts)
 
 ```js
-const connectedWallet1SEQ = warp
-  .contract(contractSEQ.contractTxId)
-  .connect('use_wallet');
-
-await connectedWallet1SEQ.writeInteraction({ function: 'mint' });
+await warp
+    .contract(REBAR_CONTRACT_ID)
+    .connect('use_wallet')
+    .setEvaluationOptions({
+      remoteStateSyncEnabled: true,
+      unsafeClient: 'skip',
+      allowBigInt: true,
+      internalWrites: true,
+    })
+    .writeInteraction(
+      {
+        function: 'mint',
+      },
+      {
+        disableBundling: true,
+        reward: "1000000000000", // 1 rebar (you can change this to whatever you want as long as its greater than `72600854` winston)
+      }
+    );
 ```
 
 ### Transfer (SEQ)
@@ -173,11 +98,11 @@ The `transfer` function transfers RebAR tokens from the connected wallet to anot
 > warp-contracts (npm i warp-contracts)
 
 ```js
-const connectedWallet1SEQ = warp
-  .contract(contractSEQ.contractTxId)
+const connectedWallet = warp
+  .contract(REBAR_CONTRACT_ID)
   .connect('use_wallet');
 
-await connectedWallet1SEQ.writeInteraction({
+await connectedWallet.writeInteraction({
   function: 'transfer',
   target: wallet2.address,
   qty: 5000000,
@@ -186,7 +111,7 @@ await connectedWallet1SEQ.writeInteraction({
 
 ### Allow (SEQ)
 
-> Foreign Call Protocol (FCP): Step 1
+> Foreign Call Protocol (FCP)
 
 The `allow` function is the first step in the Foreign Call Protocol, and allows for any address (eg. contract id or wallet address) to initiate a transfer that can be "claimed".
 
@@ -205,11 +130,11 @@ Now when the user calls the `foo` contract to purchase 1 of the 10 assets, the `
 > warp-contracts (npm i warp-contracts)
 
 ```js
-const connectedWallet1SEQ = warp
-  .contract(contractSEQ.contractTxId)
+const connectedWallet = warp
+  .contract(REBAR_CONTRACT_ID)
   .connect('use_wallet');
 
-const interaction1 = await connectedWallet1SEQ.writeInteraction({
+const interaction1 = await connectedWallet.writeInteraction({
   function: 'allow',
   target: wallet1.address,
   qty: 2000000,
@@ -218,7 +143,7 @@ const interaction1 = await connectedWallet1SEQ.writeInteraction({
 
 ### Claim (SEQ)
 
-> Foreign Call Protocol (FCP): Step 2
+> Foreign Call Protocol (FCP)
 
 The `claim` function claims a transfer request that was initiated by the `allow` function.
 
@@ -231,14 +156,38 @@ The `claim` function claims a transfer request that was initiated by the `allow`
 > warp-contracts (npm i warp-contracts)
 
 ```js
-const connectedWallet1SEQ = warp
-  .contract(contractSEQ.contractTxId)
+const connectedWallet = warp
+  .contract(REBAR_CONTRACT_ID)
   .connect('use_wallet');
 
-await connectedWallet1SEQ.writeInteraction({
+await connectedWallet.writeInteraction({
   function: 'claim',
   txID: interaction1.originalTxId,
   qty: 2000000,
+});
+```
+
+### Reject (SEQ)
+
+> Foreign Call Protocol (FCP)
+
+The `reject` function rejects a transfer request that was initiated by the `allow` function.
+
+> Input
+
+- `function`: `reject`
+- `tx`: The transaction id of the `allow` request.
+
+> warp-contracts (npm i warp-contracts)
+
+```js
+const connectedWallet = warp
+  .contract(REBAR_CONTRACT_ID)
+  .connect('use_wallet');
+
+await connectedWallet.writeInteraction({
+  function: 'reject',
+  tx: "<tx-from-allow-transaction>",
 });
 ```
 
