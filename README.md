@@ -20,6 +20,10 @@ Introducing the rebirth of bAR. RebAR — bAR Reborn. The fuel of the Permaweb.
 
 ## Summary
 
+REBAR_CONTRACT_ID: LL2_TB0RUgZnKP6QZ2M1kiUz0joKEHuGHXiXQYVhRsM
+
+1 RebAR = 1,000,000 Ferons
+
 RebAR is fuel for the Permaweb. Permaweb users can use RebAR to swap between other tokens, and interact with applications living on the permaweb that use RebAR. Developers can use RebAR in their applications like many other applications on the Permaweb. Applications can leverage the Foreign Call Protocol (allow / claim / reject) to make "contract to contract" transactions possible using internal writes. It will allow users to buy, sell, and interact with any asset on the Permaweb.
 
 ## Repository
