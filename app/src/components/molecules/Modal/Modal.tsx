@@ -38,7 +38,7 @@ export default function Modal(props: IProps) {
     if (props.noContainer) {
       return (
         <>
-          <S.BodyAlt>{props.children}</S.BodyAlt>
+          <S.BodyAlt zoom={false}>{props.children}</S.BodyAlt>
           <S.CloseTextContainerAlt>
             <S.CloseButtonContainer onClick={() => props.handleClose()}>
               {language.close}
