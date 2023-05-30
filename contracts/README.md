@@ -1,6 +1,6 @@
 # RebAR Contracts
 
-This folder contains the L1 contract to create a RebAR mint, and the SEQUENCER contract for RebAR. The L1 contract initiates a mint on the Arweave base layer and when this transaction is confirmed, the SEQUENCER contract can process the mint and update the users balance. Everything else (transfer, Foreign Call Protocol (allow / claim), balance) happens on the SEQUENCER contract. Once you enter the Permaweb, you are on L2.
+This folder contains the RebAR contract. The allows a mint to be initiated on the Arweave base layer. Everything else (transfer, Foreign Call Protocol -- allow / claim / reject) happens via Warp Sequencer. Once you enter the Permaweb, you are on L2.
 
 - [RebAR Contracts](#rebar-contracts)
   - [Build](#build)
