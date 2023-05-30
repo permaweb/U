@@ -56,11 +56,15 @@ Additionally, there is a function called `reject` that can be used in this contr
 
 ### Mint (L1)
 
-The `mint` function views the state of the L1 contract to get `state.requests`. It then checks its own state (`state.pile`) to filter out any requsts that are already in the pile (or mints that have been processed, so they've been thrown in the `pile`). Finally, update balances for any un-processed requests.
+The `mint` function checks that the user is submitting a base layer transaction by checking if `SmartWeave.transaction.reward` is greater than `72600854`. If it is, the contract mints RebAR at a 1:1 ratio.
 
 > Input
 
 - `function`: `mint`
+
+> Config
+- `disableBundling`: `true`
+- `reward`: string (the amount of AR in `winstons` you are burning to `mint` RebAR)
 
 > warp-contracts (npm i warp-contracts)
 
