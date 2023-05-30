@@ -16,8 +16,8 @@ const jwk = JSON.parse(
 
 const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
 
-const funding = await bundlr.fund('250000000000');
-console.log('Funding result:', JSON.stringify(funding));
+// const funding = await bundlr.fund('250000000000');
+// console.log('Funding result:', JSON.stringify(funding));
 
 const warp = WarpFactory.custom(arweave, defaultCacheOptions, 'mainnet')
   .useArweaveGateway()
