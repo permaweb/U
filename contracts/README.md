@@ -1,6 +1,6 @@
 # RebAR Contracts
 
-This folder contains the RebAR contract. The allows a mint to be initiated on the Arweave base layer. Everything else (transfer, Foreign Call Protocol -- allow / claim / reject) happens via Warp Sequencer. Once you enter the Permaweb, you are on L2.
+This folder contains the RebAR contract. The contract allows a mint to be initiated on the Arweave base layer. Everything else (transfer, Foreign Call Protocol -- allow / claim / reject) happens via Warp Sequencer. Once you enter the Permaweb, you are on L2.
 
 - [RebAR Contracts](#rebar-contracts)
   - [Build](#build)
