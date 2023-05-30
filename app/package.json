@@ -11,7 +11,8 @@
     "deploy": "rm -rf dist-*; npm run build && node ./scripts/deploy.mjs",
     "deploy-action": "rm -rf dist-*; npm run build && node ./scripts/deploy-action.mjs",
     "bundlr-balance": "bundlr balance f9S7EFBe9QMbu-Z6nA-ZcIV3dI6mRqD_kcIpOomaIvg  -h https://node2.bundlr.network -c arweave",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "hello": "echo hello"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
