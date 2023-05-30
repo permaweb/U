@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
-    "prod": "VITE_CONTRACT=8-i3lqKG7UJhzSQE0nxxg-V1dwgvW4vxoGJGiZCNpBs vite --mode production",
+    "prod": "VITE_CONTRACT=ETMDy2AqkOJ8UMjkpWVMq5qkWGWB2CILs4rfUdHHLXE vite --mode production",
     "build": "node ./scripts/build.mjs",
     "preview": "vite preview"
   },
