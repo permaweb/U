@@ -52,7 +52,7 @@ npm run launch
 
 ### Mint ArLocal AR Tokens
 
-Replace `YOUR_ADDRESS` the arweave wallet you connect to the app.
+Replace `YOUR_ADDRESS` with the arweave wallet address you connect to the app.
 
 - http://localhost:1984/mint/YOUR_ADDRESS/100000000000000
 
