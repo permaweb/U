@@ -24,7 +24,7 @@
     "ramda": "^0.29.0",
     "replace-in-file": "6.3.5",
     "uvu": "0.5.6",
-    "warp-contracts": "1.4.6",
+    "warp-contracts": "1.4.10",
     "warp-contracts-plugin-deploy": "1.0.8"
   },
   "dependencies": {
