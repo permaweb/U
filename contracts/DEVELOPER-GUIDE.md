@@ -15,7 +15,7 @@ A guide to using the RebAR.
     - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
-**REBAR_CONTRACT_ID**: `LL2_TB0RUgZnKP6QZ2M1kiUz0joKEHuGHXiXQYVhRsM`
+**REBAR_CONTRACT_ID**: `vPaIJgl6bLf8V2Wy7aGbsPoUL3RkQ0srr0ChEm8wxvs`
 
 1 RebAR = 1,000,000 Ferons
 
