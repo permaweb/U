@@ -11,11 +11,17 @@ export async function handle(state, action) {
     ['transfer', 'allow', 'claim', 'reject'].includes(
       action?.input?.function
     ) &&
-    Number(SmartWeave.transaction.reward) > 72600854
+    SmartWeave.transaction.origin === 'L1'
   ) {
-    // skip these fns is a L1
+    // skip these fns on L1
     return { state };
   }
+
+  if (
+    action?.input?.function === 'mint' &&
+    SmartWeave.transaction.origin === 'L2'
+  )
+    return { state }; // skip mint on L2
 
   switch (action?.input?.function) {
     case 'balance':
