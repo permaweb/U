@@ -161,22 +161,6 @@ export default function Burn() {
             <h2>{language.burn}</h2>
             <p>{parse(language.burnDescription)}</p>
           </S.DWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.arBalance}: `}</span>
-              {`${
-                arProvider.walletAddress && arProvider.availableBalance !== null
-                  ? Number(arProvider.availableBalance.toFixed(4))
-                  : `-`
-              }`}
-            </p>
-          </S.BWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.uBalance}: `}</span>
-              {`${connectedUBalance || '-'}`}
-            </p>
-          </S.BWrapper>
           <S.FWrapper>
             <FormField
               type={'number'}
@@ -189,6 +173,17 @@ export default function Burn() {
               invalid={{ status: false, message: null }}
               logo={ASSETS.arweaveLogo}
             />
+            <S.BWrapper>
+              <p>
+                <span>{`${language.arBalance}: `}</span>
+                {`${
+                  arProvider.walletAddress &&
+                  arProvider.availableBalance !== null
+                    ? Number(arProvider.availableBalance.toFixed(4))
+                    : `-`
+                }`}
+              </p>
+            </S.BWrapper>
 
             <S.Divider>
               <ReactSVG src={ASSETS.arrowDown} />
@@ -205,6 +200,12 @@ export default function Burn() {
               invalid={{ status: false, message: null }}
               logo={ASSETS.uLogo}
             />
+            <S.BWrapper>
+              <p>
+                <span>{`${language.uBalance}: `}</span>
+                {`${connectedUBalance || '-'}`}
+              </p>
+            </S.BWrapper>
           </S.FWrapper>
         </S.TWrapper>
         <S.AWrapper>{getAction()}</S.AWrapper>
