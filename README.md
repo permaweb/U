@@ -2,7 +2,7 @@
 
 ![U logo](https://kocmnja3z4bopl4uzdvzujcwtqkm3yyecr4r5ptqqvrq4mxu52ta.arweave.net/J3WXX4OGa6wP5E9oLhNyqlN4deYI7ARjrd5se740ftE)
 
-Introducing the Unit of Account of the Permaweb. The Permaweb needs U.
+Introducing the Unit of Account for the Permaweb. The Permaweb needs U.
 
 - [U](#u)
   - [Goals](#goals)
