@@ -3,14 +3,14 @@ import { burn } from './burn';
 import { transfer } from './transfer';
 import { claim } from './claim';
 import { getPollingTx, pollMint } from './poll-mint';
-import { getRebarBalance } from './get-rebar-balance';
+import { getUBalance } from './get-u-balance';
 export * from './interface';
 
 export const env = {
   getState,
   burn,
   transfer,
-  getRebarBalance,
+  getUBalance,
   claim,
   pollMint,
   getPollingTx,

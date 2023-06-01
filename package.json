@@ -1,5 +1,5 @@
 {
-  "name": "rebar",
+  "name": "u",
   "version": "1.0.0",
   "description": "The utility token of the permaweb",
   "main": "index.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/permaweb/rebar.git"
+    "url": "git+https://github.com/permaweb/u.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/permaweb/rebar/issues"
+    "url": "https://github.com/permaweb/u/issues"
   },
-  "homepage": "https://github.com/permaweb/rebar#readme",
+  "homepage": "https://github.com/permaweb/u#readme",
   "devDependencies": {
     "husky": "^8.0.0"
   },

@@ -19,7 +19,7 @@ import * as S from './styles';
 const NAV_PATHS = [
   {
     name: language.docs,
-    href: 'https://github.com/permaweb/RebAR#readme',
+    href: 'https://github.com/permaweb/U#readme',
   },
 ];
 
@@ -108,7 +108,12 @@ export default function Header() {
         <S.LogoContainer>
           <Link to={urls.base} onClick={() => setOpen(false)}>
             <S.LogoContent>
-              <ReactSVG src={ASSETS.logo} />
+              <ReactSVG
+                beforeInjection={(svg) => {
+                  svg.setAttribute('style', 'width: 60px');
+                }}
+                src="https://e52zox4dqzv2yd7ej5uc4e3svjjxq5pgbdwaiy5n3zwhxprup3iq.arweave.net/J3WXX4OGa6wP5E9oLhNyqlN4deYI7ARjrd5se740ftE"
+              />
             </S.LogoContent>
           </Link>
         </S.LogoContainer>
@@ -118,4 +123,4 @@ export default function Header() {
   );
 }
 
-// https://github.com/permaweb/RebAR#readme
+// https://github.com/permaweb/U#readme

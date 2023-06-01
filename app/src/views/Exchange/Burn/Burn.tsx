@@ -17,7 +17,7 @@ import { ResponseType } from 'helpers/types';
 import * as S from './styles';
 import { env, State } from 'api';
 
-const { burn, getPollingTx, pollMint, getState, getRebarBalance } = env;
+const { burn, getPollingTx, pollMint, getState, getUBalance } = env;
 
 export default function Burn() {
   const arProvider = useArweaveProvider();
@@ -30,14 +30,15 @@ export default function Burn() {
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
   const [finalizeInfo, setShowFinalizeInfo] = React.useState<boolean>(false);
-  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+  const [connectedUBalance, setConnectedUBalance] = React.useState<
     number | undefined
   >();
-  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
-    React.useState<string | undefined>();
+  const [connectedUBalanceError, setConnectedUBalanceError] = React.useState<
+    string | undefined
+  >();
 
   const [arAmount, setArAmount] = React.useState<number>(0);
-  const [reBarAmount, setRebarAmount] = React.useState<number>(0);
+  const [UAmount, setUAmount] = React.useState<number>(0);
 
   useEffect(() => {
     getState(import.meta.env.VITE_CONTRACT)
@@ -46,15 +47,15 @@ export default function Burn() {
   }, []);
 
   useEffect(() => {
-    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
-        .then(setConnectedRebarBalance)
-        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    if (arProvider.walletAddress && state && !connectedUBalanceError) {
+      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+        .then(setConnectedUBalance)
+        .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
   }, [state, arProvider.walletAddress]);
 
   useEffect(() => {
-    setRebarAmount(arAmount);
+    setUAmount(arAmount);
   }, [arAmount]);
 
   useEffect(() => {
@@ -82,8 +83,8 @@ export default function Burn() {
       disabled = false;
     } else {
       disabled =
-        reBarAmount <= 0 ||
-        reBarAmount > arProvider.availableBalance! ||
+        UAmount <= 0 ||
+        UAmount > arProvider.availableBalance! ||
         loading ||
         polling;
     }
@@ -172,8 +173,8 @@ export default function Burn() {
           </S.BWrapper>
           <S.BWrapper>
             <p>
-              <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || '-'}`}
+              <span>{`${language.uBalance}: `}</span>
+              {`${connectedUBalance || '-'}`}
             </p>
           </S.BWrapper>
           <S.FWrapper>
@@ -196,13 +197,13 @@ export default function Burn() {
             <FormField
               type={'number'}
               label={language.to}
-              value={reBarAmount}
+              value={UAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setRebarAmount(parseFloat(e.target.value))
+                setUAmount(parseFloat(e.target.value))
               }
               disabled={true}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.rebarLogo}
+              logo={ASSETS.uLogo}
             />
           </S.FWrapper>
         </S.TWrapper>

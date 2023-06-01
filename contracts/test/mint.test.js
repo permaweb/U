@@ -6,7 +6,7 @@ const test = suite('mint');
 
 test.before(async () => {});
 
-test('should mint 1 rebar', async () => {
+test('should mint 1 u', async () => {
   const env = setupSmartWeaveEnv(
     1000000000000, // reward
     0, // height
@@ -16,8 +16,8 @@ test('should mint 1 rebar', async () => {
   const caller = '<justin>';
   const output = mint(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],

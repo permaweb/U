@@ -15,22 +15,23 @@ import * as S from './styles';
 import { env } from 'api';
 import { State } from 'api';
 
-const { transfer, getState, getRebarBalance } = env;
+const { transfer, getState, getUBalance } = env;
 
 export default function Transfer() {
   const arProvider = useArweaveProvider();
 
   const [state, setState] = React.useState<State | undefined>();
-  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+  const [connectedUBalance, setConnectedUBalance] = React.useState<
     number | undefined
   >();
-  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
-    React.useState<string | undefined>();
+  const [connectedUBalanceError, setConnectedUBalanceError] = React.useState<
+    string | undefined
+  >();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [transferResult, setTransferResult] =
     React.useState<ResponseType | null>(null);
 
-  const [reBarAmount, setRebarAmount] = React.useState<number>(0);
+  const [UAmount, setUAmount] = React.useState<number>(0);
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
@@ -40,10 +41,10 @@ export default function Transfer() {
   }, []);
 
   useEffect(() => {
-    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
-        .then(setConnectedRebarBalance)
-        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    if (arProvider.walletAddress && state && !connectedUBalanceError) {
+      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+        .then(setConnectedUBalance)
+        .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
   }, [state, arProvider.walletAddress]);
 
@@ -55,14 +56,14 @@ export default function Transfer() {
     if (!arProvider.walletAddress) {
       disabled = false;
     } else {
-      disabled = reBarAmount <= 0 || !recipient || loading;
+      disabled = UAmount <= 0 || !recipient || loading;
     }
 
     if (!arProvider.walletAddress) {
       action = () => arProvider.setWalletModalVisible(true);
       label = language.connectWallet;
     } else {
-      action = () => transferReBar();
+      action = () => transferU();
       label = language.transfer;
     }
 
@@ -79,12 +80,12 @@ export default function Transfer() {
     );
   }
 
-  const transferReBar = async () => {
+  const transferU = async () => {
     setLoading(true);
     transfer({
       contractId: import.meta.env.VITE_CONTRACT,
       from: arProvider.walletAddress as string,
-      qty: reBarAmount,
+      qty: UAmount,
       target: recipient,
     })
       // Same shape as the contract State
@@ -94,9 +95,9 @@ export default function Transfer() {
           status: true,
           message: language.transferSuccess,
         });
-        if (connectedRebarBalance) {
-          setConnectedRebarBalance(
-            Math.floor(connectedRebarBalance) - Math.floor(reBarAmount)
+        if (connectedUBalance) {
+          setConnectedUBalance(
+            Math.floor(connectedUBalance) - Math.floor(UAmount)
           );
         }
       })
@@ -137,21 +138,21 @@ export default function Transfer() {
           </S.BWrapper>
           <S.BWrapper>
             <p>
-              <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || '-'}`}
+              <span>{`${language.uBalance}: `}</span>
+              {`${connectedUBalance || '-'}`}
             </p>
           </S.BWrapper>
           <S.FWrapper>
             <FormField
               type={'number'}
               label={language.amount}
-              value={reBarAmount}
+              value={UAmount}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setRebarAmount(parseFloat(e.target.value))
+                setUAmount(parseFloat(e.target.value))
               }
               disabled={!arProvider.walletAddress}
               invalid={{ status: false, message: null }}
-              logo={ASSETS.rebarLogo}
+              logo={ASSETS.uLogo}
             />
 
             <S.Divider>

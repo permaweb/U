@@ -1,8 +1,8 @@
-# RebAR UI
+# U UI
 
-The UI / Renderer for the RebAR SmartWeave contracts.
+The UI / Renderer for the U SmartWeave contracts.
 
-- [RebAR UI](#rebar-ui)
+- [U UI](#u-ui)
   - [Prerequisites](#prerequisites)
   - [Install](#install)
   - [Build](#build)

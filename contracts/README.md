@@ -1,8 +1,8 @@
-# RebAR Contracts
+# U Contracts
 
-This folder contains the RebAR contract. The contract allows a mint to be initiated on the Arweave base layer. Everything else (transfer, Foreign Call Protocol -- allow / claim / reject) happens via Warp Sequencer. Once you enter the Permaweb, you are on L2.
+This folder contains the U contract. The contract allows a mint to be initiated on the Arweave base layer. Everything else (transfer, Foreign Call Protocol -- allow / claim / reject) happens via Warp Sequencer. Once you enter the Permaweb, you are on L2.
 
-- [RebAR Contracts](#rebar-contracts)
+- [U Contracts](#u-contracts)
   - [Build](#build)
   - [Test](#test)
   - [Deploy](#deploy)
@@ -10,7 +10,7 @@ This folder contains the RebAR contract. The contract allows a mint to be initia
 
 ## Build
 
-This commit was added to fix how `esbuild` imports `BigNumber` https://github.com/permaweb/rebar/pull/27/commits/a1f3005de4b53fdd0ba175febcc9385aab51f9cc.
+This commit was added to fix how `esbuild` imports `BigNumber` https://github.com/permaweb/u/pull/27/commits/a1f3005de4b53fdd0ba175febcc9385aab51f9cc.
 
 eg.
 

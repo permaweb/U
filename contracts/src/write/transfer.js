@@ -2,7 +2,7 @@ import { fromNullable, of } from '../hyper-either.js';
 import { ce, isInteger, roundDown } from '../util.js';
 
 /**
- * @description Transfers RebAR tokens to another address.
+ * @description Transfers U tokens to another address.
  *
  * @author @jshaw-ar
  * @export
