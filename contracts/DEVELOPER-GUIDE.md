@@ -15,7 +15,7 @@ A guide to using the U.
     - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
-**U_CONTRACT_ID**: `vPaIJgl6bLf8V2Wy7aGbsPoUL3RkQ0srr0ChEm8wxvs`
+**U_CONTRACT_ID**: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
 
 1 U = 1,000,000 Ferons
 

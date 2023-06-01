@@ -20,7 +20,7 @@ Introducing the Unit of Value of the Permaweb. The Permaweb needs U.
 
 ## Summary
 
-U_CONTRACT_ID: <TODO>
+U_CONTRACT_ID: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
 
 1 U = 1,000,000 SU (Sub Unit)
 
