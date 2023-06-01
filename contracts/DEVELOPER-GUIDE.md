@@ -17,7 +17,7 @@ A guide to using the U.
 
 **U_CONTRACT_ID**: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
 
-1 U = 1,000,000 Ferons
+1 U (Unit) = 1,000,000 SU (Sub Units)
 
 ## Summary
 
