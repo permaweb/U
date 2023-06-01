@@ -42,7 +42,7 @@ export const BWrapper = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 0px 0px 12px 12px;
   padding: 24px 12px 12px 12px;
   z-index: -1;

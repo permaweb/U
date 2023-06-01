@@ -73,7 +73,7 @@ export const Input = styled.input<{
   background: ${(props) => props.theme.colors.transparent};
   padding: 10px 52.5px 10px 15px;
   box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05);
-  `;
+`;
 
 export const LogoContainer = styled.div`
   position: absolute;
