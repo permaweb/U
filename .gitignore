@@ -40,7 +40,7 @@ Thumbs.db
 
 #Project Docs
 logs
-docs/packages/rebar
+docs/packages/u
 contracts/logs
 mint-contract/logs
 cache/

@@ -6,7 +6,7 @@ import infoSVG from 'assets/info.svg';
 import logoSVG from 'assets/logo.svg';
 import menuSVG from 'assets/menu.svg';
 import arweaveLogoSVG from 'assets/arweave-logo.svg';
-import rebarLogoSVG from 'assets/rebar-logo.svg';
+import uLogoSVG from 'assets/u-logo.svg';
 
 import { IURLView } from './types';
 import { language } from './language';
@@ -24,7 +24,7 @@ export const ASSETS = {
   info: infoSVG,
   logo: logoSVG,
   menu: menuSVG,
-  rebarLogo: rebarLogoSVG,
+  uLogo: uLogoSVG,
   wallets: {
     arconnect: arconnectWalletPNG,
   },

@@ -1,6 +1,6 @@
 # Developers
 
-A guide to using the RebAR.
+A guide to using the U.
 
 - [Developers](#developers)
   - [Summary](#summary)
@@ -15,13 +15,13 @@ A guide to using the RebAR.
     - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
-**REBAR_CONTRACT_ID**: `vPaIJgl6bLf8V2Wy7aGbsPoUL3RkQ0srr0ChEm8wxvs`
+**U_CONTRACT_ID**: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
 
-1 RebAR = 1,000,000 Ferons
+1 U = 1,000,000 Ferons
 
 ## Summary
 
-The RebAR contract has 2 types of transactions: 
+The U contract has 2 types of transactions: 
 
 1. Layer 1 transactions, which are the only type of trasaction allowed for `mint` (burn)
 2. Layer 2 (Sequencer) transactions, which are the only typle allowed for `transfer`, `allow`, `claim`, `reject`.
@@ -32,14 +32,14 @@ Great question.
 
 There are 2 key points:
 
-1. **GAS**: The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive RebAR tokens.
+1. **GAS**: The `mint` must be initiated on the Base Layer, so that a reward can be processed with the transaction.  You are Burning your AR tokens, which means you are paying the Endowment in AR to receive U tokens.
 2. **GASLESS**: All other functions (specifically `transfer` function) must go through the Sequencer.  This prevents a user from submitting a transfer transaction on the base layer, then submitting a new L2 transaction with the same tokens. The results are fast(sub-second), consistent state updates.
 
 ## Architecture
 
 In order to verify that the `mint` (burn) function only happens on the Arweave base layer, the contract is looking for a **reward** (fee) greater than the **reward** that would be sent by the Warp Sequencer. This means the contract will throw an error if anyone tries call the `mint` function via Sequencer.
 
-This allows us to have 1 contract that can split functionality between L1 and L2. L1 is used to enter rebar, and once entered, everything else happens instantly on the Warp Sequencer (via Bundlr Network).
+This allows us to have 1 contract that can split functionality between L1 and L2. L1 is used to enter u, and once entered, everything else happens instantly on the Warp Sequencer (via Bundlr Network).
 
 - [Contract Manifest](https://docs.warp.cc/docs/sdk/advanced/manifest/).
 - [Contract Evaluation Options](https://docs.warp.cc/docs/sdk/advanced/evaluation-options#sourcetype-evaluation-option).
@@ -60,7 +60,7 @@ Additionally, there is a function called `reject` that can be used in this contr
 
 ### Mint (L1)
 
-The `mint` function checks that the user is submitting a base layer transaction by checking if `SmartWeave.transaction.reward` is greater than `72600854`. If it is, the contract mints RebAR at a 1:1 ratio.
+The `mint` function checks that the user is submitting a base layer transaction by checking if `SmartWeave.transaction.reward` is greater than `72600854`. If it is, the contract mints U at a 1:1 ratio.
 
 > Input
 
@@ -68,13 +68,13 @@ The `mint` function checks that the user is submitting a base layer transaction 
 
 > Config
 - `disableBundling`: `true`
-- `reward`: string (the amount of AR in `winstons` you are burning to `mint` RebAR)
+- `reward`: string (the amount of AR in `winstons` you are burning to `mint` U)
 
 > warp-contracts (npm i warp-contracts)
 
 ```js
 await warp
-    .contract(REBAR_CONTRACT_ID)
+    .contract(U_CONTRACT_ID)
     .connect('use_wallet')
     .setEvaluationOptions({
       remoteStateSyncEnabled: true,
@@ -88,26 +88,26 @@ await warp
       },
       {
         disableBundling: true,
-        reward: "1000000000000", // 1 rebar (you can change this to whatever you want as long as its greater than `72600854` winston)
+        reward: "1000000000000", // 1 u (you can change this to whatever you want as long as its greater than `72600854` winston)
       }
     );
 ```
 
 ### Transfer (SEQ)
 
-The `transfer` function transfers RebAR tokens from the connected wallet to another address.
+The `transfer` function transfers U tokens from the connected wallet to another address.
 
 > Input
 
 - `function`: `transfer`
 - `qty`: The integer value being transferred.
-- `target`: The address of the wallet the RebAR is being transferred to.
+- `target`: The address of the wallet the U is being transferred to.
 
 > warp-contracts (npm i warp-contracts)
 
 ```js
 const connectedWallet = warp
-  .contract(REBAR_CONTRACT_ID)
+  .contract(U_CONTRACT_ID)
   .connect('use_wallet');
 
 await connectedWallet.writeInteraction({
@@ -123,23 +123,23 @@ await connectedWallet.writeInteraction({
 
 The `allow` function is the first step in the Foreign Call Protocol, and allows for any address (eg. contract id or wallet address) to initiate a transfer that can be "claimed".
 
-For example, if you have a contract (`foo` contract) that holds 10 assets, and each asset is set with a price of 1 **_RebAR_**. That contract can now require the caller to have created a "transfer" that can be "claimed". To purchase an asset, the user would need to:
+For example, if you have a contract (`foo` contract) that holds 10 assets, and each asset is set with a price of 1 **_U_**. That contract can now require the caller to have created a "transfer" that can be "claimed". To purchase an asset, the user would need to:
 
-- Run `allow` on RebAR for 1 token with `target` set to the **_contract id_** of the `foo` contract.
+- Run `allow` on U for 1 token with `target` set to the **_contract id_** of the `foo` contract.
 
-Now when the user calls the `foo` contract to purchase 1 of the 10 assets, the `foo` contract can call `claim` (step 2 of the FCP) on RebAR to claim the tokens before sending them to the user's wallet. (claim example below)
+Now when the user calls the `foo` contract to purchase 1 of the 10 assets, the `foo` contract can call `claim` (step 2 of the FCP) on U to claim the tokens before sending them to the user's wallet. (claim example below)
 
 > Input
 
 - `function`: `allow`
-- `target`: The contract id or address of the wallet the RebAR is being transferred to
+- `target`: The contract id or address of the wallet the U is being transferred to
 - `qty`: The integer value being transferred.
 
 > warp-contracts (npm i warp-contracts)
 
 ```js
 const connectedWallet = warp
-  .contract(REBAR_CONTRACT_ID)
+  .contract(U_CONTRACT_ID)
   .connect('use_wallet');
 
 const interaction1 = await connectedWallet.writeInteraction({
@@ -165,7 +165,7 @@ The `claim` function claims a transfer request that was initiated by the `allow`
 
 ```js
 const connectedWallet = warp
-  .contract(REBAR_CONTRACT_ID)
+  .contract(U_CONTRACT_ID)
   .connect('use_wallet');
 
 await connectedWallet.writeInteraction({
@@ -190,7 +190,7 @@ The `reject` function rejects a transfer request that was initiated by the `allo
 
 ```js
 const connectedWallet = warp
-  .contract(REBAR_CONTRACT_ID)
+  .contract(U_CONTRACT_ID)
   .connect('use_wallet');
 
 await connectedWallet.writeInteraction({

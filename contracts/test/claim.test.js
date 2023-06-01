@@ -14,8 +14,8 @@ test('should not allow claiming without txId', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -37,8 +37,8 @@ test('should not allow claiming with null txID', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -60,8 +60,8 @@ test('should not allow claiming with non-existing txID', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -83,8 +83,8 @@ test('should throw (Claim not addressed to caller.)', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -111,8 +111,8 @@ test('should throw (Incorrect qty.)', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -140,8 +140,8 @@ test('should throw (Incorrect qty.)', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -169,8 +169,8 @@ test('should not allow claiming with null quantity', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -199,8 +199,8 @@ test('should not allow claiming with incorrect quantity', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             '<tom>': 11,
           },
@@ -232,8 +232,8 @@ test('should not allow claiming with null quantity', () => {
     () =>
       claim(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -260,8 +260,8 @@ test('should claim tokens', async () => {
   const caller = '<justin>';
   const output = await claim(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       balances: {},
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],

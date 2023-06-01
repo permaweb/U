@@ -14,8 +14,8 @@ test('should throw (Please specify a target.)', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {},
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
@@ -38,8 +38,8 @@ test('should throw (Target cannot be caller.)', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -61,8 +61,8 @@ test('should throw (qty must be an integer.)', async () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -84,8 +84,8 @@ test('should throw (qty must be an integer.)', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -110,8 +110,8 @@ test('should throw (Not enough tokens for allow.)', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -136,8 +136,8 @@ test('should not allow null amount of tokens', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -162,8 +162,8 @@ test('should not allow without providing quantity', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -188,8 +188,8 @@ test('should not transfer corrupted amount of tokens', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -214,8 +214,8 @@ test('should not allow fractional value', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -239,8 +239,8 @@ test('should not allow without a target', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -265,8 +265,8 @@ test('should not allow with null target', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -291,8 +291,8 @@ test('should not allow with undefined target', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -317,8 +317,8 @@ test('should not transfer negative amount of tokens', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -343,8 +343,8 @@ test('should not transfer 0 tokens', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -369,8 +369,8 @@ test('should not transfer to the same account', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -404,8 +404,8 @@ test('should not transfer to the same account', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           balances: {
             [caller]: 10,
           },
@@ -439,8 +439,8 @@ test('should not transfer more than owned', () => {
     () =>
       allow(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -467,8 +467,8 @@ test('should transfer to empty account', async () => {
   const caller = '<justin>';
   const output = await allow(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       balances: {
         [caller]: 10,
       },
@@ -501,8 +501,8 @@ test('should allow to existing account', async () => {
   );
   const output = await allow(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],

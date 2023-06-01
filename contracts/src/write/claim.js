@@ -2,7 +2,7 @@ import { fromNullable, of } from '../hyper-either.js';
 import { addClaimBalanceTo, ce } from '../util.js';
 
 /**
- * @description Claims rebAR from claimables
+ * @description Claims U from claimables
  *
  * @author @jshaw-ar
  * @export

@@ -28,9 +28,10 @@ export const Wrapper = styled.div<{
   focused: boolean;
 }>`
   width: 100%;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   display: flex;
   flex-direction: column;
+  z-index: 1;
   position: relative;
   background: ${(props) => getBackground(props.theme, props.disabled)};
   border: 1px solid
@@ -71,7 +72,8 @@ export const Input = styled.input<{
   border: none;
   background: ${(props) => props.theme.colors.transparent};
   padding: 10px 52.5px 10px 15px;
-`;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.05);
+  `;
 
 export const LogoContainer = styled.div`
   position: absolute;

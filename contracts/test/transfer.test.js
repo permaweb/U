@@ -15,8 +15,8 @@ test('should throw (Please specify a target.)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -39,8 +39,8 @@ test('should throw (Target cannot be caller.)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -63,8 +63,8 @@ test('should throw (Not enough tokens for transfer.)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -86,8 +86,8 @@ test('should throw (qty must be an integer.)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -111,8 +111,8 @@ test('should throw (Not enough tokens for transfer.)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -135,8 +135,8 @@ test('should not transfer null amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -157,8 +157,8 @@ test('should not transfer undefined amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -181,8 +181,8 @@ test("should not transfer 'string' amount of tokens", () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -203,8 +203,8 @@ test('should not transfer fractional amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -227,8 +227,8 @@ test('should not transfer without a target', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -251,8 +251,8 @@ test('should not transfer with null target', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -275,8 +275,8 @@ test('should not transfer with undefined target', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -300,8 +300,8 @@ test('should not transfer from non-existing account (in kv store)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -322,8 +322,8 @@ test('should not transfer more than owned', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -347,8 +347,8 @@ test('should not transfer 0 tokens', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -373,8 +373,8 @@ test('should not transfer negative amount of tokens', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -396,8 +396,8 @@ test('should not transfer to the same account (caller -> caller)', () => {
     () =>
       transfer(
         {
-          name: 'RebAR',
-          ticker: 'RebAR',
+          name: 'U',
+          ticker: 'U',
           settings: [
             ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
             ['isTradeable', true],
@@ -418,8 +418,8 @@ test('should transfer to empty account', () => {
   const caller = '<justin>';
   const output = transfer(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],
@@ -442,8 +442,8 @@ test('should transfer to existing account', async () => {
 
   const output = transfer(
     {
-      name: 'RebAR',
-      ticker: 'RebAR',
+      name: 'U',
+      ticker: 'U',
       settings: [
         ['communityLogo', '_32hAgwNt4ZVPisYAP3UQNUbwi_6LPUuZldPFCLm0fo'],
         ['isTradeable', true],

@@ -2,7 +2,7 @@ import Bundlr from '@bundlr-network/client';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import Arweave from 'arweave';
 
-const ANT = 'tudrGap6uMQ80zdFZsjAUkSp4Ea8YYsaKgskewqNWSU'; // rebar.arweave.dev
+const ANT = 'tudrGap6uMQ80zdFZsjAUkSp4Ea8YYsaKgskewqNWSU'; // u.arweave.dev
 const arweave = Arweave.init({
   host: 'arweave.net',
   port: 443,
@@ -37,4 +37,4 @@ await contract.writeInteraction({
   transactionId: result.id,
 });
 
-console.log('Deployed RebAR, please wait 20 - 30 minutes for ArNS to update!');
+console.log('Deployed U, please wait 20 - 30 minutes for ArNS to update!');

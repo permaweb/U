@@ -1,9 +1,9 @@
 {
-  "ticker": "RebAR",
-  "name": "RebAR",
+  "ticker": "U",
+  "name": "U",
   "settings": [
     ["isTradeable", true],
-    ["communityLogo", "U4TGpBvPAuevlMjrmiRWnBTN4wQUeR6-cIVjDjL07qY"]
+    ["communityLogo", "J3WXX4OGa6wP5E9oLhNyqlN4deYI7ARjrd5se740ftE"]
   ],
   "claimable": [],
   "balances": {},

@@ -10,17 +10,18 @@ import * as S from './styles';
 import { Claimable, env, State } from 'api';
 import { ResponseType } from 'helpers/types';
 
-const { getState, getRebarBalance, claim } = env;
+const { getState, getUBalance, claim } = env;
 
 export default function Claim() {
   const arProvider = useArweaveProvider();
 
   const [state, setState] = React.useState<State | undefined>();
-  const [connectedRebarBalance, setConnectedRebarBalance] = React.useState<
+  const [connectedUBalance, setConnectedUBalance] = React.useState<
     number | undefined
   >();
-  const [connectedRebarBalanceError, setConnectedRebarBalanceError] =
-    React.useState<string | undefined>();
+  const [connectedUBalanceError, setConnectedUBalanceError] = React.useState<
+    string | undefined
+  >();
   const [connectedClaims, setConnectedClaims] = React.useState<
     Claimable[] | undefined
   >();
@@ -44,10 +45,10 @@ export default function Claim() {
   }, [claim]);
 
   useEffect(() => {
-    if (arProvider.walletAddress && state && !connectedRebarBalanceError) {
-      getRebarBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
-        .then(setConnectedRebarBalance)
-        .catch((e: any) => setConnectedRebarBalanceError(e.message || 'Error'));
+    if (arProvider.walletAddress && state && !connectedUBalanceError) {
+      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+        .then(setConnectedUBalance)
+        .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
   }, [state, connectedClaims, arProvider.walletAddress]);
 
@@ -66,7 +67,7 @@ export default function Claim() {
       action = () => arProvider.setWalletModalVisible(true);
       label = language.connectWallet;
     } else {
-      action = () => claimReBar();
+      action = () => claimU();
       label = language.claim;
     }
 
@@ -95,7 +96,7 @@ export default function Claim() {
     }
   }
 
-  const claimReBar = async () => {
+  const claimU = async () => {
     if (connectedClaims && activeClaims.length > 0) {
       for (let i = 0; i < activeClaims.length; i++) {
         await processClaim(activeClaims[i]);
@@ -115,14 +116,14 @@ export default function Claim() {
         );
         setClaimNotification({
           status: true,
-          message: language.rebarClaimed,
+          message: language.uClaimed,
         });
       })
       .catch((e: any) => {
         console.log(e);
         setClaimNotification({
           status: false,
-          message: language.rebarClaimError,
+          message: language.uClaimError,
         });
       });
   };
@@ -147,7 +148,7 @@ export default function Claim() {
                     &nbsp;
                     <S.CDetailLineHeaderValue>{`${(claim.qty / 1e6).toFixed(
                       2
-                    )} ${language.rebar}`}</S.CDetailLineHeaderValue>
+                    )} ${language.u}`}</S.CDetailLineHeaderValue>
                   </S.CFlex>
                   <S.CFrom>
                     <span>{`${language.from}:`}</span>
@@ -200,8 +201,8 @@ export default function Claim() {
           </S.BWrapper>
           <S.BWrapper>
             <p>
-              <span>{`${language.rebarBalance}: `}</span>
-              {`${connectedRebarBalance || '-'}`}
+              <span>{`${language.uBalance}: `}</span>
+              {`${connectedUBalance || '-'}`}
             </p>
           </S.BWrapper>
           <S.CWrapper>{getClaims()}</S.CWrapper>

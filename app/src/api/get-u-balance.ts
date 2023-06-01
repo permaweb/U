@@ -10,7 +10,7 @@ const { of, fromPromise } = Async;
  * @param {string} tx
  * @return {*}
  */
-export function getRebarBalance(tx: string, target: string) {
+export function getUBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
       fromPromise(viewState)(tx, { function: 'balance', target })

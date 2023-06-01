@@ -79,7 +79,7 @@ export async function waitForConfirmation(tx) {
   let res = null;
 
   while (res === null || res?.status === 202) {
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Delay for 20 second
+    await new Promise((resolve) => setTimeout(resolve, 10000)); // Delay for 10 second
     res = await fetch(`https://arweave.net/tx/${tx}`);
     console.log('Status:', res?.status);
   }
