@@ -22,6 +22,5 @@
   "homepage": "https://github.com/permaweb/u#readme",
   "devDependencies": {
     "husky": "^8.0.0"
-  },
-  "dependencies": {}
+  }
 }
