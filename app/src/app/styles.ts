@@ -165,6 +165,8 @@ export const GlobalStyle = createGlobalStyle`
     min-height: 540px;
     width: 100%;
     padding: 40px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.01);
+
     background: ${(props) => props.theme.colors.container.primary.background};
     border-bottom-left-radius: ${STYLING.dimensions.borderRadius};
     border-bottom-right-radius: ${STYLING.dimensions.borderRadius};
@@ -180,5 +182,6 @@ export const GlobalStyle = createGlobalStyle`
     background: ${(props) => props.theme.colors.container.primary.background};
     border-radius: ${STYLING.dimensions.borderRadius};
     border: 1px solid ${(props) => props.theme.colors.border.primary};
+
   }
 `;

@@ -189,22 +189,7 @@ export default function Claim() {
             <h2>{language.claim}</h2>
             <p>{parse(language.claimDescription)}</p>
           </S.DWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.arBalance}: `}</span>
-              {`${
-                arProvider.walletAddress && arProvider.availableBalance !== null
-                  ? Number(arProvider.availableBalance.toFixed(4))
-                  : `-`
-              }`}
-            </p>
-          </S.BWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.uBalance}: `}</span>
-              {`${connectedUBalance || '-'}`}
-            </p>
-          </S.BWrapper>
+
           <S.CWrapper>{getClaims()}</S.CWrapper>
           <S.AWrapper>{getAction()}</S.AWrapper>
         </S.TWrapper>

@@ -25,15 +25,23 @@ export const DWrapper = styled.div`
 `;
 
 export const BWrapper = styled.div`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  background-color: #d9d9d9;
+  border-radius: 0px 0px 12px 12px;
+  padding: 24px 12px 12px 12px;
+  z-index: -1;
+  transform: translateY(-12px);
+
   p,
   span {
     line-height: 1.5;
     font-weight: ${(props) => props.theme.typography.weight.bold};
     font-family: ${(props) => props.theme.typography.family.alt1};
-    font-size: 24px;
+    font-size: 12px;
   }
   p {
-    margin: 20px 0 0 0;
     color: ${(props) => props.theme.colors.font.primary.alt8};
   }
 `;

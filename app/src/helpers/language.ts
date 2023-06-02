@@ -8,7 +8,7 @@ export const language = {
   burnSuccess: `Burn Initiated`,
   claim: `Claim`,
   claimDescription: `Claim <span>U</span>`,
-  claimsEmpty: `Nothing to claim`,
+  claimsEmpty: `Nothing to claim yet`,
   claimRecipientPlaceholder: `Address`,
   claimSuccess: `Successfully claimed`,
   close: `Close`,

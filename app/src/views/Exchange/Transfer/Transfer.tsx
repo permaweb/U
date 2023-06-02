@@ -126,22 +126,7 @@ export default function Transfer() {
             <h2>{language.transfer}</h2>
             <p>{parse(language.transferDescription)}</p>
           </S.DWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.arBalance}: `}</span>
-              {`${
-                arProvider.walletAddress && arProvider.availableBalance !== null
-                  ? Number(arProvider.availableBalance.toFixed(4))
-                  : `-`
-              }`}
-            </p>
-          </S.BWrapper>
-          <S.BWrapper>
-            <p>
-              <span>{`${language.uBalance}: `}</span>
-              {`${connectedUBalance || '-'}`}
-            </p>
-          </S.BWrapper>
+
           <S.FWrapper>
             <FormField
               type={'number'}
@@ -154,7 +139,12 @@ export default function Transfer() {
               invalid={{ status: false, message: null }}
               logo={ASSETS.uLogo}
             />
-
+            <S.BWrapper>
+              <p>
+                <span>{`${language.uBalance}: `}</span>
+                {`${connectedUBalance || '-'}`}
+              </p>
+            </S.BWrapper>
             <S.Divider>
               <ReactSVG src={ASSETS.arrowDown} />
             </S.Divider>

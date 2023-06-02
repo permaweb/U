@@ -11,6 +11,7 @@ export const Wrapper = styled.header`
   z-index: 5;
   background: ${(props) => props.theme.colors.navigation.header.background};
   border-bottom: 1px solid ${(props) => props.theme.colors.border.primary};
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.02);
 `;
 
 export const NavContainer = styled.div`

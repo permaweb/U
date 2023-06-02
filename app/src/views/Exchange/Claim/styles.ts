@@ -126,9 +126,10 @@ export const AWrapper = styled.div`
 export const Message = styled.div`
   margin: 40px 0 0 0;
   p {
-    font-weight: ${(props) => props.theme.typography.weight.bold};
-    font-family: ${(props) => props.theme.typography.family.alt1};
-    font-size: 24px;
+    font-weight: ${(props) => props.theme.typography.weight.medium};
+    font-family: ${(props) => props.theme.typography.family.primary};
+    font-color: ${(props) => props.theme.colors.primary3} ;
+    font-size: 16px;
     text-align: center;
   }
 `;
