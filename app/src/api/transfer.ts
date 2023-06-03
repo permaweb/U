@@ -26,6 +26,7 @@ const warpTransfer = async (input: TransferInput) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
+      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       allowBigInt: true,

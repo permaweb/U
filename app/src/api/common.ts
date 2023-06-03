@@ -27,6 +27,7 @@ export const readState = async (tx: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
+      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       allowBigInt: true,
@@ -48,6 +49,7 @@ export const viewState = async (tx: string, input: any) => {
   const state = await warp
     .contract(tx)
     .setEvaluationOptions({
+      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       internalWrites: true,

@@ -128,7 +128,7 @@ export const Message = styled.div`
   p {
     font-weight: ${(props) => props.theme.typography.weight.medium};
     font-family: ${(props) => props.theme.typography.family.primary};
-    font-color: ${(props) => props.theme.colors.primary3} ;
+    font-color: ${(props) => props.theme.colors.primary3};
     font-size: 16px;
     text-align: center;
   }
