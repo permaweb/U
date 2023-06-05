@@ -35,6 +35,7 @@ const mint = async (input: { contractId: string; qty: number }) => {
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
+      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       unsafeClient: 'skip',

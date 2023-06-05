@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node ./scripts/build.mjs",
+    "build": "npm i && node ./scripts/build.mjs",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
     "prod": "VITE_CONTRACT=rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk vite --mode production",
     "deploy": "rm -rf dist-*; npm run build && node ./scripts/deploy.mjs",
