@@ -26,8 +26,7 @@
     "react-router-dom": "^6.4.2",
     "react-svg": "^16.1.7",
     "styled-components": "^5.3.6",
-    "warp-contracts": "1.4.10",
-    "warp-contracts-plugin-deploy": "1.0.8"
+    "warp-contracts": "1.4.11"
   },
   "devDependencies": {
     "@bundlr-network/client": "0.11.2",
