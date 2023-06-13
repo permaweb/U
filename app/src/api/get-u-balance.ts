@@ -11,7 +11,7 @@ const { of, fromPromise } = Async;
  * @param {string} tx
  * @return {*}
  */
-export function getUBalance(tx: string, target: string): number {
+export function getUBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
       fromPromise(viewStateWrapper)(tx, target, 'dre-1', undefined)
