@@ -16,24 +16,103 @@ export function getWarpFactory() {
  *
  * @author @jshaw-ar
  * @export
+ * @todo turn this into an async pipe so it's easier to read
  * @param {string} tx
  * @return {*}
  */
 export const readState = async (tx: string) => {
   const warp = getWarpFactory();
-  const contract = await warp
+  return warp
     .contract(tx)
     .connect('use_wallet')
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
+      remoteStateSyncSource: 'https://dre-1.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       allowBigInt: true,
     })
-    .readState();
-  return contract.cachedValue.state;
+    .readState()
+    .then((s) => s.cachedValue.state)
+    .catch(() =>
+      warp
+        .contract(tx)
+        .connect('use_wallet')
+        .setEvaluationOptions({
+          internalWrites: true,
+          unsafeClient: 'skip',
+          remoteStateSyncSource: 'https://dre-2.warp.cc/contract',
+          remoteStateSyncEnabled:
+            import.meta.env.VITE_LOCAL === 'true' ? false : true,
+          allowBigInt: true,
+        })
+        .readState()
+        .then((s) => s.cachedValue.state)
+        .catch((e) =>
+          warp
+            .contract(tx)
+            .connect('use_wallet')
+            .setEvaluationOptions({
+              internalWrites: true,
+              unsafeClient: 'skip',
+              remoteStateSyncSource: 'https://dre-3.warp.cc/contract',
+              remoteStateSyncEnabled:
+                import.meta.env.VITE_LOCAL === 'true' ? false : true,
+              allowBigInt: true,
+            })
+            .readState()
+            .then((s) => s.cachedValue.state)
+            .catch(() =>
+              warp
+                .contract(tx)
+                .connect('use_wallet')
+                .setEvaluationOptions({
+                  internalWrites: true,
+                  unsafeClient: 'skip',
+                  remoteStateSyncSource: 'https://dre-4.warp.cc/contract',
+                  remoteStateSyncEnabled:
+                    import.meta.env.VITE_LOCAL === 'true' ? false : true,
+                  allowBigInt: true,
+                })
+                .readState()
+                .then((s) => s.cachedValue.state)
+                .catch(() =>
+                  warp
+                    .contract(tx)
+                    .connect('use_wallet')
+                    .setEvaluationOptions({
+                      internalWrites: true,
+                      unsafeClient: 'skip',
+                      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
+                      remoteStateSyncEnabled:
+                        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+                      allowBigInt: true,
+                    })
+                    .readState()
+                    .then((s) => s.cachedValue.state)
+                    .catch(() =>
+                      warp
+                        .contract(tx)
+                        .connect('use_wallet')
+                        .setEvaluationOptions({
+                          internalWrites: true,
+                          unsafeClient: 'skip',
+                          remoteStateSyncSource:
+                            'https://dre-1.warp.cc/contract',
+                          remoteStateSyncEnabled:
+                            import.meta.env.VITE_LOCAL === 'true'
+                              ? false
+                              : true,
+                          allowBigInt: true,
+                        })
+                        .readState()
+                        .then((s) => s.cachedValue.state)
+                    )
+                )
+            )
+        )
+    );
 };
 
 /**
@@ -46,17 +125,89 @@ export const readState = async (tx: string) => {
  */
 export const viewState = async (tx: string, input: any) => {
   const warp = getWarpFactory();
-  const state = await warp
+  return warp
     .contract(tx)
     .setEvaluationOptions({
-      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
+      remoteStateSyncSource: 'https://dre-1.warp.cc/contract',
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       internalWrites: true,
       allowBigInt: true,
       unsafeClient: 'skip',
     })
-    .viewState(input);
-  if (state.error) throw new Error(state.errorMessage || 'An error occurred.');
-  return state.result;
+    .viewState(input)
+    .then((s) => s.result)
+    .catch(() =>
+      warp
+        .contract(tx)
+        .setEvaluationOptions({
+          remoteStateSyncSource: 'https://dre-2.warp.cc/contract',
+          remoteStateSyncEnabled:
+            import.meta.env.VITE_LOCAL === 'true' ? false : true,
+          internalWrites: true,
+          allowBigInt: true,
+          unsafeClient: 'skip',
+        })
+        .viewState(input)
+        .then((s) => s.result)
+        .catch(() =>
+          warp
+            .contract(tx)
+            .setEvaluationOptions({
+              remoteStateSyncSource: 'https://dre-3.warp.cc/contract',
+              remoteStateSyncEnabled:
+                import.meta.env.VITE_LOCAL === 'true' ? false : true,
+              internalWrites: true,
+              allowBigInt: true,
+              unsafeClient: 'skip',
+            })
+            .viewState(input)
+            .then((s) => s.result)
+            .catch(() =>
+              warp
+                .contract(tx)
+                .setEvaluationOptions({
+                  remoteStateSyncSource: 'https://dre-4.warp.cc/contract',
+                  remoteStateSyncEnabled:
+                    import.meta.env.VITE_LOCAL === 'true' ? false : true,
+                  internalWrites: true,
+                  allowBigInt: true,
+                  unsafeClient: 'skip',
+                })
+                .viewState(input)
+                .then((s) => s.result)
+                .catch(() =>
+                  warp
+                    .contract(tx)
+                    .setEvaluationOptions({
+                      remoteStateSyncSource: 'https://dre-5.warp.cc/contract',
+                      remoteStateSyncEnabled:
+                        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+                      internalWrites: true,
+                      allowBigInt: true,
+                      unsafeClient: 'skip',
+                    })
+                    .viewState(input)
+                    .then((s) => s.result)
+                    .catch(() =>
+                      warp
+                        .contract(tx)
+                        .setEvaluationOptions({
+                          remoteStateSyncSource:
+                            'https://dre-6.warp.cc/contract',
+                          remoteStateSyncEnabled:
+                            import.meta.env.VITE_LOCAL === 'true'
+                              ? false
+                              : true,
+                          internalWrites: true,
+                          allowBigInt: true,
+                          unsafeClient: 'skip',
+                        })
+                        .viewState(input)
+                        .then((s) => s.result)
+                    )
+                )
+            )
+        )
+    );
 };
