@@ -125,22 +125,18 @@ export const readState = async (tx: string) => {
  * @return {*}
  */
 export const viewState = async (tx: string, input: any, dre: string) => {
-  try {
-    const warp = getWarpFactory();
-    const interaction = warp
-      .contract(tx)
-      .setEvaluationOptions({
-        remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
-        remoteStateSyncEnabled:
-          import.meta.env.VITE_LOCAL === 'true' ? false : true,
-        internalWrites: true,
-        allowBigInt: true,
-        unsafeClient: 'skip',
-      })
-      .viewState(input);
-    if ((await interaction).type === 'ok') return interaction;
-    throw new Error(`There was an error evaluating state using ${dre}.`);
-  } catch (error) {
-    console.log(`There was an error evalutating state on ${dre}.`);
-  }
+  const warp = getWarpFactory();
+  const interaction = warp
+    .contract(tx)
+    .setEvaluationOptions({
+      remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
+      remoteStateSyncEnabled:
+        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+      internalWrites: true,
+      allowBigInt: true,
+      unsafeClient: 'skip',
+    })
+    .viewState(input);
+  if ((await interaction).type === 'ok') return interaction;
+  throw new Error(`There was an error evaluating state using ${dre}.`);
 };
