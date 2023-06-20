@@ -37,7 +37,7 @@ There are 2 key points:
 
 ## Architecture
 
-In order to verify that the `mint` (burn) function only happens on the Arweave base layer, the contract is looking for a `SourceType` of `L1` in the Warp execution environment. This means the contract will throw an error if anyone tries call the `mint` function via Sequencer (`L2`).
+In order to verify that the `mint` (burn) function only happens on the Arweave base layer, the contract is looking for a `SourceType` of `L1` in the Warp execution environment. This means the contract will not execute the `mint` function if the function is executed via Sequencer.
 
 This allows us to have 1 contract that can split functionality between L1 and L2. L1 is used to enter u, and once entered, everything else happens instantly on the Warp Sequencer (via Bundlr Network).
 
@@ -60,7 +60,7 @@ Additionally, there is a function called `reject` that can be used in this contr
 
 ### Mint (L1)
 
-The `mint` function checks that the user is submitting a base layer transaction by checking if `SmartWeave.transaction.reward` is greater than `72600854`. If it is, the contract mints U at a 1:1 ratio.
+The `mint` function checks that the user is submitting a base layer transaction by checking if `SmartWeave.transaction.origin` is `L1`. If it is, the contract mints U at a 1:1 ratio.
 
 > Input
 
