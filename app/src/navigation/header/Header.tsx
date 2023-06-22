@@ -19,7 +19,7 @@ import * as S from './styles';
 const NAV_PATHS = [
   {
     name: language.docs,
-    href: 'https://github.com/permaweb/U#readme',
+    href: 'https://u-wiki.g8way.io',
   },
 ];
 
