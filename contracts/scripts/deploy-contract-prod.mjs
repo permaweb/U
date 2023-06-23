@@ -8,28 +8,26 @@ export function roundDown(v) {
   return new BigNumber(v).integerValue(BigNumber.ROUND_DOWN).toNumber();
 }
 async function deploy(folder) {
-  const balances = await fetch(
-    'https://cache-2.permaweb.tools/contract/?id=VFr3Bk-uM-motpNNkkFg4lNW1BMmSfzqsVO551Ho4hA'
-  )
-    .then((res) => res.json())
-    .then((result) => result.state.balances)
-    .then(map((v) => roundDown(v)))
-    .then(
-      omit([
-        'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI',
-        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-        'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw',
-        '89tR0-C1m3_sCWCoVCChg4gFYKdiH5_ZDyZpdJ2DDRw',
-        'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-        'VYDyg7TPf5tB4wqeCOklGx5VWjrbRFkDnsCuFaWhtb8',
-      ])
-    );
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
   const warp = WarpFactory.forMainnet(defaultCacheOptions, true).use(
     new DeployPlugin()
   );
+
+  const connected = warp
+    .contract('rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk')
+    .setEvaluationOptions({
+      internalWrites: true,
+      unsafeClient: 'skip',
+      remoteStateSyncSource: 'https://dre-1.warp.cc/contract',
+      remoteStateSyncEnabled: true,
+      allowBigInt: true,
+    })
+    .connect(jwk);
+
+  const state = (await connected.readState()).cachedValue.state;
+  const balances = state.balances;
   const contractSrc = fs.readFileSync(`${folder}/contract.js`, 'utf8');
   const stateFromFile = JSON.parse(
     fs.readFileSync(`${folder}/initial-state.json`, 'utf8')
@@ -54,7 +52,14 @@ async function deploy(folder) {
       wallet: jwk,
       initState: JSON.stringify({
         ...initialState,
-        balances,
+        balances: {
+          ...balances,
+          'OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs':
+            balances['OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs'] +
+            balances['1'],
+          ['1']: undefined,
+          ['2']: undefined,
+        },
       }),
       src: contractSrc,
       evaluationManifest: {

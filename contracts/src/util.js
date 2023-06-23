@@ -111,3 +111,17 @@ export const addClaimBalanceFrom = ({ state, action }) => {
   state.balances[claim.from] = balance + claim.qty;
   return indexToRemove;
 };
+
+/**
+ *
+ *
+ * @author @jshaw-ar
+ * @export
+ * @param {string} address
+ * @return {boolean | undefined}
+ */
+export function isArweaveAddress(address) {
+  if (!address) return undefined;
+  const addr = address.toString().trim();
+  return /[a-z0-9_-]{43}/i.test(addr);
+}

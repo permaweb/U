@@ -20,7 +20,7 @@ Introducing the Unit of Account for the Permaweb. The Permaweb needs U.
 
 ## Summary
 
-U_CONTRACT_ID: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
+U_CONTRACT_ID: `KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw`
 
 1 U = 1,000,000 SU (Sub Unit)
 
