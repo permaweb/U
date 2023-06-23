@@ -1,5 +1,5 @@
 import { fromNullable, of } from '../hyper-either.js';
-import { ce, isInteger, roundDown } from '../util.js';
+import { ce, isArweaveAddress, isInteger, roundDown } from '../util.js';
 
 /**
  * @description Creates a transfer that can be claimed.
@@ -17,7 +17,7 @@ export function allow(state, action) {
     .chain(
       ce(action.input?.target === action.caller, 'Target cannot be caller.')
     )
-
+    .chain(ce(!isArweaveAddress(action.input?.target), 'Invalid target.'))
     .chain(ce(!isInteger(action.input?.qty), 'qty must be an integer.'))
     .chain(
       ce(
