@@ -13,17 +13,8 @@ async function deploy(folder) {
   )
     .then((res) => res.json())
     .then((result) => result.state.balances)
-    .then(map((v) => roundDown(v)))
-    .then(
-      omit([
-        'vh-NTHVvlKZqRxc8LyyTNok65yQ55a_PJ1zWLb9G2JI',
-        '9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4',
-        'vLRHFqCw1uHu75xqB4fCDW-QxpkpJxBtFD9g4QYUbfw',
-        '89tR0-C1m3_sCWCoVCChg4gFYKdiH5_ZDyZpdJ2DDRw',
-        'uf_FqRvLqjnFMc8ZzGkF4qWKuNmUIQcYP0tPlCGORQk',
-        'VYDyg7TPf5tB4wqeCOklGx5VWjrbRFkDnsCuFaWhtb8',
-      ])
-    );
+    .then(map((v) => roundDown(v)));
+
   const jwk = JSON.parse(
     fs.readFileSync(process.env.PATH_TO_WALLET).toString()
   );
@@ -54,7 +45,14 @@ async function deploy(folder) {
       wallet: jwk,
       initState: JSON.stringify({
         ...initialState,
-        balances,
+        balances: {
+          ...balances,
+          'OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs':
+            balances['OXcT1sVRSA5eGwt2k6Yuz8-3e3g9WJi5uSE99CWqsBs'] +
+            balances['1'],
+          ['1']: undefined,
+          ['2']: undefined,
+        },
       }),
       src: contractSrc,
       evaluationManifest: {
