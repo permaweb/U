@@ -15,7 +15,7 @@ A guide to using the U.
     - [Reject (SEQ)](#reject-seq)
   - [Resources](#resources)
 
-**U_CONTRACT_ID**: `rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk`
+**U_CONTRACT_ID**: `KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw`
 
 1 U (Unit) = 1,000,000 SU (Sub Units)
 

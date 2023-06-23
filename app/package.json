@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npm i && node ./scripts/build.mjs",
     "format": "eslint --fix . && npx prettier --single-quote --write .",
-    "prod": "VITE_CONTRACT=rO8f4nTVarU6OtU2284C8-BIH6HscNd-srhWznUllTk vite --mode production",
+    "prod": "VITE_CONTRACT=KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw vite --mode production",
     "deploy": "rm -rf dist-*; npm run build && node ./scripts/deploy.mjs",
     "deploy-action": "rm -rf dist-*; npm run build && node ./scripts/deploy-action.mjs",
     "bundlr-balance": "bundlr balance f9S7EFBe9QMbu-Z6nA-ZcIV3dI6mRqD_kcIpOomaIvg  -h https://node2.bundlr.network -c arweave",
