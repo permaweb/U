@@ -71,7 +71,10 @@ test('should throw (qty must be an integer.)', async () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>' } }
+        {
+          caller,
+          input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
+        }
       ),
     /qty must be an integer./
   );
@@ -97,7 +100,10 @@ test('should throw (qty must be an integer.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>' } }
+        {
+          caller,
+          input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
+        }
       ),
     /qty must be an integer./
   );
@@ -123,7 +129,13 @@ test('should throw (Not enough tokens for allow.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>', qty: 11 } }
+        {
+          caller,
+          input: {
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            qty: 11,
+          },
+        }
       ),
     /Not enough tokens for transfer./
   );
@@ -149,7 +161,13 @@ test('should not allow null amount of tokens', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>', qty: null } }
+        {
+          caller,
+          input: {
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            qty: null,
+          },
+        }
       ),
     /qty must be an integer./
   );
@@ -175,7 +193,10 @@ test('should not allow without providing quantity', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>' } }
+        {
+          caller,
+          input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
+        }
       ),
     /qty must be an integer./
   );
@@ -201,7 +222,13 @@ test('should not transfer corrupted amount of tokens', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>', qty: 'xxx' } }
+        {
+          caller,
+          input: {
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            qty: 'xxx',
+          },
+        }
       ),
     /qty must be an integer./
   );
@@ -227,7 +254,13 @@ test('should not allow fractional value', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: '<tom>', qty: 9.8 } }
+        {
+          caller,
+          input: {
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            qty: 9.8,
+          },
+        }
       ),
     /qty must be an integer./
   );
@@ -330,7 +363,13 @@ test('should not transfer negative amount of tokens', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: -1, target: '<tom>' } }
+        {
+          caller,
+          input: {
+            qty: -1,
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          },
+        }
       ),
     /Invalid token transfer. qty must be an integer greater than 0./
   );
@@ -356,7 +395,13 @@ test('should not transfer 0 tokens', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 0, target: '<tom>' } }
+        {
+          caller,
+          input: {
+            qty: 0,
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          },
+        }
       ),
     /Invalid token transfer. qty must be an integer greater than 0./
   );
@@ -417,7 +462,13 @@ test('should not transfer to the same account', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller: '<non-existing>', input: { qty: 5, target: '<tom>' } }
+        {
+          caller: '<non-existing>',
+          input: {
+            qty: 5,
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          },
+        }
       ),
     /Not enough tokens for transfer./
   );
@@ -449,7 +500,13 @@ test('should not transfer more than owned', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 11, target: '<tom>' } }
+        {
+          caller,
+          input: {
+            qty: 11,
+            target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+          },
+        }
       ),
     /Not enough tokens for transfer./
   );
@@ -479,13 +536,19 @@ test('should transfer to empty account', async () => {
       claimable: [],
       divisibility: 1e6,
     },
-    { caller, input: { target: '<tom>', qty: 10 } }
+    {
+      caller,
+      input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
+    }
   );
 
   const { state } = output;
   assert.equal(state.balances['<justin>'], 0);
   assert.equal(state.claimable[0]?.txID, '<tx>');
-  assert.equal(state.claimable[0]?.to, '<tom>');
+  assert.equal(
+    state.claimable[0]?.to,
+    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+  );
   assert.equal(state.claimable[0]?.qty, 10);
 });
 
@@ -509,19 +572,29 @@ test('should allow to existing account', async () => {
       ],
       balances: {
         [caller]: 10,
-        '<tom>': 10,
+        'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx': 10,
       },
       claimable: [],
       divisibility: 1e6,
     },
-    { caller, input: { target: '<tom>', qty: 10 } }
+    {
+      caller,
+      input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
+    }
   );
 
   const { state } = output;
   assert.equal(state.balances[caller], 0);
-  assert.equal(state.claimable[0]?.to, '<tom>');
+  assert.equal(
+    state.claimable[0]?.to,
+    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+  );
   assert.equal(state.claimable[0]?.qty, 10);
-  assert.equal(state.claimable[0]?.qty + state.balances['<tom>'], 20);
+  assert.equal(
+    state.claimable[0]?.qty +
+      state.balances['tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
+    20
+  );
 });
 
 test.after(async () => {});
