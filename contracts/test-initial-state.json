@@ -1,0 +1,16 @@
+{
+  "ticker": "test-U",
+  "name": "test-U",
+  "note": "Dad <3's U B & R!",
+  "settings": [
+    ["isTradeable", true],
+    ["communityLogo", "J3WXX4OGa6wP5E9oLhNyqlN4deYI7ARjrd5se740ftE"]
+  ],
+  "claimable": [],
+  "minted": [],
+  "balances": {
+    "9x24zjvs9DA5zAz2DmqBWAg6XcxrrE-8w3EkpwRm4e4": 100000000
+  },
+  "divisibility": 1e6,
+  "block": null
+}
