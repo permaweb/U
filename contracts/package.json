@@ -8,6 +8,8 @@
     "test": "npm run build && uvu test",
     "build": "rm -r dist; node ./scripts/build.js && cp initial-state.json dist/initial-state.json",
     "deploy": "npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-prod.mjs ./dist",
+    "build-testnet": "rm -r dist; node ./scripts/test-build.js && cp test-initial-state.json dist/test-initial-state.json",
+    "deploy-testnet": "npm run build-testnet && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-test.mjs ./dist",
     "deploy:local": "npm i && npm run build && NODE_NO_WARNINGS=1 node ./scripts/deploy-contract-local.mjs ./dist",
     "read-state:local": "node ./perf/read-state-local.mjs",
     "perf:setup": "node --max-old-space-size=10240 ./perf/perf-setup.mjs dist",
