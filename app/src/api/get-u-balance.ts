@@ -13,22 +13,7 @@ const { of, fromPromise } = Async;
 export function getUBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-1')
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-2'),
-      Resolved
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-3'),
-      Resolved
-    )
-    .bichain(
-      () =>
-        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-4'),
-      Resolved
+      fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-3')
     )
     .bichain(
       () =>
@@ -38,6 +23,21 @@ export function getUBalance(tx: string, target: string) {
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-6'),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-1'),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-2'),
+      Resolved
+    )
+    .bichain(
+      () =>
+        fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-4'),
       Resolved
     )
     .fork(

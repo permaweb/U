@@ -11,15 +11,15 @@ async function read(contractId, address) {
   const connected = warp
     .contract(contractId)
     .setEvaluationOptions({
+      remoteStateSyncSource: `https://dre-6.warp.cc/contract`,
+      remoteStateSyncEnabled: true,
       internalWrites: true,
+      allowBigInt: true,
       unsafeClient: 'skip',
     })
     .connect(jwk);
   const state = (await connected.readState()).cachedValue.state;
-  const balance = (await connected.getStorageValues([address])).cachedValue.get(
-    address
-  );
 
-  console.log('State / Balances', JSON.stringify({ state, balance }));
+  console.log('State / Balances', JSON.stringify({ state }));
 }
 read(process.argv[2], process.argv[3]).catch(console.log);
