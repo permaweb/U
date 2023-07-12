@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import Account from "arweave-account";
+import Account from 'arweave-account';
 
-import { Modal } from "components/molecules/Modal";
-import { AR_WALLETS, WALLET_PERMISSIONS } from "helpers/config";
-import { getBalanceEndpoint } from "helpers/endpoints";
-import { language } from "helpers/language";
-import { STYLING } from "helpers/styling";
-import { useConnection } from "arweave-wallet-kit";
+import { Modal } from 'components/molecules/Modal';
+import { AR_WALLETS, WALLET_PERMISSIONS } from 'helpers/config';
+import { getBalanceEndpoint } from 'helpers/endpoints';
+import { language } from 'helpers/language';
+import { STYLING } from 'helpers/styling';
+import { useConnection } from 'arweave-wallet-kit';
 
 export const WalletListContainer = styled.div`
   height: 100%;
@@ -66,7 +66,7 @@ const DEFAULT_CONTEXT = {
   walletModalVisible: false,
   setWalletModalVisible(_open: boolean) {
     console.error(
-      `Make sure to render ArweaveProvider as an ancestor of the component that uses ARContext.Provider`
+      `Make sure to render ArweaveProvider as an ancestor of the component that uses ARContext.Provider`,
     );
   },
   arProfile: null,
@@ -83,7 +83,7 @@ function WalletList(props: { handleConnect: () => void }) {
     <WalletListContainer>
       {AR_WALLETS.map((wallet, index) => (
         <WalletListItem key={index} onClick={() => props.handleConnect()}>
-          <img src={`${wallet.logo}`} alt={""} />
+          <img src={`${wallet.logo}`} alt={''} />
           <span>
             {wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
           </span>
@@ -101,7 +101,7 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
     React.useState<boolean>(false);
   const [walletAddress, setWalletAddress] = React.useState<string | null>(null);
   const [availableBalance, setAvailableBalance] = React.useState<number | null>(
-    null
+    null,
   );
   const [arProfile, setArProfile] = React.useState<any | null>(null);
 
@@ -137,10 +137,10 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
     handleWallet();
 
-    window.addEventListener("arweaveWalletLoaded", handleWallet);
+    window.addEventListener('arweaveWalletLoaded', handleWallet);
 
     return () => {
-      window.removeEventListener("arweaveWalletLoaded", handleWallet);
+      window.removeEventListener('arweaveWalletLoaded', handleWallet);
     };
   });
 

@@ -1,4 +1,4 @@
-import { DOM, WALLET_PERMISSIONS } from "helpers/config";
+import { DOM } from "helpers/config";
 import { Header } from "navigation/header";
 import { Routes } from "routes";
 

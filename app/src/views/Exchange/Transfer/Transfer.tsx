@@ -97,7 +97,7 @@ export default function Transfer() {
         });
         if (connectedUBalance) {
           setConnectedUBalance(
-            Math.floor(connectedUBalance) - Math.floor(UAmount)
+            Math.floor(connectedUBalance) - Math.floor(UAmount),
           );
         }
       })
