@@ -27,7 +27,7 @@ export async function handle(state, action) {
       return mint(state, action);
     default:
       throw new ContractError(
-        `No function supplied or function not recognized`
+        `No function supplied or function not recognized`,
       );
   }
 }

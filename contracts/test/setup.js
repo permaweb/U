@@ -7,7 +7,7 @@ export function setupSmartWeaveEnv(
   readContractState, // pass `Promise.reject("<READ-ERROR>")` for error
   write, // pass `Promise.reject("<WRITE-ERROR>")` for error
   viewContractState,
-  balances // Pass balances like {"<addr>": "<qty>"} and a proxy map will be built to mock SmartWeave.KV
+  balances, // Pass balances like {"<addr>": "<qty>"} and a proxy map will be built to mock SmartWeave.KV
 ) {
   const pairs = toPairs(balances);
   const map = new Map(pairs);

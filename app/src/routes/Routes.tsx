@@ -45,6 +45,6 @@ function getLazyImport(view: string) {
   return lazy(() =>
     import(`../views/${view}/index.tsx`).then((module) => ({
       default: module.default,
-    }))
+    })),
   );
 }

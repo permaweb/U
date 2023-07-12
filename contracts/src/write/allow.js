@@ -15,21 +15,21 @@ export function allow(state, action) {
     .chain(fromNullable)
     .chain(ce(!action.input?.target, 'Please specify a target.'))
     .chain(
-      ce(action.input?.target === action.caller, 'Target cannot be caller.')
+      ce(action.input?.target === action.caller, 'Target cannot be caller.'),
     )
     .chain(ce(!isArweaveAddress(action.input?.target), 'Invalid target.'))
     .chain(ce(!isInteger(action.input?.qty), 'qty must be an integer.'))
     .chain(
       ce(
         roundDown(action.input?.qty) < 1,
-        'Invalid token transfer. qty must be an integer greater than 0.'
-      )
+        'Invalid token transfer. qty must be an integer greater than 0.',
+      ),
     )
     .chain(
       ce(
         (state.balances[action.caller] || 0) < roundDown(action.input?.qty),
-        'Not enough tokens for transfer.'
-      )
+        'Not enough tokens for transfer.',
+      ),
     )
     .map((caller) => {
       const safeQty = roundDown(action.input.qty);
@@ -45,6 +45,6 @@ export function allow(state, action) {
       (msg) => {
         throw new ContractError(msg || 'An error occurred.');
       },
-      () => ({ state })
+      () => ({ state }),
     );
 }

@@ -51,7 +51,7 @@ const mint = async (input: { contractId: string; qty: number }) => {
         reward: new BigNumber(qty * 1e12)
           .integerValue(BigNumber.ROUND_DOWN)
           .toString(),
-      }
+      },
     );
   return interaction?.originalTxId;
 };

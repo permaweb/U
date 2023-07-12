@@ -36,7 +36,7 @@ export default function Claim() {
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(
-            (c: Claimable) => c.to === arProvider.walletAddress
+            (c: Claimable) => c.to === arProvider.walletAddress,
           );
           if (claims?.length > 0) setConnectedClaims(claims);
         })
@@ -112,7 +112,7 @@ export default function Claim() {
     })
       .then(() => {
         setConnectedClaims((prevClaims) =>
-          prevClaims!.filter((claim) => claim.txID !== c.txID)
+          prevClaims!.filter((claim) => claim.txID !== c.txID),
         );
         setClaimNotification({
           status: true,
@@ -147,7 +147,7 @@ export default function Claim() {
                     <S.CDetailLineHeader>{`${language.qty}:`}</S.CDetailLineHeader>
                     &nbsp;
                     <S.CDetailLineHeaderValue>{`${(claim.qty / 1e6).toFixed(
-                      2
+                      2,
                     )} ${language.u}`}</S.CDetailLineHeaderValue>
                   </S.CFlex>
                   <S.CFrom>

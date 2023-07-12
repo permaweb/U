@@ -8,6 +8,7 @@ import { AR_WALLETS, WALLET_PERMISSIONS } from 'helpers/config';
 import { getBalanceEndpoint } from 'helpers/endpoints';
 import { language } from 'helpers/language';
 import { STYLING } from 'helpers/styling';
+import { useConnection } from 'arweave-wallet-kit';
 
 export const WalletListContainer = styled.div`
   height: 100%;
@@ -65,7 +66,7 @@ const DEFAULT_CONTEXT = {
   walletModalVisible: false,
   setWalletModalVisible(_open: boolean) {
     console.error(
-      `Make sure to render ArweaveProvider as an ancestor of the component that uses ARContext.Provider`
+      `Make sure to render ArweaveProvider as an ancestor of the component that uses ARContext.Provider`,
     );
   },
   arProfile: null,
@@ -94,29 +95,24 @@ function WalletList(props: { handleConnect: () => void }) {
 
 export function ArweaveProvider(props: ArweaveProviderProps) {
   const wallets = AR_WALLETS;
+  const { connect, disconnect } = useConnection();
 
   const [walletModalVisible, setWalletModalVisible] =
     React.useState<boolean>(false);
   const [walletAddress, setWalletAddress] = React.useState<string | null>(null);
   const [availableBalance, setAvailableBalance] = React.useState<number | null>(
-    null
+    null,
   );
   const [arProfile, setArProfile] = React.useState<any | null>(null);
 
   // const [arProfile, setArProfile] = React.useState<ProfileType | null>(null);
 
   async function handleConnect() {
-    await window?.arweaveWallet
-      ?.connect(WALLET_PERMISSIONS as any)
-      .then(() => {
-        setWalletModalVisible(false);
-      })
-      .catch((e: any) => {
-        alert(e);
-      });
+    connect();
   }
 
   async function handleDisconnect() {
+    await disconnect();
     await window?.arweaveWallet?.disconnect();
     setWalletAddress(null);
   }

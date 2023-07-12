@@ -6,7 +6,7 @@ export function mint(state, action) {
   }
 
   state.balances[action.caller] += roundDown(
-    SmartWeave.transaction.reward / state.divisibility
+    SmartWeave.transaction.reward / state.divisibility,
   );
 
   return { state };
