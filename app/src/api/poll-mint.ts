@@ -1,4 +1,4 @@
-import Async from 'hyper-async';
+import Async from "hyper-async";
 const { of, fromPromise } = Async;
 
 export function pollMint(tx: string) {
@@ -13,7 +13,7 @@ export function pollMint(tx: string) {
  * @return {string}
  */
 export function getPollingTx(): string | null {
-  return localStorage.getItem('polling_tx');
+  return localStorage.getItem("polling_tx");
 }
 
 /**
@@ -30,13 +30,13 @@ export async function waitForConfirmation(tx: string) {
     await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay for 20 second
     res = await fetch(
       `${
-        import.meta.env.VITE_LOCAL === 'true'
-          ? 'http://localhost:1984'
-          : 'https://arweave.net'
+        import.meta.env.VITE_LOCAL === "true"
+          ? "http://localhost:1984"
+          : "https://arweave.net"
       }/tx/${tx}`
     );
     console.log(res.status);
   }
-  localStorage.removeItem('polling_tx');
+  localStorage.removeItem("polling_tx");
   return { tx, status: res.status };
 }

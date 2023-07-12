@@ -24,6 +24,6 @@
     "husky": "^8.0.0"
   },
   "dependencies": {
-    "arweave-wallet-kit": "^1.0.1-beta.0"
+    "arweave-wallet-kit": "1.0.0"
   }
 }

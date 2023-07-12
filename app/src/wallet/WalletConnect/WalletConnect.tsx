@@ -7,6 +7,7 @@ import { useArweaveProvider } from "providers/ArweaveProvider";
 import { CloseHandler } from "wrappers/CloseHandler";
 
 import * as S from "./styles";
+import { useConnection } from "arweave-wallet-kit";
 
 export default function WalletConnect(props: { callback?: () => void }) {
   const arProvider = useArweaveProvider();
@@ -14,6 +15,8 @@ export default function WalletConnect(props: { callback?: () => void }) {
   const [showWallet, setShowWallet] = React.useState<boolean>(false);
   const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
   const [copied, setCopied] = React.useState<boolean>(false);
+
+  const { connect } = useConnection();
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -25,7 +28,7 @@ export default function WalletConnect(props: { callback?: () => void }) {
     if (arProvider.walletAddress) {
       setShowDropdown(true);
     } else {
-      arProvider.setWalletModalVisible(true);
+      connect();
     }
   }
 
