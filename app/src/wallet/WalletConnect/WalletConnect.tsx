@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-import { Button } from 'components/atoms/Button';
-import { language } from 'helpers/language';
-import { formatAddress } from 'helpers/utils';
-import { useArweaveProvider } from 'providers/ArweaveProvider';
-import { CloseHandler } from 'wrappers/CloseHandler';
+import { Button } from "components/atoms/Button";
+import { language } from "helpers/language";
+import { formatAddress } from "helpers/utils";
+import { useArweaveProvider } from "providers/ArweaveProvider";
+import { CloseHandler } from "wrappers/CloseHandler";
 
-import * as S from './styles';
+import * as S from "./styles";
 
 export default function WalletConnect(props: { callback?: () => void }) {
   const arProvider = useArweaveProvider();
@@ -71,7 +71,7 @@ export default function WalletConnect(props: { callback?: () => void }) {
     >
       <S.Wrapper>
         <Button
-          type={'alt1'}
+          type={"alt1"}
           label={getWalletLabel()}
           handlePress={handlePress}
           width={160}

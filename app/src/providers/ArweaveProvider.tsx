@@ -1,13 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Account from 'arweave-account';
+import Account from "arweave-account";
 
-import { Modal } from 'components/molecules/Modal';
-import { AR_WALLETS, WALLET_PERMISSIONS } from 'helpers/config';
-import { getBalanceEndpoint } from 'helpers/endpoints';
-import { language } from 'helpers/language';
-import { STYLING } from 'helpers/styling';
+import { Modal } from "components/molecules/Modal";
+import { AR_WALLETS, WALLET_PERMISSIONS } from "helpers/config";
+import { getBalanceEndpoint } from "helpers/endpoints";
+import { language } from "helpers/language";
+import { STYLING } from "helpers/styling";
+import { useConnection } from "arweave-wallet-kit";
 
 export const WalletListContainer = styled.div`
   height: 100%;
@@ -82,7 +83,7 @@ function WalletList(props: { handleConnect: () => void }) {
     <WalletListContainer>
       {AR_WALLETS.map((wallet, index) => (
         <WalletListItem key={index} onClick={() => props.handleConnect()}>
-          <img src={`${wallet.logo}`} alt={''} />
+          <img src={`${wallet.logo}`} alt={""} />
           <span>
             {wallet.name.charAt(0).toUpperCase() + wallet.name.slice(1)}
           </span>
@@ -94,6 +95,7 @@ function WalletList(props: { handleConnect: () => void }) {
 
 export function ArweaveProvider(props: ArweaveProviderProps) {
   const wallets = AR_WALLETS;
+  const { connect } = useConnection();
 
   const [walletModalVisible, setWalletModalVisible] =
     React.useState<boolean>(false);
@@ -141,10 +143,10 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
 
     handleWallet();
 
-    window.addEventListener('arweaveWalletLoaded', handleWallet);
+    window.addEventListener("arweaveWalletLoaded", handleWallet);
 
     return () => {
-      window.removeEventListener('arweaveWalletLoaded', handleWallet);
+      window.removeEventListener("arweaveWalletLoaded", handleWallet);
     };
   });
 
