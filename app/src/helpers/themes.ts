@@ -145,6 +145,9 @@ export const defaultTheme: DefaultTheme = {
       alt7: {
         background: DEFAULT.primary5,
       },
+      alt8: {
+        background: DEFAULT.neutral6,
+      },
     },
     font: {
       primary: {
