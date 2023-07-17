@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Button } from 'components/atoms/Button';
-
 import * as S from './styles';
 import { ICProps, ITProps, IUProps } from './types';
 

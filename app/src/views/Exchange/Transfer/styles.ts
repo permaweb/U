@@ -55,7 +55,7 @@ export const Divider = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 25px 0 20px 0;
+  margin: 12.5px 0 20px 0;
   svg {
     width: 40px;
   }

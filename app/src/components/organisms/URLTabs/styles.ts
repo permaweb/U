@@ -52,7 +52,7 @@ export const TabAction = styled.button<{ active: boolean }>`
   cursor: pointer;
 
   &:hover {
-    opacity: 50%;
+    color: ${(props) => props.theme.colors.font.primary.alt2};
   }
 
   &:after {
@@ -61,7 +61,7 @@ export const TabAction = styled.button<{ active: boolean }>`
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    bottom: -8.35px;
+    bottom: 0px;
     background: ${(props) =>
       props.active
         ? props.theme.colors.tabs.active
