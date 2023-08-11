@@ -1,4 +1,4 @@
-import Bundlr from '@bundlr-network/client';
+import Bundlr from '@bundlr-network/client/build/esm/node/bundlr';
 import { readFileSync } from 'fs';
 
 const jwk = JSON.parse(readFileSync(process.env.PATH_TO_WALLET, 'utf-8'));
