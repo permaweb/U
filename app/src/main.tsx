@@ -32,5 +32,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </ArweaveProvider>
       </ArweaveWalletKit>
     </ThemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

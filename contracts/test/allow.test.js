@@ -25,9 +25,9 @@ test('should throw (Please specify a target.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller },
+        { caller }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -48,9 +48,9 @@ test('should throw (Target cannot be caller.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: caller } },
+        { caller, input: { target: caller } }
       ),
-    /Target cannot be caller./,
+    /Target cannot be caller./
   );
 });
 
@@ -74,9 +74,9 @@ test('should throw (qty must be an integer.)', async () => {
         {
           caller,
           input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -103,9 +103,9 @@ test('should throw (qty must be an integer.)', () => {
         {
           caller,
           input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -135,9 +135,9 @@ test('should throw (Not enough tokens for allow.)', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 11,
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -167,9 +167,9 @@ test('should not allow null amount of tokens', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: null,
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -196,9 +196,9 @@ test('should not allow without providing quantity', () => {
         {
           caller,
           input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -228,9 +228,9 @@ test('should not transfer corrupted amount of tokens', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 'xxx',
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -260,9 +260,9 @@ test('should not allow fractional value', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 9.8,
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 test('should not allow without a target', () => {
@@ -285,9 +285,9 @@ test('should not allow without a target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 10 } },
+        { caller, input: { qty: 10 } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -311,9 +311,9 @@ test('should not allow with null target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 10, target: null } },
+        { caller, input: { qty: 10, target: null } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -337,9 +337,9 @@ test('should not allow with undefined target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 10, target: undefined } },
+        { caller, input: { qty: 10, target: undefined } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -369,9 +369,9 @@ test('should not transfer negative amount of tokens', () => {
             qty: -1,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Invalid token transfer. qty must be an integer greater than 0./,
+    /Invalid token transfer. qty must be an integer greater than 0./
   );
 });
 
@@ -401,9 +401,9 @@ test('should not transfer 0 tokens', () => {
             qty: 0,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Invalid token transfer. qty must be an integer greater than 0./,
+    /Invalid token transfer. qty must be an integer greater than 0./
   );
 });
 
@@ -427,9 +427,9 @@ test('should not transfer to the same account', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 0, target: caller } },
+        { caller, input: { qty: 0, target: caller } }
       ),
-    /Target cannot be caller./,
+    /Target cannot be caller./
   );
 });
 
@@ -442,7 +442,7 @@ test('should not transfer to the same account', () => {
     '<tx>',
     undefined,
     undefined,
-    undefined,
+    undefined
   );
 
   assert.throws(
@@ -468,9 +468,9 @@ test('should not transfer to the same account', () => {
             qty: 5,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -484,7 +484,7 @@ test('should not transfer more than owned', () => {
     undefined,
     undefined,
     undefined,
-    { [caller]: 10 },
+    { [caller]: 10 }
   );
   assert.throws(
     () =>
@@ -506,9 +506,9 @@ test('should not transfer more than owned', () => {
             qty: 11,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -519,7 +519,7 @@ test('should transfer to empty account', async () => {
     '<tx>',
     undefined,
     undefined,
-    undefined,
+    undefined
   );
   const caller = '<justin>';
   const output = await allow(
@@ -539,7 +539,7 @@ test('should transfer to empty account', async () => {
     {
       caller,
       input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
-    },
+    }
   );
 
   const { state } = output;
@@ -547,7 +547,7 @@ test('should transfer to empty account', async () => {
   assert.equal(state.claimable[0]?.txID, '<tx>');
   assert.equal(
     state.claimable[0]?.to,
-    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   );
   assert.equal(state.claimable[0]?.qty, 10);
 });
@@ -560,7 +560,7 @@ test('should allow to existing account', async () => {
     '<tx>',
     undefined,
     undefined,
-    undefined,
+    undefined
   );
   const output = await allow(
     {
@@ -580,20 +580,20 @@ test('should allow to existing account', async () => {
     {
       caller,
       input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
-    },
+    }
   );
 
   const { state } = output;
   assert.equal(state.balances[caller], 0);
   assert.equal(
     state.claimable[0]?.to,
-    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   );
   assert.equal(state.claimable[0]?.qty, 10);
   assert.equal(
     state.claimable[0]?.qty +
       state.balances['tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
-    20,
+    20
   );
 });
 

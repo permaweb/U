@@ -1,6 +1,6 @@
-import { DOM } from "helpers/config";
-import { Header } from "navigation/header";
-import { Routes } from "routes";
+import { DOM } from 'helpers/config';
+import { Header } from 'navigation/header';
+import { Routes } from 'routes';
 
 export default function App() {
   return (

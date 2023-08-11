@@ -1,5 +1,9 @@
 import { WarpFactory, SourceType, defaultCacheOptions } from 'warp-contracts';
-import { DeployPlugin, ArweaveSigner } from 'warp-contracts-plugin-deploy';
+import {
+  DeployPlugin,
+  ArweaveSigner,
+  InjectedArweaveSigner,
+} from 'warp-contracts-plugin-deploy';
 import { map, omit } from 'ramda';
 import BigNumber from 'bignumber.js';
 
@@ -33,29 +37,44 @@ async function deploy(folder) {
     },
   };
 
-  const deployed = await warp.deploy(
-    {
-      // wallet: new ArweaveSigner(jwk),
-      wallet: jwk,
-      initState: JSON.stringify({
-        ...initialState,
-      }),
-      src: contractSrc,
-      evaluationManifest: {
-        evaluationOptions: {
-          sourceType: SourceType.BOTH,
-          internalWrites: true,
-          allowBigInt: true,
-          unsafeClient: 'skip',
-        },
+  const { contractTxId, srcTxId } = await warp.deploy({
+    wallet: new InjectedArweaveSigner(jwk),
+    initState: JSON.stringify({ ...initialState }),
+    src: contractSrc,
+    evaluationManifest: {
+      evaluationOptions: {
+        sourceType: SourceType.BOTH,
+        internalWrites: true,
+        allowBigInt: true,
+        unsafeClient: 'skip',
       },
     },
-    {
-      disabledBundling: true,
-    }
-  );
-  console.log(`SEQ contractTxId ${deployed.contractTxId}`);
-  await waitForConfirmation(deployed.contractTxId);
+  });
+
+  // const deployed = await warp.deploy(
+  //   {
+  //     // wallet: new ArweaveSigner(jwk),
+  //     wallet: jwk,
+  //     initState: JSON.stringify({
+  //       ...initialState,
+  //     }),
+  //     src: contractSrc,
+  //     evaluationManifest: {
+  //       evaluationOptions: {
+  //         sourceType: SourceType.BOTH,
+  //         internalWrites: true,
+  //         allowBigInt: true,
+  //         unsafeClient: 'skip',
+  //       },
+  //     },
+  //   },
+  //   {
+  //     disabledBundling: true,
+  //   }
+  // );
+  console.log(`SEQ contractTxId ${contractTxId}, ${srcTxId}`);
+  // console.log(`SEQ contractTxId ${deployed.contractTxId}`);
+  // await waitForConfirmation(deployed.contractTxId);
 }
 deploy(process.argv[2]).catch(console.log);
 

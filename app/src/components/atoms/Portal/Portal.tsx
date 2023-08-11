@@ -11,7 +11,7 @@ export default function Portal(props: IProps) {
   return DOM && document.getElementById(props.node)
     ? ReactDOM.createPortal(
         props.children,
-        document.getElementById(props.node)!,
+        document.getElementById(props.node)!
       )
     : null;
 }

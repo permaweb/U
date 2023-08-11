@@ -13,37 +13,37 @@ const { of, fromPromise } = Async;
 export function getUBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-3'),
+      fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-3')
     )
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-5'),
-      Resolved,
+      Resolved
     )
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-6'),
-      Resolved,
+      Resolved
     )
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-1'),
-      Resolved,
+      Resolved
     )
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-2'),
-      Resolved,
+      Resolved
     )
     .bichain(
       () =>
         fromPromise(viewState)(tx, { function: 'balance', target }, 'dre-4'),
-      Resolved,
+      Resolved
     )
     .fork(
       (e: any) => {
         throw new Error(e?.message || e || 'An error occurred.');
       },
-      (interaction: any) => interaction.result.balance / 1e6,
+      (interaction: any) => interaction.result.balance / 1e6
     );
 }

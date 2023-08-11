@@ -25,9 +25,9 @@ test('should not allow claiming without txId', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller },
+        { caller }
       ),
-    /txID must be passed to the claim function./,
+    /txID must be passed to the claim function./
   );
 });
 
@@ -48,9 +48,9 @@ test('should not allow claiming with null txID', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { txID: null } },
+        { caller, input: { txID: null } }
       ),
-    /txID must be passed to the claim function./,
+    /txID must be passed to the claim function./
   );
 });
 
@@ -71,9 +71,9 @@ test('should not allow claiming with non-existing txID', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>', qty: 1 } },
+        { caller, input: { txID: '<test-claim>', qty: 1 } }
       ),
-    /There must be 1 claimable with this tx id./,
+    /There must be 1 claimable with this tx id./
   );
 });
 
@@ -99,9 +99,9 @@ test('should throw (Claim not addressed to caller.)', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>', qty: 1 } },
+        { caller, input: { txID: '<test-claim>', qty: 1 } }
       ),
-    /Claim not addressed to caller./,
+    /Claim not addressed to caller./
   );
 });
 
@@ -128,9 +128,9 @@ test('should throw (Incorrect qty.)', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>', qty: 10 } },
+        { caller, input: { txID: '<test-claim>', qty: 10 } }
       ),
-    /Incorrect qty./,
+    /Incorrect qty./
   );
 });
 
@@ -157,9 +157,9 @@ test('should throw (Incorrect qty.)', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>' } },
+        { caller, input: { txID: '<test-claim>' } }
       ),
-    /A qty must be specified./,
+    /A qty must be specified./
   );
 });
 
@@ -186,9 +186,9 @@ test('should not allow claiming with null quantity', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>', qty: null } },
+        { caller, input: { txID: '<test-claim>', qty: null } }
       ),
-    /A qty must be specified./,
+    /A qty must be specified./
   );
 });
 
@@ -219,9 +219,9 @@ test('should not allow claiming with incorrect quantity', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { txID: '<test-claim>', qty: 10 } },
+        { caller, input: { txID: '<test-claim>', qty: 10 } }
       ),
-    /Incorrect qty./,
+    /Incorrect qty./
   );
 });
 
@@ -249,9 +249,9 @@ test('should not allow claiming with null quantity', () => {
           ],
           divisibility: 1e6,
         },
-        { caller: '<incorrect>', input: { txID: '<test-claim>', qty: 11 } },
+        { caller: '<incorrect>', input: { txID: '<test-claim>', qty: 11 } }
       ),
-    /Claim not addressed to caller./,
+    /Claim not addressed to caller./
   );
 });
 
@@ -289,7 +289,7 @@ test('should claim tokens', async () => {
       ],
       divisibility: 1e6,
     },
-    { caller, input: { txID: '<test-claim>', qty: 11 } },
+    { caller, input: { txID: '<test-claim>', qty: 11 } }
   );
 
   const { state } = output;

@@ -33,7 +33,7 @@ export async function waitForConfirmation(tx: string) {
         import.meta.env.VITE_LOCAL === 'true'
           ? 'http://localhost:1984'
           : 'https://arweave.net'
-      }/tx/${tx}`,
+      }/tx/${tx}`
     );
     console.log(res.status);
   }

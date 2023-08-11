@@ -18,15 +18,15 @@ export function rejectClaimable(state, action) {
     .chain(
       ce(
         state.claimable.filter((c) => c.txID === action.input.tx).length !== 1,
-        'There must be 1 claimable with this tx id.',
-      ),
+        'There must be 1 claimable with this tx id.'
+      )
     )
     .chain(
       ce(
         state.claimable.filter((c) => c.txID === action.input.tx)[0]?.to !==
           action.caller,
-        'Claim not addressed to caller.',
-      ),
+        'Claim not addressed to caller.'
+      )
     )
     .map(addClaimBalanceFrom)
     .map((indexToRemove) => {
@@ -37,6 +37,6 @@ export function rejectClaimable(state, action) {
       (msg) => {
         throw new ContractError(msg || 'An error occurred.');
       },
-      (state) => ({ state }),
+      (state) => ({ state })
     );
 }

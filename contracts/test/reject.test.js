@@ -34,9 +34,9 @@ test('should throw txID must be passed to the reject function.', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { function: 'reject' } },
+        { caller, input: { function: 'reject' } }
       ),
-    /txID must be passed to the reject function./,
+    /txID must be passed to the reject function./
   );
 });
 
@@ -66,9 +66,9 @@ test('should throw Claim not addressed to caller.', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { function: 'reject', tx: '<reject-tx>' } },
+        { caller, input: { function: 'reject', tx: '<reject-tx>' } }
       ),
-    /Claim not addressed to caller./,
+    /Claim not addressed to caller./
   );
 });
 
@@ -98,9 +98,9 @@ test('should throw Claim does not exist.', () => {
           ],
           divisibility: 1e6,
         },
-        { caller, input: { function: 'reject', tx: '<not-exist>' } },
+        { caller, input: { function: 'reject', tx: '<not-exist>' } }
       ),
-    /There must be 1 claimable with this tx id./,
+    /There must be 1 claimable with this tx id./
   );
 });
 
@@ -125,7 +125,7 @@ test('should reject tokens', async () => {
       ],
       divisibility: 1e6,
     },
-    { caller, input: { function: 'reject', tx: '<reject-tx>' } },
+    { caller, input: { function: 'reject', tx: '<reject-tx>' } }
   );
 
   const { state } = output;

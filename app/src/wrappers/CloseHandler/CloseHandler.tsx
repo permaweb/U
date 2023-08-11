@@ -9,7 +9,7 @@ function useCloseHandler(ref: RefType, callback: () => void) {
   React.useEffect(() => {
     function handleAction(
       event: React.MouseEvent<HTMLInputElement>,
-      callback: () => void,
+      callback: () => void
     ) {
       if (
         (ref as RefType).current &&
@@ -19,11 +19,11 @@ function useCloseHandler(ref: RefType, callback: () => void) {
       }
     }
     document.addEventListener('mousedown', (e) =>
-      handleAction(e as any, callback),
+      handleAction(e as any, callback)
     );
     return () => {
       document.removeEventListener('mousedown', (e) =>
-        handleAction(e as any, callback),
+        handleAction(e as any, callback)
       );
     };
   }, [ref, callback]);

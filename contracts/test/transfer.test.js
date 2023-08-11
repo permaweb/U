@@ -27,9 +27,9 @@ test('should throw (Please specify a target.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller },
+        { caller }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -51,9 +51,9 @@ test('should throw (Target cannot be caller.)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { target: caller } },
+        { caller, input: { target: caller } }
       ),
-    /Target cannot be caller./,
+    /Target cannot be caller./
   );
 });
 
@@ -79,9 +79,9 @@ test('should throw (Not enough tokens for transfer.)', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 5,
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -107,9 +107,9 @@ test('should throw (qty must be an integer.)', () => {
         {
           caller,
           input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -138,9 +138,9 @@ test('should throw (Not enough tokens for transfer.)', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 11,
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -166,9 +166,9 @@ test('should not transfer null amount of tokens', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: null,
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -193,9 +193,9 @@ test('should not transfer undefined amount of tokens', () => {
         {
           caller,
           input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -221,9 +221,9 @@ test("should not transfer 'string' amount of tokens", () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 'xxx',
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -251,9 +251,9 @@ test('should not transfer fractional amount of tokens', () => {
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
             qty: 199999.01,
           },
-        },
+        }
       ),
-    /qty must be an integer./,
+    /qty must be an integer./
   );
 });
 
@@ -275,9 +275,9 @@ test('should not transfer without a target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 1000000 } },
+        { caller, input: { qty: 1000000 } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -299,9 +299,9 @@ test('should not transfer with null target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 1000000, target: null } },
+        { caller, input: { qty: 1000000, target: null } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -323,9 +323,9 @@ test('should not transfer with undefined target', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 1000000, target: undefined } },
+        { caller, input: { qty: 1000000, target: undefined } }
       ),
-    /Please specify a target./,
+    /Please specify a target./
   );
 });
 
@@ -352,9 +352,9 @@ test('should not transfer from non-existing account (in kv store)', () => {
             qty: 1000000,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -382,9 +382,9 @@ test('should not transfer more than owned', () => {
             qty: 2000000,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Not enough tokens for transfer./,
+    /Not enough tokens for transfer./
   );
 });
 
@@ -413,9 +413,9 @@ test('should not transfer 0 tokens', () => {
             qty: 0,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Invalid token transfer. qty must be an integer greater than 0./,
+    /Invalid token transfer. qty must be an integer greater than 0./
   );
 });
 
@@ -443,9 +443,9 @@ test('should not transfer negative amount of tokens', () => {
             qty: -1,
             target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
           },
-        },
+        }
       ),
-    /Invalid token transfer. qty must be an integer greater than 0./,
+    /Invalid token transfer. qty must be an integer greater than 0./
   );
 });
 
@@ -468,9 +468,9 @@ test('should not transfer to the same account (caller -> caller)', () => {
           claimable: [],
           divisibility: 1e6,
         },
-        { caller, input: { qty: 1000000, target: caller } },
+        { caller, input: { qty: 1000000, target: caller } }
       ),
-    /Target cannot be caller./,
+    /Target cannot be caller./
   );
 });
 
@@ -493,12 +493,12 @@ test('should transfer to empty account', () => {
     {
       caller,
       input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
-    },
+    }
   );
   const { state } = output;
   assert.equal(
     state.balances['tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
-    10,
+    10
   );
   assert.equal(state.balances[caller], 10000000 - 10);
 });
@@ -524,7 +524,7 @@ test('should transfer to existing account', async () => {
     {
       caller,
       input: { target: 'tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', qty: 10 },
-    },
+    }
   );
 
   const { state } = output;
@@ -532,7 +532,7 @@ test('should transfer to existing account', async () => {
   assert.equal(state.balances[caller], 10);
   assert.equal(
     state.balances['tom-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'],
-    11,
+    11
   );
 });
 

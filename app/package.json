@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "arweave-account": "^1.3.6",
+    "arweave-wallet-kit": "1.0.0",
     "bignumber.js": "9.1.1",
     "html-react-parser": "^3.0.4",
     "hyper-async": "1.1.1",

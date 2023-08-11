@@ -107,11 +107,11 @@ export const readState = async (tx: string) => {
                           allowBigInt: true,
                         })
                         .readState()
-                        .then((s) => s.cachedValue.state),
-                    ),
-                ),
-            ),
-        ),
+                        .then((s) => s.cachedValue.state)
+                    )
+                )
+            )
+        )
     );
 };
 

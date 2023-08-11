@@ -23,7 +23,7 @@ export default function Modal(props: IProps) {
         props.handleClose();
       }
     },
-    [props],
+    [props]
   );
 
   React.useEffect(() => {

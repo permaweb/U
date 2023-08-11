@@ -13,7 +13,7 @@ function getHeight(height: number | undefined) {
 function getWidth(
   noMinWidth: boolean | undefined,
   width: number | undefined,
-  fullWidth: boolean | undefined,
+  fullWidth: boolean | undefined
 ) {
   if (fullWidth) {
     return `100%`;

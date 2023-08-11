@@ -9,7 +9,7 @@ export async function handle(state, action) {
   // need to only accept L2 txs for transfer, allow, claim
   if (
     ['transfer', 'allow', 'claim', 'reject'].includes(
-      action?.input?.function,
+      action?.input?.function
     ) &&
     SmartWeave.transaction.origin === 'L1'
   ) {
@@ -38,7 +38,7 @@ export async function handle(state, action) {
       return mint(state, action);
     default:
       throw new ContractError(
-        `No function supplied or function not recognized`,
+        `No function supplied or function not recognized`
       );
   }
 }
