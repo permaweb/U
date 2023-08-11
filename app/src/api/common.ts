@@ -1,4 +1,5 @@
 import { WarpFactory } from 'warp-contracts';
+import { DRES } from './constants';
 
 /**
  *
@@ -28,91 +29,13 @@ export const readState = async (tx: string) => {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      remoteStateSyncSource: 'https://dre-1.warp.cc/contract',
+      remoteStateSyncSource: DRES['DRE-U'],
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       allowBigInt: true,
     })
     .readState()
-    .then((s) => s.cachedValue.state)
-    .catch(() =>
-      warp
-        .contract(tx)
-        .connect('use_wallet')
-        .setEvaluationOptions({
-          internalWrites: true,
-          unsafeClient: 'skip',
-          remoteStateSyncSource: 'https://dre-2.warp.cc/contract',
-          remoteStateSyncEnabled:
-            import.meta.env.VITE_LOCAL === 'true' ? false : true,
-          allowBigInt: true,
-        })
-        .readState()
-        .then((s) => s.cachedValue.state)
-        .catch((e) =>
-          warp
-            .contract(tx)
-            .connect('use_wallet')
-            .setEvaluationOptions({
-              internalWrites: true,
-              unsafeClient: 'skip',
-              remoteStateSyncSource: 'https://dre-3.warp.cc/contract',
-              remoteStateSyncEnabled:
-                import.meta.env.VITE_LOCAL === 'true' ? false : true,
-              allowBigInt: true,
-            })
-            .readState()
-            .then((s) => s.cachedValue.state)
-            .catch(() =>
-              warp
-                .contract(tx)
-                .connect('use_wallet')
-                .setEvaluationOptions({
-                  internalWrites: true,
-                  unsafeClient: 'skip',
-                  remoteStateSyncSource: 'https://dre-4.warp.cc/contract',
-                  remoteStateSyncEnabled:
-                    import.meta.env.VITE_LOCAL === 'true' ? false : true,
-                  allowBigInt: true,
-                })
-                .readState()
-                .then((s) => s.cachedValue.state)
-                .catch(() =>
-                  warp
-                    .contract(tx)
-                    .connect('use_wallet')
-                    .setEvaluationOptions({
-                      internalWrites: true,
-                      unsafeClient: 'skip',
-                      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
-                      remoteStateSyncEnabled:
-                        import.meta.env.VITE_LOCAL === 'true' ? false : true,
-                      allowBigInt: true,
-                    })
-                    .readState()
-                    .then((s) => s.cachedValue.state)
-                    .catch(() =>
-                      warp
-                        .contract(tx)
-                        .connect('use_wallet')
-                        .setEvaluationOptions({
-                          internalWrites: true,
-                          unsafeClient: 'skip',
-                          remoteStateSyncSource:
-                            'https://dre-1.warp.cc/contract',
-                          remoteStateSyncEnabled:
-                            import.meta.env.VITE_LOCAL === 'true'
-                              ? false
-                              : true,
-                          allowBigInt: true,
-                        })
-                        .readState()
-                        .then((s) => s.cachedValue.state)
-                    )
-                )
-            )
-        )
-    );
+    .then((s) => s.cachedValue.state);
 };
 
 /**
@@ -129,7 +52,7 @@ export const viewState = async (tx: string, input: any, dre: string) => {
   const interaction = warp
     .contract(tx)
     .setEvaluationOptions({
-      remoteStateSyncSource: `https://${dre}.warp.cc/contract`,
+      remoteStateSyncSource: dre,
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       internalWrites: true,
