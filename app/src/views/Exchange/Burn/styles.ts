@@ -42,7 +42,7 @@ export const BWrapper = styled.div`
   display: flex;
   justify-content: right;
   align-items: center;
-  background-color: #d9d9d9;
+  background: ${(props) => props.theme.colors.container.alt8.background};
   border-radius: 0px 0px 12px 12px;
   padding: 24px 12px 12px 12px;
   z-index: -1;
@@ -69,7 +69,7 @@ export const Divider = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 25px 0 20px 0;
+  margin: 12.5px 0 20px 0;
   svg {
     width: 40px;
   }

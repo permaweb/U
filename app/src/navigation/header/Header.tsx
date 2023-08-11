@@ -110,7 +110,7 @@ export default function Header() {
             <S.LogoContent>
               <ReactSVG
                 beforeInjection={(svg) => {
-                  svg.setAttribute('style', 'width: 60px');
+                  svg.setAttribute('style', 'width: 45px');
                 }}
                 src="https://e52zox4dqzv2yd7ej5uc4e3svjjxq5pgbdwaiy5n3zwhxprup3iq.arweave.net/J3WXX4OGa6wP5E9oLhNyqlN4deYI7ARjrd5se740ftE"
               />
