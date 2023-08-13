@@ -8,6 +8,7 @@ import { AR_WALLETS, WALLET_PERMISSIONS } from 'helpers/config';
 import { getBalanceEndpoint } from 'helpers/endpoints';
 import { language } from 'helpers/language';
 import { STYLING } from 'helpers/styling';
+import { useConnection } from 'arweave-wallet-kit';
 
 export const WalletListContainer = styled.div`
   height: 100%;
@@ -94,6 +95,7 @@ function WalletList(props: { handleConnect: () => void }) {
 
 export function ArweaveProvider(props: ArweaveProviderProps) {
   const wallets = AR_WALLETS;
+  const { connect, disconnect } = useConnection();
 
   const [walletModalVisible, setWalletModalVisible] =
     React.useState<boolean>(false);
@@ -106,17 +108,11 @@ export function ArweaveProvider(props: ArweaveProviderProps) {
   // const [arProfile, setArProfile] = React.useState<ProfileType | null>(null);
 
   async function handleConnect() {
-    await window?.arweaveWallet
-      ?.connect(WALLET_PERMISSIONS as any)
-      .then(() => {
-        setWalletModalVisible(false);
-      })
-      .catch((e: any) => {
-        alert(e);
-      });
+    connect();
   }
 
   async function handleDisconnect() {
+    await disconnect();
     await window?.arweaveWallet?.disconnect();
     setWalletAddress(null);
   }
