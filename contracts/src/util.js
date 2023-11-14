@@ -11,7 +11,7 @@ import { Rejected, Resolved } from 'hyper-async';
  * @param {{state, action}} p The payload to pass through the func
  * @return {{state, action}} p
  */
-export const ce = (flag, message) => (p) => flag ? Left(message) : Right(p);
+export const ce = (flag, message) => (p) => (flag ? Left(message) : Right(p));
 
 /**
  * @description Contract Error Async (use with hyper-async)
@@ -85,7 +85,7 @@ export const getTargetBalance = async (target, balance, kv) => ({
  */
 export const addClaimBalanceTo = ({ state, action }) => {
   const indexToRemove = state.claimable.findIndex(
-    (claim) => claim.txID === action.input.txID
+    (claim) => claim.txID === action.input.txID,
   );
   const claim = state.claimable[indexToRemove];
   const balance = state.balances[claim.to] || 0;
@@ -104,7 +104,7 @@ export const addClaimBalanceTo = ({ state, action }) => {
  */
 export const addClaimBalanceFrom = ({ state, action }) => {
   const indexToRemove = state.claimable.findIndex(
-    (claim) => claim.txID === action.input.tx
+    (claim) => claim.txID === action.input.tx,
   );
   const claim = state.claimable[indexToRemove];
   const balance = state.balances[claim.from] || 0;

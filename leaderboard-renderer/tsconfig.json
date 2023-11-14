@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "declaration": true,
+    "allowJs": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist",
+    "esModuleInterop": true
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "dist", "./src/*.fixture.*"]
+}

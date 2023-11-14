@@ -1,0 +1,36 @@
+{
+  "name": "u-leaderboard",
+  "version": "0.0.1",
+  "description": "A suite of leaderboard components.",
+  "main": "app.js",
+  "module": "app.js",
+  "types": "App.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "test",
+    "build:types": "rm -rf dist; tsc",
+    "build-fixtures": "esbuild cosmos-server.js --bundle --minify --outfile=dist/renderer.js",
+    "build": "npm rum build:types && node ./scripts/build.mjs && cp package.json dist/package.json && (cd dist && npm pack)",
+    "build-module": "node ./scripts/build-module.js",
+    "perma-pub": "npm run build && packajs pubjs -t Type=perma-package -t Title=u-leaderboard -t Description=\"A leaderboard for U!\" -t Read-Me=https://github.com/facts-laboratory/ui-kit-js/blob/main/packages/fact-note/README.md -t Repository=https://github.com/facts-laboratory/ui-kit-js/tree/main/packages/fact-note -t Render-With=jkPpggGUW-ofqKKYzG4Al8luFwNURoqXkpLFjqmiS58 -w ${PATH_TO_WALLET}",
+    "start": "nodemon .cosmos/cosmos-server.js",
+    "cosmos": "cosmos --expose-imports"
+  },
+  "author": "Justin Shaw",
+  "license": "ISC",
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "styled-components": "6.1.1"
+  },
+  "devDependencies": {
+    "@facts-kit/packajs": "https://arweave.net/hnNArrNrudkFJTJ6AGnyDrsmD04JZIbdlEMrLNumUCQ",
+    "@types/react": "18.2.17",
+    "esbuild": "0.18.17",
+    "express": "4.18.2",
+    "nodemon": "3.0.1",
+    "react-cosmos": "6.0.0-beta.6",
+    "react-cosmos-dom": "6.0.0-beta.6",
+    "typescript": "5.1.6"
+  }
+}
