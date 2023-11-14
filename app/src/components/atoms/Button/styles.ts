@@ -13,7 +13,7 @@ function getHeight(height: number | undefined) {
 function getWidth(
   noMinWidth: boolean | undefined,
   width: number | undefined,
-  fullWidth: boolean | undefined
+  fullWidth: boolean | undefined,
 ) {
   if (fullWidth) {
     return `100%`;
@@ -114,8 +114,8 @@ export const IconPrimary = styled.div<{
       props.disabled
         ? props.theme.colors.button.primary.disabled.label
         : props.active
-        ? props.theme.colors.button.primary.active.label
-        : props.theme.colors.button.primary.label};
+          ? props.theme.colors.button.primary.active.label
+          : props.theme.colors.button.primary.label};
   }
 `;
 
@@ -167,8 +167,8 @@ export const IconSecondary = styled(IconPrimary)`
       props.disabled
         ? props.theme.colors.button.alt1.disabled.label
         : props.active
-        ? props.theme.colors.button.alt1.active.label
-        : props.theme.colors.button.alt1.label};
+          ? props.theme.colors.button.alt1.active.label
+          : props.theme.colors.button.alt1.label};
   }
 `;
 
@@ -228,8 +228,8 @@ export const IconAlt2 = styled(IconPrimary)`
       props.disabled
         ? props.theme.colors.button.alt2.disabled.label
         : props.active
-        ? props.theme.colors.button.alt2.active.label
-        : props.theme.colors.button.alt2.label};
+          ? props.theme.colors.button.alt2.active.label
+          : props.theme.colors.button.alt2.label};
   }
 `;
 

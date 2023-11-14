@@ -10,7 +10,7 @@ test('should mint 1 u', async () => {
   const env = setupSmartWeaveEnv(
     1000000000000, // reward
     0, // height
-    '<tx>'
+    '<tx>',
   );
 
   const caller = '<justin>';
@@ -26,7 +26,7 @@ test('should mint 1 u', async () => {
       claimable: [],
       divisibility: 1e6,
     },
-    { caller }
+    { caller },
   );
   const state = output.state;
   assert.is(state.balances[caller], 1000000);

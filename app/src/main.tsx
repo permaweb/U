@@ -18,5 +18,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </HashRouter>
       </ArweaveProvider>
     </ThemeProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

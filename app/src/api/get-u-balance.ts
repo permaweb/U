@@ -14,12 +14,16 @@ const { of, fromPromise } = Async;
 export function getUBalance(tx: string, target: string) {
   return of(tx)
     .chain((tx: string) =>
-      fromPromise(viewState)(tx, { function: 'balance', target }, DRES['DRE-U'])
+      fromPromise(viewState)(
+        tx,
+        { function: 'balance', target },
+        DRES['DRE-U'],
+      ),
     )
     .fork(
       (e: any) => {
         throw new Error(e?.message || e || 'An error occurred.');
       },
-      (interaction: any) => interaction.result.balance / 1e6
+      (interaction: any) => interaction.result.balance / 1e6,
     );
 }

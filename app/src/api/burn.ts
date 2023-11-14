@@ -3,6 +3,7 @@ const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
+import { DRES } from './constants';
 
 /**
  * @author @jshaw-ar
@@ -35,7 +36,7 @@ const mint = async (input: { contractId: string; qty: number }) => {
     .contract(contractId)
     .connect('use_wallet')
     .setEvaluationOptions({
-      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
+      remoteStateSyncSource: DRES['DRE-U'],
       remoteStateSyncEnabled:
         import.meta.env.VITE_LOCAL === 'true' ? false : true,
       unsafeClient: 'skip',
@@ -51,7 +52,7 @@ const mint = async (input: { contractId: string; qty: number }) => {
         reward: new BigNumber(qty * 1e12)
           .integerValue(BigNumber.ROUND_DOWN)
           .toString(),
-      }
+      },
     );
   return interaction?.originalTxId;
 };
