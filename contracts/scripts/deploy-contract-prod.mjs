@@ -20,7 +20,7 @@ async function deploy(folder) {
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
-      remoteStateSyncSource: 'https://dre-1.warp.cc/contract',
+      remoteStateSyncSource: 'https://dre-u.warp.cc/contract',
       remoteStateSyncEnabled: true,
       allowBigInt: true,
     })

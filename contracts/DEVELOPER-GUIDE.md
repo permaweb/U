@@ -77,7 +77,7 @@ await warp
     .contract(U_CONTRACT_ID)
     .connect('use_wallet')
     .setEvaluationOptions({
-      remoteStateSyncSource: 'https://dre-6.warp.cc/contract',
+      remoteStateSyncSource: 'https://dre-u.warp.cc/contract',
       remoteStateSyncEnabled: true,
       unsafeClient: 'skip',
       allowBigInt: true,
