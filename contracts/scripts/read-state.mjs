@@ -11,7 +11,7 @@ async function read(contractId, address) {
   const connected = warp
     .contract(contractId)
     .setEvaluationOptions({
-      remoteStateSyncSource: `https://dre-6.warp.cc/contract`,
+      remoteStateSyncSource: `https://dre-u.warp.cc/contract`,
       remoteStateSyncEnabled: true,
       internalWrites: true,
       allowBigInt: true,
