@@ -1,6 +1,6 @@
-import Bundlr from '@bundlr-network/client';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
 import Arweave from 'arweave';
+import Irys from '@irys/sdk';
 
 const ANT = 'tudrGap6uMQ80zdFZsjAUkSp4Ea8YYsaKgskewqNWSU'; // u.arweave.dev
 const arweave = Arweave.init({
@@ -14,10 +14,7 @@ const jwk = JSON.parse(
   Buffer.from(process.env.WALLET, 'base64').toString('utf-8')
 );
 
-const bundlr = new Bundlr('https://node2.bundlr.network', 'arweave', jwk);
-
-// const funding = await bundlr.fund('250000000000');
-// console.log('Funding result:', JSON.stringify(funding));
+const irys = new Irys({ url: 'https://node2.bundlr.network', token: 'arweave', key: jwk });
 
 const warp = WarpFactory.custom(arweave, defaultCacheOptions, 'mainnet')
   .useArweaveGateway()
@@ -25,7 +22,7 @@ const warp = WarpFactory.custom(arweave, defaultCacheOptions, 'mainnet')
 
 const contract = warp.contract(ANT).connect(jwk);
 // upload folder
-const result = await bundlr.uploadFolder('./dist', {
+const result = await irys.uploadFolder('./dist', {
   indexFile: 'index.html',
 });
 
