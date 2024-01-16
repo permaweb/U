@@ -35,14 +35,14 @@ export default function Transfer() {
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT)
+    getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -83,7 +83,7 @@ export default function Transfer() {
   const transferU = async () => {
     setLoading(true);
     transfer({
-      contractId: import.meta.env.VITE_CONTRACT,
+      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
       from: arProvider.walletAddress as string,
       qty: UAmount,
       target: recipient,

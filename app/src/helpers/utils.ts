@@ -1,5 +1,5 @@
-export function formatAddress(address: string | null, wrap: boolean) {
-  if (!address) {
+export function formatAddress(address: any, wrap: boolean) {
+  if (!address || address.error) {
     return '';
   }
   const formattedAddress =

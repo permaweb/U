@@ -1,5 +1,8 @@
-import { WarpFactory } from 'warp-contracts';
+import { LoggerFactory, defaultCacheOptions, WarpFactory } from 'warp-contracts';
+import { DeployPlugin, InjectedArweaveSigner } from 'warp-contracts-plugin-deploy';
 import { DRES } from './constants';
+
+LoggerFactory.INST.logLevel('fatal');
 
 /**
  *
@@ -8,9 +11,10 @@ import { DRES } from './constants';
  * @return {Warp}
  */
 export function getWarpFactory() {
-  return import.meta.env.VITE_LOCAL === 'true'
-    ? WarpFactory.forLocal()
-    : WarpFactory.forMainnet();
+  return WarpFactory.forMainnet({
+    ...defaultCacheOptions,
+    inMemory: true,
+  }).use(new DeployPlugin());
 }
 
 /**
@@ -23,15 +27,20 @@ export function getWarpFactory() {
  */
 export const readState = async (tx: string) => {
   const warp = getWarpFactory();
+  
+  const signer: any = new InjectedArweaveSigner(global.window.arweaveWallet);
+  signer.getAddress = global.window.arweaveWallet.getActiveAddress;
+  await signer.setPublicKey();
+
   return warp
     .contract(tx)
-    .connect('use_wallet')
+    .connect(signer)
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
       remoteStateSyncSource: DRES['DRE-U'],
       remoteStateSyncEnabled:
-        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+        true,
       allowBigInt: true,
     })
     .readState()
@@ -54,7 +63,7 @@ export const viewState = async (tx: string, input: any, dre: string) => {
     .setEvaluationOptions({
       remoteStateSyncSource: dre,
       remoteStateSyncEnabled:
-        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+        true,
       internalWrites: true,
       allowBigInt: true,
       unsafeClient: 'skip',

@@ -3,6 +3,7 @@ const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 import { identity } from 'ramda';
 import { WarpFactory, defaultCacheOptions } from 'warp-contracts';
+import { InjectedArweaveSigner } from 'warp-contracts-plugin-deploy';
 import { DRES } from './constants';
 
 /**
@@ -28,17 +29,19 @@ export function burn(input: { contractId: string; qty: number }) {
 const mint = async (input: { contractId: string; qty: number }) => {
   const { contractId, qty } = input;
 
-  const warp =
-    import.meta.env.VITE_LOCAL === 'true'
-      ? WarpFactory.forLocal()
-      : WarpFactory.forMainnet(defaultCacheOptions, true);
+  const warp = WarpFactory.forMainnet(defaultCacheOptions, true);
+
+  const signer: any = new InjectedArweaveSigner(global.window.arweaveWallet);
+  signer.getAddress = global.window.arweaveWallet.getActiveAddress;
+  await signer.setPublicKey();
+
   const interaction = await warp
     .contract(contractId)
-    .connect('use_wallet')
+    .connect(signer)
     .setEvaluationOptions({
       remoteStateSyncSource: DRES['DRE-U'],
       remoteStateSyncEnabled:
-        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+        true,
       unsafeClient: 'skip',
       allowBigInt: true,
       internalWrites: true,

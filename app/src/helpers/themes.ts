@@ -19,7 +19,7 @@ const DEFAULT = {
   neutral16: '#F0F9FE',
   primary: '#436a99',
   primary2: '#278490',
-  primary3: '#436a99',
+  primary3: '#385880',
   primary4: '#3FBACA',
   primary5: '#F3FDFF',
   alt1: '#EC7F00',

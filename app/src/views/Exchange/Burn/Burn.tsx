@@ -41,14 +41,14 @@ export default function Burn() {
   const [UAmount, setUAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getState(import.meta.env.VITE_CONTRACT)
+    getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -114,7 +114,7 @@ export default function Burn() {
   function burnAR() {
     setLoading(true);
     burn({
-      contractId: import.meta.env.VITE_CONTRACT || '',
+      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw' || '',
       qty: arAmount,
     }).then((tx: string) => {
       setPollingTx(tx);

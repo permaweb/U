@@ -1,4 +1,5 @@
 import Async from 'hyper-async';
+import { InjectedArweaveSigner } from 'warp-contracts-plugin-deploy';
 import { getWarpFactory } from './common';
 const { of, fromPromise } = Async;
 
@@ -17,16 +18,20 @@ export function claim(input: ClaimInput) {
 const warpClaim = async (input: ClaimInput) => {
   const { contractId, qty, tx } = input;
   const warp = getWarpFactory();
+  
+  const signer: any = new InjectedArweaveSigner(global.window.arweaveWallet);
+  signer.getAddress = global.window.arweaveWallet.getActiveAddress;
+  await signer.setPublicKey();
 
   const contract = warp
     .contract(contractId)
-    .connect('use_wallet')
+    .connect(signer)
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
       remoteStateSyncSource: 'https://dre-u.warp.cc/contract',
       remoteStateSyncEnabled:
-        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+        true,
       allowBigInt: true,
     });
 

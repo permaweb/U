@@ -3,6 +3,10 @@ import { getWarpFactory } from './common';
 const { of, fromPromise } = Async;
 import BigNumber from 'bignumber.js';
 
+import Arweave from 'arweave';
+import { InjectedArweaveSigner } from 'warp-contracts-plugin-deploy';
+import { ArconnectSigner } from 'arbundles';
+
 export interface TransferInput {
   contractId: string;
   from: string;
@@ -20,15 +24,19 @@ const warpTransfer = async (input: TransferInput) => {
   const { contractId, qty, target, from } = input;
   const warp = getWarpFactory();
 
+  const signer: any = new InjectedArweaveSigner(global.window.arweaveWallet);
+  signer.getAddress = global.window.arweaveWallet.getActiveAddress;
+  await signer.setPublicKey();
+
   const contract = warp
     .contract(contractId)
-    .connect('use_wallet')
+    .connect(signer)
     .setEvaluationOptions({
       internalWrites: true,
       unsafeClient: 'skip',
       remoteStateSyncSource: 'https://dre-u.warp.cc/contract',
       remoteStateSyncEnabled:
-        import.meta.env.VITE_LOCAL === 'true' ? false : true,
+        true,
       allowBigInt: true,
     });
   const newQty = new BigNumber(qty * 1e6)

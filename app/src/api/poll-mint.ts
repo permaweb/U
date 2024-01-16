@@ -29,11 +29,7 @@ export async function waitForConfirmation(tx: string) {
   while (res === null || res?.status === 202) {
     await new Promise((resolve) => setTimeout(resolve, 20000)); // Delay for 20 second
     res = await fetch(
-      `${
-        import.meta.env.VITE_LOCAL === 'true'
-          ? 'http://localhost:1984'
-          : 'https://arweave.net'
-      }/tx/${tx}`,
+      `https://arweave.net/tx/${tx}`,
     );
     console.log(res.status);
   }

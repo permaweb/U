@@ -32,7 +32,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress) {
-      getState(import.meta.env.VITE_CONTRACT)
+      getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(
@@ -46,7 +46,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance(import.meta.env.VITE_CONTRACT, arProvider.walletAddress)
+      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -107,7 +107,7 @@ export default function Claim() {
   const processClaim = async (c: Claimable) => {
     await claim({
       qty: c.qty,
-      contractId: import.meta.env.VITE_CONTRACT,
+      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
       tx: c.txID,
     })
       .then(() => {
