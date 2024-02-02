@@ -31,7 +31,6 @@ export async function waitForConfirmation(tx: string) {
     res = await fetch(
       `https://arweave.net/tx/${tx}`,
     );
-    console.log(res.status);
   }
   localStorage.removeItem('polling_tx');
   return { tx, status: res.status };

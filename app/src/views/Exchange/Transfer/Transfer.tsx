@@ -6,7 +6,7 @@ import { Button } from 'components/atoms/Button';
 import { FormField } from 'components/atoms/FormField';
 import { Notification } from 'components/atoms/Notification';
 
-import { ASSETS } from 'helpers/config';
+import { ASSETS, U_CONTRACT_ID } from 'helpers/config';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 
 import { language } from 'helpers/language';
@@ -35,14 +35,14 @@ export default function Transfer() {
   const [recipient, setRecipient] = React.useState<string>('');
 
   useEffect(() => {
-    getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
+    getState(U_CONTRACT_ID)
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
+      getUBalance(U_CONTRACT_ID, arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -83,7 +83,7 @@ export default function Transfer() {
   const transferU = async () => {
     setLoading(true);
     transfer({
-      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
+      contractId: U_CONTRACT_ID,
       from: arProvider.walletAddress as string,
       qty: UAmount,
       target: recipient,

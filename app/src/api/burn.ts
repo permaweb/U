@@ -17,6 +17,7 @@ export function burn(input: { contractId: string; qty: number }) {
     .chain(fromPromise(mint))
     .map(setLocalStorage)
     .fork((e: any) => {
+      console.log(e.message)
       return { error: 'There was an error fetching the contract state' };
     }, identity);
 }
@@ -37,7 +38,7 @@ const mint = async (input: { contractId: string; qty: number }) => {
 
   const interaction = await warp
     .contract(contractId)
-    .connect(signer)
+    .connect('use_wallet')
     .setEvaluationOptions({
       remoteStateSyncSource: DRES['DRE-U'],
       remoteStateSyncEnabled:

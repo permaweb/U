@@ -8,7 +8,7 @@ import { FormField } from 'components/atoms/FormField';
 import { Notification } from 'components/atoms/Notification';
 import { Modal } from 'components/molecules/Modal';
 
-import { ASSETS } from 'helpers/config';
+import { ASSETS, U_CONTRACT_ID } from 'helpers/config';
 import { formatAddress } from 'helpers/utils';
 import { useArweaveProvider } from 'providers/ArweaveProvider';
 
@@ -25,7 +25,7 @@ export default function Burn() {
   const [state, setState] = React.useState<State | undefined>();
 
   const [polling, setPolling] = React.useState<boolean>(false);
-  const [pollingTx, setPollingTx] = React.useState<string | null>(null);
+  const [pollingTx, setPollingTx] = React.useState<any | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [burnResult, setBurnResult] = React.useState<ResponseType | null>(null);
   const [mintResult, setMintResult] = React.useState<ResponseType | null>(null);
@@ -41,14 +41,14 @@ export default function Burn() {
   const [UAmount, setUAmount] = React.useState<number>(0);
 
   useEffect(() => {
-    getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
+    getState(U_CONTRACT_ID)
       .then(setState)
       .catch((e: any) => console.log(e));
   }, []);
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
+      getUBalance(U_CONTRACT_ID, arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -64,13 +64,18 @@ export default function Burn() {
 
   useEffect(() => {
     if (pollingTx) {
-      setPolling(true);
-      pollMint(pollingTx)
-        .toPromise()
-        .then((r: any) => {
-          setPolling(false);
-          console.log(r);
-        });
+      if (pollingTx.error) {
+        setBurnResult({ status: false, message: pollingTx.error });
+      }
+      else {
+        setPolling(true);
+        pollMint(pollingTx)
+          .toPromise()
+          .then((r: any) => {
+            setPolling(false);
+            console.log(r);
+          });
+      }
     }
   }, [pollingTx]);
 
@@ -112,18 +117,20 @@ export default function Burn() {
   }
 
   function burnAR() {
-    setLoading(true);
-    burn({
-      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw' || '',
-      qty: arAmount,
-    }).then((tx: string) => {
-      setPollingTx(tx);
-      setLoading(false);
-      setBurnResult({
-        status: true,
-        message: language.burnSuccess,
-      });
-    });
+    if (U_CONTRACT_ID) {
+      setLoading(true);
+      burn({
+        contractId: U_CONTRACT_ID,
+        qty: arAmount,
+      }).then((tx: string) => {
+        setPollingTx(tx);
+        setLoading(false);
+        setBurnResult({
+          status: true,
+          message: language.burnSuccess,
+        });
+      }).catch((e: any) => console.error(e));
+    }
   }
 
   return (

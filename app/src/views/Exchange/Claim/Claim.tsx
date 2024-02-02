@@ -9,6 +9,7 @@ import { language } from 'helpers/language';
 import * as S from './styles';
 import { Claimable, env, State } from 'api';
 import { ResponseType } from 'helpers/types';
+import { U_CONTRACT_ID } from 'helpers/config';
 
 const { getState, getUBalance, claim } = env;
 
@@ -32,7 +33,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress) {
-      getState('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw')
+      getState(U_CONTRACT_ID)
         .then((s: any) => {
           setState(s);
           const claims = s.claimable?.filter(
@@ -46,7 +47,7 @@ export default function Claim() {
 
   useEffect(() => {
     if (arProvider.walletAddress && state && !connectedUBalanceError) {
-      getUBalance('KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw', arProvider.walletAddress)
+      getUBalance(U_CONTRACT_ID, arProvider.walletAddress)
         .then(setConnectedUBalance)
         .catch((e: any) => setConnectedUBalanceError(e.message || 'Error'));
     }
@@ -107,7 +108,7 @@ export default function Claim() {
   const processClaim = async (c: Claimable) => {
     await claim({
       qty: c.qty,
-      contractId: 'KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw',
+      contractId: U_CONTRACT_ID,
       tx: c.txID,
     })
       .then(() => {

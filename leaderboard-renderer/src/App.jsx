@@ -11,13 +11,15 @@ const LoadingStatus = {
   ERROR: "ERROR",
 };
 
+const U_CONTRACT_ID = "KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw";
+
 const App = () => {
   const [loadingStatus, setLoadingStatus] = useState(LoadingStatus.NOT_LOADED);
   const [state, setState] = useState();
   const [error, setError] = useState();
   useEffect(() => {
     setLoadingStatus(LoadingStatus.LOADING);
-    getState("KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw", "dre-u")
+    getState(U_CONTRACT_ID, "dre-u")
       .then((state) => {
         setState(state);
         setLoadingStatus(LoadingStatus.LOADED);

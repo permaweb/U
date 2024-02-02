@@ -16,6 +16,8 @@ import { Burn } from 'views/Exchange/Burn';
 import { Transfer } from 'views/Exchange/Transfer';
 import { Claim } from 'views/Exchange/Claim';
 
+export const U_CONTRACT_ID = `KTzTXT_ANmF84fWEKHzWURD1LWd9QaFR9yfYUwH2Lxw`;
+
 export const ASSETS = {
   arrowDown: arrowDownSVG,
   arweaveLogo: arweaveLogoSVG,
